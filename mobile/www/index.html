@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friendy — Your AI Friend Is Always Here</title>
+<meta name="description" content="Friendy is an AI companion app with 5 unique personas — Maya, Dre, Sage, Kai, and Nova. Someone to talk to, any time, day or night.">
+<meta property="og:title" content="Friendy — Your AI Friend Is Always Here">
+<meta property="og:description" content="An AI companion app with 5 unique personas. Someone to talk to, any time.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hsw365.github.io/FRIENDY/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://hsw365.github.io/FRIENDY/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Friendy","applicationCategory":"LifestyleApplication","operatingSystem":"iOS","description":"AI companion app with 5 unique personas for conversation and support.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700;1,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#080809; --s1:#0f0f11; --s2:#141417; --s3:#1c1c21; --s4:#242429;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.1);
+  --text:#e8e6f0; --muted:#5a5a6e; --fog:#333340;
+  --accent:#7c6af7; --accent2:#9d8fff; --accentGlow:rgba(124,106,247,0.2);
+  --pink:#d45f8a; --gold:#c9a84c; --green:#3dba7b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.035;pointer-events:none;z-index:9998;}
+
+@keyframes rise{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes popIn{from{opacity:0;transform:scale(0.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.3;}40%{transform:translateY(-8px);opacity:1;}}
+@keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes overlayIn{from{opacity:0;}to{opacity:1;}}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes lineGrow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+@keyframes successPop{0%{transform:scale(0) rotate(-10deg);}60%{transform:scale(1.15) rotate(3deg);}100%{transform:scale(1) rotate(0deg);}}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:.8;}}
+
+/* ── PAGES ─────────────────────────────────────────────────────── */
+.page{display:none;}
+.page.active{display:flex;flex-direction:column;min-height:100vh;}
+#chat-page.active{min-height:100vh;height:100vh;}
+
+/* ── AMBIENT ───────────────────────────────────────────────────── */
+.amb{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
+.amb1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,106,247,0.1) 0%,transparent 70%);top:-200px;right:-200px;}
+.amb2{width:500px;height:500px;background:radial-gradient(circle,rgba(212,95,138,0.06) 0%,transparent 70%);bottom:-100px;left:-150px;}
+
+/* ── NAV ───────────────────────────────────────────────────────── */
+nav{padding:26px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;border-bottom:1px solid var(--border);animation:rise 0.6s both;}
+.wordmark{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);letter-spacing:-0.03em;}
+.wordmark span{color:var(--accent);font-style:italic;}
+.nav-right{display:flex;gap:12px;align-items:center;}
+.nav-badge{font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;letter-spacing:0.08em;text-transform:uppercase;display:none;border:1px solid;}
+.nav-badge.show{display:block;}
+.nb-basic{background:rgba(124,106,247,0.08);color:var(--accent2);border-color:rgba(124,106,247,0.2);}
+.nb-plus{background:rgba(212,95,138,0.08);color:#e07aa0;border-color:rgba(212,95,138,0.2);}
+.nb-prem{background:rgba(201,168,76,0.08);color:var(--gold);border-color:rgba(201,168,76,0.2);}
+.nav-user{font-size:12px;color:var(--muted);display:none;}
+.nav-user.show{display:block;}
+.nav-logout{font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);padding:6px 12px;border-radius:6px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;display:none;}
+.nav-logout.show{display:block;}
+.nav-logout:hover{color:var(--text);border-color:var(--border2);}
+
+/* ── HERO ──────────────────────────────────────────────────────── */
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 48px;position:relative;z-index:2;overflow:hidden;}
+.hero-kicker{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:12px;animation:rise 0.8s 0.2s both;}
+.hero-kicker::before{content:'';width:32px;height:1px;background:var(--accent);display:block;}
+.hero-h1{font-family:'Fraunces',serif;font-size:clamp(48px,7vw,92px);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:var(--text);max-width:780px;animation:rise 0.8s 0.35s both;}
+.hero-h1 em{font-style:italic;color:var(--accent2);}
+.hero-h1 .lined{position:relative;display:inline-block;}
+.hero-h1 .lined::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink));transform-origin:left;animation:lineGrow 1s 1.2s both;}
+.hero-sub{margin-top:28px;font-size:17px;line-height:1.75;color:var(--muted);max-width:500px;font-weight:400;animation:rise 0.8s 0.5s both;}
+.hero-actions{display:flex;gap:14px;margin-top:48px;align-items:center;animation:rise 0.8s 0.65s both;}
+.btn-primary{background:var(--accent);color:white;padding:16px 36px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 8px 32px rgba(124,106,247,0.35);}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 16px 48px rgba(124,106,247,0.45);}
+.btn-ghost{color:var(--muted);font-size:14px;font-weight:600;background:transparent;border:1px solid var(--border2);padding:16px 28px;border-radius:8px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color 0.2s,border-color 0.2s;}
+.btn-ghost:hover{color:var(--text);}
+.hero-stats{display:flex;gap:48px;margin-top:80px;padding-top:48px;border-top:1px solid var(--border);animation:rise 0.8s 0.8s both;flex-wrap:wrap;}
+.stat-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--text);letter-spacing:-0.03em;}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:0.04em;}
+
+/* ── FRIENDS SECTION ───────────────────────────────────────────── */
+.friends-section{padding:90px 48px;position:relative;z-index:2;border-top:1px solid var(--border);}
+.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
+.sec-title{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-0.03em;color:var(--text);line-height:1.1;}
+.sec-title em{font-style:italic;color:var(--accent2);}
+.sec-sub{font-size:13px;color:var(--muted);max-width:280px;text-align:right;line-height:1.6;}
+.friends-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.friend-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:28px 22px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.friend-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
+.friend-card:hover{transform:translateY(-4px);}
+.fc-basic::before{background:linear-gradient(135deg,rgba(124,106,247,0.06) 0%,transparent 60%);}
+.fc-plus::before{background:linear-gradient(135deg,rgba(212,95,138,0.06) 0%,transparent 60%);}
+.fc-prem::before{background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);}
+.friend-card:hover.fc-basic{border-color:rgba(124,106,247,0.35);box-shadow:0 16px 48px rgba(124,106,247,0.12);}
+.friend-card:hover.fc-plus{border-color:rgba(212,95,138,0.35);box-shadow:0 16px 48px rgba(212,95,138,0.1);}
+.friend-card:hover.fc-prem{border-color:rgba(201,168,76,0.3);box-shadow:0 16px 48px rgba(201,168,76,0.08);}
+.friend-card:hover::before{opacity:1;}
+.fc-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;display:inline-block;border:1px solid;}
+.tag-basic{background:rgba(124,106,247,0.1);color:var(--accent2);border-color:rgba(124,106,247,0.2);}
+.tag-plus{background:rgba(212,95,138,0.1);color:#e07aa0;border-color:rgba(212,95,138,0.2);}
+.tag-prem{background:rgba(201,168,76,0.1);color:var(--gold);border-color:rgba(201,168,76,0.2);}
+.fc-lock{position:absolute;top:12px;right:12px;font-size:14px;opacity:0.4;}
+.fc-av{width:48px;height:48px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+.av-b{background:linear-gradient(135deg,rgba(124,106,247,0.3),rgba(124,106,247,0.1));}
+.av-p{background:linear-gradient(135deg,rgba(212,95,138,0.3),rgba(212,95,138,0.1));}
+.av-r{background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.1));}
+.fc-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px;}
+.fc-vibe{font-size:12px;color:var(--muted);line-height:1.55;}
+.fc-price{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);margin-top:20px;letter-spacing:-0.02em;}
+.fc-price span{font-size:12px;color:var(--muted);font-weight:400;font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* ── WHY SECTION ───────────────────────────────────────────────── */
+.why-section{padding:0 48px 90px;position:relative;z-index:2;}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.why-card{background:var(--s1);padding:36px 32px;}
+.why-num{font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:var(--fog);letter-spacing:-0.04em;margin-bottom:16px;}
+.why-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.why-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── MODALS ────────────────────────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(4,4,5,0.92);backdrop-filter:blur(16px);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:overlayIn 0.3s both;}
+.modal-box{background:var(--s1);border:1px solid var(--border2);border-radius:20px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 40px 120px rgba(0,0,0,0.8);animation:modalIn 0.4s both;position:relative;}
+.modal-box::-webkit-scrollbar{width:3px;}
+.modal-box::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px;}
+.pricing-box{max-width:900px;}
+.login-box{max-width:440px;}
+.modal-close{position:absolute;top:20px;right:20px;width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--s2);cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2;}
+.modal-close:hover{background:var(--s3);color:var(--text);}
+
+/* PRICING */
+.modal-top{padding:44px 44px 28px;border-bottom:1px solid var(--border);}
+.modal-top h2{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:var(--text);letter-spacing:-0.03em;margin-bottom:8px;}
+.modal-top h2 em{font-style:italic;color:var(--accent2);}
+.modal-top p{font-size:14px;color:var(--muted);}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:32px 44px 44px;}
+.plan-card{border:1px solid var(--border);border-radius:16px;padding:28px 24px;background:var(--s2);display:flex;flex-direction:column;position:relative;cursor:pointer;transition:all 0.2s;}
+.plan-card:hover{transform:translateY(-2px);}
+.plan-card.pop{border-color:rgba(124,106,247,0.3);box-shadow:0 0 0 1px rgba(124,106,247,0.15) inset;}
+.plan-card.prem{border-color:rgba(201,168,76,0.25);}
+.plan-hot{position:absolute;top:-12px;left:24px;background:var(--accent);color:white;font-size:10px;font-weight:800;padding:3px 14px;border-radius:4px;letter-spacing:0.1em;text-transform:uppercase;}
+.plan-label{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block;}
+.plan-price{font-family:'Fraunces',serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.04em;color:var(--text);}
+.plan-card.pop .plan-price{color:var(--accent2);}
+.plan-card.prem .plan-price{color:var(--gold);}
+.plan-mo{font-size:12px;color:var(--muted);margin:4px 0 8px;}
+.plan-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px;}
+.plan-tagline{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+.plan-div{height:1px;background:var(--border);margin-bottom:20px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;flex:1;}
+.plan-features li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.plan-features li::before{content:'—';font-size:11px;flex-shrink:0;margin-top:1px;font-weight:700;}
+.plan-card.pop .plan-features li::before{color:var(--accent2);}
+.plan-card.prem .plan-features li::before{color:var(--gold);}
+.plan-card:not(.pop):not(.prem) .plan-features li::before{color:var(--green);}
+.plan-btn{width:100%;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;border-radius:8px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border2);background:transparent;color:var(--text);}
+.plan-btn:hover{background:var(--s3);}
+.plan-card.pop .plan-btn{background:var(--accent);color:white;border-color:transparent;box-shadow:0 8px 24px rgba(124,106,247,0.3);}
+.plan-card.pop .plan-btn:hover{background:var(--accent2);}
+.plan-card.prem .plan-btn{background:var(--gold);color:#0a0800;border-color:transparent;font-weight:800;}
+
+/* LOGIN MODAL */
+.login-inner{padding:44px;}
+.login-inner h2{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--text);letter-spacing:-0.02em;margin-bottom:8px;}
+.login-inner h2 em{font-style:italic;color:var(--accent2);}
+.login-inner p{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-field label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.form-field input{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:13px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.form-field input::placeholder{color:var(--muted);}
+.form-field input:focus{border-color:rgba(124,106,247,0.4);}
+.login-btn{width:100%;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:var(--accent);color:white;transition:all 0.2s;box-shadow:0 8px 24px rgba(124,106,247,0.3);margin-top:4px;}
+.login-btn:hover{background:var(--accent2);}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.login-err{font-size:13px;color:#f87171;margin-top:12px;display:none;padding:10px 14px;background:rgba(248,113,113,0.08);border-radius:8px;border:1px solid rgba(248,113,113,0.2);}
+.login-err.show{display:block;}
+.login-divider{text-align:center;font-size:12px;color:var(--muted);margin:20px 0;}
+.login-signup{text-align:center;font-size:13px;color:var(--muted);}
+.login-signup a{color:var(--accent2);cursor:pointer;font-weight:600;text-decoration:none;}
+.login-signup a:hover{color:var(--accent);}
+
+/* ── CHAT PAGE ─────────────────────────────────────────────────── */
+#chat-page{background:var(--bg);overflow:hidden;}
+.chat-header{padding:16px 24px;background:var(--s1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.back-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all 0.2s;flex-shrink:0;}
+.back-btn:hover{background:var(--s2);color:var(--text);}
+.chat-av{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+.chat-fn{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.chat-status{font-size:11px;color:var(--green);font-weight:500;margin-top:1px;display:flex;align-items:center;gap:5px;}
+.chat-status::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block;}
+.chat-plan-chip{margin-left:auto;font-size:10px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;border:1px solid;}
+.messages{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
+.messages::-webkit-scrollbar{width:3px;}
+.messages::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px;}
+.msg-row{display:flex;gap:10px;animation:popIn 0.3s ease both;}
+.msg-row.user{flex-direction:row-reverse;}
+.msg-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;align-self:flex-end;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.5);}
+.msg-av.u{background:var(--accent);color:white;font-size:11px;}
+.bubble{max-width:72%;padding:13px 17px;border-radius:14px;font-size:14px;line-height:1.7;font-weight:400;}
+.bubble.ai{background:var(--s2);color:var(--text);border-radius:14px 14px 14px 4px;border:1px solid var(--border);}
+.bubble.user{background:var(--accent);color:white;border-radius:14px 14px 4px 14px;}
+.msg-col{display:flex;flex-direction:column;}
+.msg-time{font-size:10px;color:var(--muted);margin-top:5px;padding:0 4px;letter-spacing:0.04em;}
+.msg-row.user .msg-time{text-align:right;}
+.date-div{text-align:center;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin:4px 0;display:flex;align-items:center;gap:10px;}
+.date-div::before,.date-div::after{content:'';flex:1;height:1px;background:var(--border);}
+.typing-indicator{display:none;gap:10px;align-items:center;padding:0 4px;}
+.typing-indicator.visible{display:flex;}
+.typing-bubble{background:var(--s2);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 16px;display:flex;gap:5px;align-items:center;}
+.dot{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce 1.2s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:0.2s;}
+.dot:nth-child(3){animation-delay:0.4s;}
+.chat-input-area{padding:14px 20px 18px;background:var(--s1);border-top:1px solid var(--border);flex-shrink:0;}
+.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:10px 10px 10px 16px;transition:border-color 0.2s;}
+.input-row:focus-within{border-color:rgba(124,106,247,0.35);}
+#msg-input{flex:1;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);resize:none;outline:none;line-height:1.5;max-height:120px;min-height:22px;overflow-y:auto;}
+#msg-input::placeholder{color:var(--muted);}
+.send-btn{width:34px;height:34px;border-radius:8px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s,transform 0.15s;flex-shrink:0;}
+.send-btn:hover{background:var(--accent2);transform:scale(1.05);}
+.send-btn:active{transform:scale(0.95);}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.send-icon{width:14px;height:14px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.quick-prompts{display:flex;gap:8px;padding:10px 20px 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+.quick-prompts::-webkit-scrollbar{display:none;}
+.prompt-chip{background:var(--s2);border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:500;padding:7px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.prompt-chip:hover{background:var(--s3);border-color:rgba(124,106,247,0.3);color:var(--text);}
+.input-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:0.03em;}
+
+/* ERROR TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;transition:transform 0.3s,opacity 0.3s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.error{border-color:rgba(248,113,113,0.3);color:#fca5a5;}
+.toast.success{border-color:rgba(61,186,123,0.3);color:#6ee7b7;}
+
+@media(max-width:768px){
+  nav{padding:18px 20px;}
+  .hero{padding:50px 20px 60px;}
+  .friends-section,.why-section{padding:50px 20px;}
+  .friends-grid{grid-template-columns:repeat(2,1fr);}
+  .why-grid{grid-template-columns:1fr;}
+  .hero-stats{gap:24px;}
+  .plans-grid{grid-template-columns:1fr;padding:24px;}
+  .modal-top{padding:28px 24px 20px;}
+  .messages{padding:14px;}
+  .bubble{max-width:86%;}
+  .chat-input-area{padding:10px 14px 14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== LANDING PAGE ===== -->
+<div class="page active" id="landing-page">
+  <div class="amb amb1"></div><div class="amb amb2"></div>
+
+  <nav>
+    <div class="wordmark">Friend<span>y</span></div>
+    <div class="nav-right">
+      <div class="nav-badge" id="nav-badge"></div>
+      <div class="nav-user" id="nav-user"></div>
+      <button class="nav-logout" id="nav-restore" onclick="restorePurchasesUI()" style="display:none;">Restore</button>
+      <button class="nav-logout" id="nav-delete" onclick="confirmDeleteAccount()">Delete Account</button>
+      <button class="nav-logout" id="nav-logout" onclick="logout()">Sign Out</button>
+      <button class="btn-primary" id="nav-login-btn" onclick="openLogin()" style="padding:10px 20px;font-size:13px;">Sign In</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-kicker">Always in your corner</div>
+    <h1 class="hero-h1">
+      The friend who<br>
+      <span class="lined">always shows up.</span><br>
+      <em>No exceptions.</em>
+    </h1>
+    <p class="hero-sub">Talk about anything. Get real advice, real encouragement, and a genuine perspective shift — every single time.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="handleMainCTA()">Meet Your Friend →</button>
+      <button class="btn-ghost" onclick="document.querySelector('.friends-section').scrollIntoView({behavior:'smooth'})">See Who's Available</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Active members</div></div>
+      <div class="stat"><div class="stat-num">97%</div><div class="stat-label">Feel better after talking</div></div>
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Never unavailable</div></div>
+      <div class="stat"><div class="stat-num">4.9</div><div class="stat-label">Average rating</div></div>
+    </div>
+  </section>
+
+  <section class="friends-section">
+    <div class="sec-header">
+      <h2 class="sec-title">Pick your<br><em>friend.</em></h2>
+      <p class="sec-sub">Five distinct personalities. Each one trained to flip your mindset and keep it real.</p>
+    </div>
+    <div class="friends-grid">
+      <div class="friend-card fc-basic" onclick="tryFriend('Maya')">
+        <div class="fc-tag tag-basic">$8 · Basic</div>
+        <div class="fc-av av-b">MA</div>
+        <div class="fc-name">Maya</div>
+        <div class="fc-vibe">Warm, ride-or-die energy. Always in your corner no matter what.</div>
+        <div class="fc-price">$8<span>/mo</span></div>
+      </div>
+      <div class="friend-card fc-basic" onclick="tryFriend('Dre')">
+        <div class="fc-tag tag-basic">$8 · Basic</div>
+        <div class="fc-av av-b">DR</div>
+        <div class="fc-name">Dre</div>
+        <div class="fc-vibe">Straight talk. No sugar coating. Loyalty above everything.</div>
+        <div class="fc-price">$8<span>/mo</span></div>
+      </div>
+      <div class="friend-card fc-plus" onclick="tryFriend('Sage')">
+        <div class="fc-tag tag-plus">$12 · Plus</div>
+        <div class="fc-av av-p">SG</div>
+        <div class="fc-name">Sage</div>
+        <div class="fc-vibe">Deep, grounded wisdom. Helps you see what you've been missing.</div>
+        <div class="fc-price">$12<span>/mo</span></div>
+      </div>
+      <div class="friend-card fc-plus" onclick="tryFriend('Kai')">
+        <div class="fc-tag tag-plus">$12 · Plus</div>
+        <div class="fc-av av-p">KA</div>
+        <div class="fc-name">Kai</div>
+        <div class="fc-vibe">Pure hype. Turns your doubts into fuel and your excuses into action.</div>
+        <div class="fc-price">$12<span>/mo</span></div>
+      </div>
+      <div class="friend-card fc-prem" onclick="tryFriend('Nova')">
+        <div class="fc-tag tag-prem">$15 · Premium</div>
+        <div class="fc-av av-r">NV</div>
+        <div class="fc-name">Nova</div>
+        <div class="fc-vibe">Psychology-level insight delivered like a real conversation. Goes deep.</div>
+        <div class="fc-price">$15<span>/mo</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-section">
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">01</div>
+        <div class="why-title">Flips Every Negative</div>
+        <div class="why-desc">Every response is engineered to reframe your thinking. Cognitive behavioral techniques woven into real conversation — not therapy speak.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02</div>
+        <div class="why-title">Psychology That Actually Works</div>
+        <div class="why-desc">CBT, strength-based thinking, mindfulness — delivered the way a brilliant friend would. No clinical walls. Just results.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03</div>
+        <div class="why-title">Zero Judgment. Always.</div>
+        <div class="why-desc">Say anything. Your friend never gets tired, never judges, never tells anyone. Available every day, every hour, no exceptions.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== PRICING MODAL ===== -->
+<div class="modal-overlay" id="pricing-overlay" onclick="closePricingOutside(event)">
+  <div class="modal-box pricing-box">
+    <button class="modal-close" onclick="closePricing()">✕</button>
+    <div class="modal-top">
+      <h2>Choose your <em>plan</em></h2>
+      <p>Every plan gets a real friend. No free tier. Cancel anytime via Stripe.</p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card" onclick="goToStripe('basic')">
+        <span class="plan-label">Starter</span>
+        <div class="plan-price">$8</div>
+        <div class="plan-mo">per month</div>
+        <div class="plan-name">Basic</div>
+        <div class="plan-tagline">Two friends. Unlimited conversations.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-features">
+          <li>Maya & Dre unlocked</li>
+          <li>Unlimited daily messages</li>
+          <li>Positive reframing on every reply</li>
+          <li>Psychology-backed advice</li>
+          <li>Card · Apple Pay · Google Pay</li>
+        </ul>
+        <button class="plan-btn">Get Basic →</button>
+      </div>
+      <div class="plan-card pop">
+        <div class="plan-hot">Most Popular</div>
+        <span class="plan-label">Best Value</span>
+        <div class="plan-price">$12</div>
+        <div class="plan-mo">per month</div>
+        <div class="plan-name">Plus</div>
+        <div class="plan-tagline">Four friends. Deeper conversations.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-features">
+          <li>Maya, Dre, Sage & Kai unlocked</li>
+          <li>Unlimited messages</li>
+          <li>Memory — they remember your story</li>
+          <li>Advanced CBT + mindfulness tools</li>
+          <li>Weekly growth check-in</li>
+          <li>Card · Apple Pay · Google Pay</li>
+        </ul>
+        <button class="plan-btn" onclick="goToStripe('plus')">Get Plus →</button>
+      </div>
+      <div class="plan-card prem">
+        <span class="plan-label">Elite</span>
+        <div class="plan-price">$15</div>
+        <div class="plan-mo">per month</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-tagline">All 5 friends. The deepest level.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-features">
+          <li>All 5 friends including Nova</li>
+          <li>Unlimited everything</li>
+          <li>Deep psychology mode</li>
+          <li>Personalized monthly growth plan</li>
+          <li>Priority response speed</li>
+          <li>Custom friend builder (coming soon)</li>
+          <li>Card · Apple Pay · Google Pay</li>
+        </ul>
+        <button class="plan-btn" onclick="goToStripe('premium')">Get Premium →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="login-overlay" onclick="closeLoginOutside(event)">
+  <div class="modal-box login-box">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="login-inner">
+      <h2>Welcome back to <em>Friendy</em></h2>
+      <p>Enter the email you used when subscribing to sign in.</p>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-err" id="login-err"></div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
+      <div class="login-divider">— or —</div>
+      <div class="login-signup">Don't have an account? <a onclick="closeLogin();openPricing()">Choose a plan →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NATIVE IN-APP PURCHASE MODAL (iOS only) ===== -->
+<div class="modal-overlay" id="iap-overlay" onclick="closeIapOutside(event)">
+  <div class="modal-box login-box">
+    <button class="modal-close" onclick="closeIap()">✕</button>
+    <div class="login-inner">
+      <h2>Get <em id="iap-plan-label">Plus</em></h2>
+      <p>Enter your email so we can link your subscription to your account. You'll confirm the purchase with Face ID / Touch ID next.</p>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" id="iap-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')confirmNativePurchase()">
+      </div>
+      <div class="login-err" id="iap-err"></div>
+      <button class="login-btn" id="iap-btn" onclick="confirmNativePurchase()">Subscribe →</button>
+      <div class="login-divider">Payment is processed securely by Apple.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHAT PAGE ===== -->
+<div class="page" id="chat-page">
+  <div class="chat-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="chat-av" id="chat-av">MA</div>
+    <div>
+      <div class="chat-fn" id="chat-fn">Maya</div>
+      <div class="chat-status">Online — here for you</div>
+    </div>
+    <div class="chat-plan-chip" id="chat-chip">Basic</div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="typing-indicator" id="typing">
+    <div class="msg-av" id="typing-av">MA</div>
+    <div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+
+  <div class="quick-prompts" id="quick-prompts">
+    <button class="prompt-chip" onclick="sendQuick(this)">I'm stressed and overwhelmed</button>
+    <button class="prompt-chip" onclick="sendQuick(this)">I feel like I'm failing</button>
+    <button class="prompt-chip" onclick="sendQuick(this)">I need someone to talk to</button>
+    <button class="prompt-chip" onclick="sendQuick(this)">I keep doubting myself</button>
+    <button class="prompt-chip" onclick="sendQuick(this)">Something good happened</button>
+    <button class="prompt-chip" onclick="sendQuick(this)">Help me see the bright side</button>
+  </div>
+
+  <div class="chat-input-area">
+    <div class="input-row">
+      <textarea id="msg-input" placeholder="Talk to me..." rows="1"></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">
+        <svg class="send-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+    <div class="input-hint">Friendy · Always positive · Always in your corner</div>
+    <div class="input-hint" style="margin-top:4px;">Friendy is a supportive companion, not a licensed therapist. In a crisis, call or text 988 (US) any time.</div>
+  </div>
+</div>
+
+<script src="native-bridge.bundle.js"></script>
+<script>
+// ── CONFIG — UPDATE THESE ─────────────────────────────────────────
+const API = 'https://ucgymjcenpddqshokybj.supabase.co/functions/v1/friendy-api';
+// New Edge Function that handles native-IAP account activation + account deletion.
+const ACCOUNT_API = 'https://ucgymjcenpddqshokybj.supabase.co/functions/v1/friendy-account';
+
+const STRIPE_LINKS = {
+  basic:   'https://buy.stripe.com/fZu7sLb9tgZ0g2W9ZV3VC04',
+  plus:    'https://buy.stripe.com/fZu3cv4L5bEG4keb3Z3VC05',
+  premium: 'https://buy.stripe.com/eVq14n6Td2461823Bx3VC06'
+};
+
+const PLAN_FRIENDS = { basic:['Maya','Dre'], plus:['Maya','Dre','Sage','Kai'], premium:['Maya','Dre','Sage','Kai','Nova'] };
+const PLAN_RANK = { basic:1, plus:2, premium:3 };
+
+const FRIEND_META = {
+  Maya:{ initials:'MA', plan:'basic', avClass:'av-b' },
+  Dre: { initials:'DR', plan:'basic', avClass:'av-b' },
+  Sage:{ initials:'SG', plan:'plus',  avClass:'av-p' },
+  Kai: { initials:'KA', plan:'plus',  avClass:'av-p' },
+  Nova:{ initials:'NV', plan:'premium', avClass:'av-r' }
+};
+
+const AV_STYLES = {
+  'av-b':'linear-gradient(135deg,rgba(124,106,247,0.3),rgba(124,106,247,0.1))',
+  'av-p':'linear-gradient(135deg,rgba(212,95,138,0.3),rgba(212,95,138,0.1))',
+  'av-r':'linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.1))'
+};
+
+// ── APP STATE ─────────────────────────────────────────────────────
+const APP = {
+  token: localStorage.getItem('friendy_token'),
+  user: JSON.parse(localStorage.getItem('friendy_user') || 'null'),
+  friend: null, history: [], isTyping: false
+};
+
+// ── INIT ──────────────────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  if (window.FriendyNative && FriendyNative.isNative()) {
+    await FriendyNative.init();
+    document.getElementById('nav-restore').style.display = 'block';
+  }
+  // Check if returning from Stripe with session_id
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  if (sessionId) {
+    history.replaceState({}, '', window.location.pathname);
+    await verifyStripeSession(sessionId);
+    return;
+  }
+  // Validate existing token
+  if (APP.token) await validateToken();
+  updateUI();
+});
+
+async function verifyStripeSession(sessionId) {
+  showToast('Activating your plan...', false);
+  try {
+    const res = await fetch(`${API}/auth/verify-payment`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId })
+    });
+    const data = await res.json();
+    if (data.token) {
+      APP.token = data.token; APP.user = data.user;
+      localStorage.setItem('friendy_token', data.token);
+      localStorage.setItem('friendy_user', JSON.stringify(data.user));
+      showToast('Welcome to Friendy! Pick your friend.', true);
+      updateUI();
+    } else {
+      showToast('Payment received — sign in with your email to access.', true);
+    }
+  } catch (err) {
+    showToast('Could not verify payment. Please sign in with your email.', false);
+  }
+}
+
+async function validateToken() {
+  try {
+    const res = await fetch(`${API}/auth/me`, { headers: { 'Authorization': `Bearer ${APP.token}` } });
+    if (res.ok) {
+      APP.user = await res.json();
+      localStorage.setItem('friendy_user', JSON.stringify(APP.user));
+    } else {
+      logout(true);
+    }
+  } catch (err) { /* keep local state */ }
+}
+
+function updateUI() {
+  const loggedIn = APP.token && APP.user;
+  const plan = APP.user?.plan;
+
+  // Nav
+  document.getElementById('nav-login-btn').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('nav-logout').classList.toggle('show', !!loggedIn);
+  document.getElementById('nav-user').classList.toggle('show', !!loggedIn);
+  if (loggedIn) document.getElementById('nav-user').textContent = APP.user.email;
+
+  const badge = document.getElementById('nav-badge');
+  if (loggedIn && plan) {
+    badge.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+    badge.className = `nav-badge show nb-${plan === 'premium' ? 'prem' : plan}`;
+  } else {
+    badge.className = 'nav-badge';
+  }
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function handleMainCTA() {
+  if (APP.token && APP.user) {
+    document.querySelector('.friends-section').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    openPricing();
+  }
+}
+
+// ── PRICING ───────────────────────────────────────────────────────
+function openPricing() { document.getElementById('pricing-overlay').classList.add('open'); }
+function closePricing() { document.getElementById('pricing-overlay').classList.remove('open'); }
+function closePricingOutside(e) { if (e.target === document.getElementById('pricing-overlay')) closePricing(); }
+
+function goToStripe(plan) {
+  // Native iOS app → StoreKit / RevenueCat (Apple requires IAP for digital
+  // subscriptions, Guideline 3.1.1). Web → existing Stripe Checkout link.
+  if (window.FriendyNative && FriendyNative.isNative()) {
+    nativeCheckout(plan);
+    return;
+  }
+  const successUrl = encodeURIComponent(window.location.href + '?session_id={CHECKOUT_SESSION_ID}');
+  window.location.href = STRIPE_LINKS[plan];
+}
+
+// ── NATIVE (RevenueCat / StoreKit) CHECKOUT ────────────────────────
+let PENDING_PLAN = null;
+
+function nativeCheckout(plan) {
+  PENDING_PLAN = plan;
+  closePricing();
+  document.getElementById('iap-plan-label').textContent =
+    plan.charAt(0).toUpperCase() + plan.slice(1);
+  document.getElementById('iap-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('iap-email').focus(), 300);
+}
+
+function closeIap() { document.getElementById('iap-overlay').classList.remove('open'); }
+function closeIapOutside(e) { if (e.target === document.getElementById('iap-overlay')) closeIap(); }
+
+async function confirmNativePurchase() {
+  const email = document.getElementById('iap-email').value.trim();
+  const err = document.getElementById('iap-err');
+  const btn = document.getElementById('iap-btn');
+  err.classList.remove('show');
+  if (!email || !email.includes('@')) {
+    err.textContent = 'Please enter a valid email.'; err.classList.add('show'); return;
+  }
+  btn.disabled = true; btn.textContent = 'Processing...';
+  try {
+    await FriendyNative.identify(email);
+    const purchase = await FriendyNative.purchasePlan(PENDING_PLAN);
+    if (!purchase.success) {
+      if (!purchase.cancelled) {
+        err.textContent = purchase.error || 'Purchase failed. Please try again.';
+        err.classList.add('show');
+      }
+      btn.disabled = false; btn.textContent = 'Subscribe →';
+      return;
+    }
+    const res = await fetch(`${ACCOUNT_API}/activate-iap`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, plan: purchase.plan || PENDING_PLAN, appUserId: email })
+    });
+    const data = await res.json();
+    if (data.token) {
+      APP.token = data.token; APP.user = data.user;
+      localStorage.setItem('friendy_token', data.token);
+      localStorage.setItem('friendy_user', JSON.stringify(data.user));
+      closeIap();
+      updateUI();
+      showToast('Welcome to Friendy! Pick your friend.', true);
+    } else {
+      err.textContent = data.error || 'Purchase succeeded but activation failed — contact support@hoodstar365.com.';
+      err.classList.add('show');
+    }
+  } catch (e) {
+    err.textContent = 'Something went wrong. Please try again.'; err.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Subscribe →';
+}
+
+async function restorePurchasesUI() {
+  if (!window.FriendyNative || !FriendyNative.isNative()) return;
+  showToast('Restoring purchases...', true);
+  const result = await FriendyNative.restorePurchases();
+  if (result.success && result.plan) {
+    const email = APP.user?.email || document.getElementById('login-email')?.value?.trim();
+    if (email) {
+      const res = await fetch(`${ACCOUNT_API}/activate-iap`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, plan: result.plan, appUserId: email })
+      });
+      const data = await res.json();
+      if (data.token) {
+        APP.token = data.token; APP.user = data.user;
+        localStorage.setItem('friendy_token', data.token);
+        localStorage.setItem('friendy_user', JSON.stringify(data.user));
+        updateUI();
+        showToast('Purchases restored!', true);
+        return;
+      }
+    }
+    showToast('Purchase found — please sign in with your email to link it.', true);
+    openLogin();
+  } else {
+    showToast('No active purchases found for this Apple ID.', false);
+  }
+}
+
+// ── ACCOUNT DELETION (Apple Guideline 5.1.1(v)) ────────────────────
+function confirmDeleteAccount() {
+  if (!APP.token) { showToast('Sign in first.', false); return; }
+  const ok = window.confirm('Delete your Friendy account? This permanently removes your profile and conversation history and cannot be undone.');
+  if (ok) deleteAccount();
+}
+
+async function deleteAccount() {
+  try {
+    const res = await fetch(`${ACCOUNT_API}/delete`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${APP.token}` }
+    });
+    if (window.FriendyNative && FriendyNative.isNative()) {
+      try { await FriendyNative.logOut(); } catch (e) {}
+    }
+    if (res.ok) {
+      showToast('Your account has been deleted.', true);
+    } else {
+      showToast('Account data cleared locally. Contact support@hoodstar365.com if issues remain.', false);
+    }
+  } catch (e) {
+    showToast('Could not reach the server — signed you out locally.', false);
+  }
+  logout(true);
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────────
+function openLogin() { document.getElementById('login-overlay').classList.add('open'); setTimeout(()=>document.getElementById('login-email').focus(), 300); }
+function closeLogin() { document.getElementById('login-overlay').classList.remove('open'); }
+function closeLoginOutside(e) { if (e.target === document.getElementById('login-overlay')) closeLogin(); }
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const err = document.getElementById('login-err');
+  const btn = document.getElementById('login-btn');
+  err.classList.remove('show');
+  if (!email) { err.textContent = 'Please enter your email.'; err.classList.add('show'); return; }
+
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.token) {
+      APP.token = data.token; APP.user = data.user;
+      localStorage.setItem('friendy_token', data.token);
+      localStorage.setItem('friendy_user', JSON.stringify(data.user));
+      closeLogin();
+      updateUI();
+      showToast('Welcome back!', true);
+    } else {
+      err.textContent = data.error || 'Sign in failed.';
+      if (data.code === 'SUBSCRIPTION_REQUIRED') err.textContent = 'No active subscription found. Please subscribe first.';
+      err.classList.add('show');
+    }
+  } catch (e) {
+    err.textContent = 'Connection error. Try again.'; err.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Sign In →';
+}
+
+function logout(silent = false) {
+  APP.token = null; APP.user = null;
+  localStorage.removeItem('friendy_token'); localStorage.removeItem('friendy_user');
+  showPage('landing-page');
+  updateUI();
+  if (!silent) showToast('Signed out.', false);
+}
+
+// ── FRIENDS ───────────────────────────────────────────────────────
+function tryFriend(name) {
+  if (!APP.token || !APP.user) { openLogin(); return; }
+  const required = FRIEND_META[name].plan;
+  if (PLAN_RANK[APP.user.plan] < PLAN_RANK[required]) {
+    showToast(`${name} requires ${required.charAt(0).toUpperCase()+required.slice(1)} plan. Upgrade to unlock.`, false);
+    openPricing(); return;
+  }
+  openChat(name);
+}
+
+function openChat(name) {
+  const meta = FRIEND_META[name];
+  APP.friend = { name, ...meta }; APP.history = [];
+
+  const avEl = document.getElementById('chat-av');
+  avEl.textContent = meta.initials;
+  avEl.style.background = AV_STYLES[meta.avClass];
+
+  const tav = document.getElementById('typing-av');
+  tav.textContent = meta.initials;
+  tav.style.background = AV_STYLES[meta.avClass];
+
+  document.getElementById('chat-fn').textContent = name;
+
+  const chip = document.getElementById('chat-chip');
+  const plan = APP.user.plan;
+  chip.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+  chip.style.background = plan==='premium'?'rgba(201,168,76,0.1)':plan==='plus'?'rgba(212,95,138,0.1)':'rgba(124,106,247,0.1)';
+  chip.style.color = plan==='premium'?'var(--gold)':plan==='plus'?'#e07aa0':'var(--accent2)';
+  chip.style.borderColor = plan==='premium'?'rgba(201,168,76,0.2)':plan==='plus'?'rgba(212,95,138,0.2)':'rgba(124,106,247,0.2)';
+
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('quick-prompts').style.display = 'flex';
+
+  const div = document.createElement('div'); div.className = 'date-div'; div.textContent = 'Today';
+  document.getElementById('messages').appendChild(div);
+
+  showPage('chat-page');
+
+  const greetings = {
+    Maya: `Hey — really glad you're here. This is your space. No filter, no judgment. What's going on?`,
+    Dre:  `Yo. What's good? Real talk — whatever you're dealing with, I'm here for it. What's on your mind?`,
+    Sage: `Hey. Take a moment to settle in — there's no rush here. What's been weighing on you lately?`,
+    Kai:  `Let's go — you showed up and that already says a lot. What's happening in your world right now?`,
+    Nova: `Hey, really glad you reached out. This is a space where we can go deep and figure things out together. What's been going on?`
+  };
+  setTimeout(() => addAI(greetings[name]), 700);
+}
+
+function goBack() {
+  showPage('landing-page');
+  APP.friend = null; APP.history = [];
+}
+
+// ── MESSAGES ──────────────────────────────────────────────────────
+function addAI(text) {
+  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  const row = document.createElement('div'); row.className = 'msg-row';
+  row.innerHTML = `
+    <div class="msg-av" style="background:${AV_STYLES[APP.friend.avClass]};font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);">${APP.friend.initials}</div>
+    <div class="msg-col"><div class="bubble ai">${text}</div><div class="msg-time">${time}</div></div>`;
+  document.getElementById('messages').appendChild(row);
+  scrollBot();
+}
+
+function addUser(text) {
+  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  const row = document.createElement('div'); row.className = 'msg-row user';
+  row.innerHTML = `
+    <div class="msg-col"><div class="bubble user">${text}</div><div class="msg-time">${time}</div></div>
+    <div class="msg-av u">You</div>`;
+  document.getElementById('messages').appendChild(row);
+  scrollBot();
+}
+
+function scrollBot() { const m = document.getElementById('messages'); setTimeout(() => m.scrollTop = m.scrollHeight, 50); }
+
+// ── CHAT ──────────────────────────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text || APP.isTyping) return;
+  document.getElementById('quick-prompts').style.display = 'none';
+  input.value = ''; input.style.height = 'auto';
+  addUser(text);
+  APP.history.push({ role:'user', content:text });
+  APP.isTyping = true;
+  document.getElementById('send-btn').disabled = true;
+  document.getElementById('typing').classList.add('visible');
+  scrollBot();
+  try {
+    const res = await fetch(`${API}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${APP.token}` },
+      body: JSON.stringify({ friend: APP.friend.name, messages: APP.history })
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      const data = await res.json();
+      document.getElementById('typing').classList.remove('visible');
+      if (data.code === 'SUBSCRIPTION_REQUIRED') {
+        showToast('Your subscription expired. Please renew.', false);
+        logout(true); return;
+      }
+      if (data.code === 'UPGRADE_REQUIRED') {
+        showToast(data.error, false); goBack(); openPricing(); return;
+      }
+      showToast('Session expired. Please sign in again.', false);
+      logout(true); return;
+    }
+
+    const data = await res.json();
+    const reply = data.reply || 'Still right here with you.';
+    APP.history.push({ role:'assistant', content:reply });
+    const delay = Math.min(900 + reply.length * 14, 3200);
+    setTimeout(() => {
+      document.getElementById('typing').classList.remove('visible');
+      addAI(reply); APP.isTyping = false;
+      document.getElementById('send-btn').disabled = false;
+    }, delay);
+  } catch (err) {
+    setTimeout(() => {
+      document.getElementById('typing').classList.remove('visible');
+      addAI("Connection hiccupped — but I didn't. What were you saying?");
+      APP.isTyping = false; document.getElementById('send-btn').disabled = false;
+    }, 1000);
+  }
+}
+
+function sendQuick(el) { document.getElementById('msg-input').value = el.textContent; sendMessage(); }
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg, success = true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${success ? 'success' : 'error'} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── INPUT ─────────────────────────────────────────────────────────
+document.getElementById('msg-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+document.getElementById('msg-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+</script>
+</body>
+</html>
