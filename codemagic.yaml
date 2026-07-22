@@ -1,5 +1,5 @@
 workflows:
-  friendy-ios-release:
+  friendy-ios-release: &friendy_ios_base
     name: Friendy — iOS TestFlight Release
     max_build_duration: 90
     instance_type: mac_mini_m2
@@ -89,8 +89,8 @@ workflows:
           failure: true
 
   friendy-ios-app-store-submit:
+    <<: *friendy_ios_base
     name: Friendy — Submit for App Store Review
-    extends: friendy-ios-release
     triggering:
       events: []
     publishing:
@@ -99,5 +99,3 @@ workflows:
         submit_to_testflight: true
         submit_to_app_store: true
         release_type: MANUAL
-        submission_metadata:
-          export_compliance_uses_encryption: false
