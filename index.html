@@ -2,803 +2,1232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Friendy — Your AI Friend Is Always Here</title>
-<meta name="description" content="Friendy is an AI companion app with 5 unique personas — Maya, Dre, Sage, Kai, and Nova. Someone to talk to, any time, day or night.">
-<meta property="og:title" content="Friendy — Your AI Friend Is Always Here">
-<meta property="og:description" content="An AI companion app with 5 unique personas. Someone to talk to, any time.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Friendy — AI friends who always show up</title>
+<meta name="description" content="Friendy gives you five AI friends — Maya, Dre, Sage, Kai and Nova — who listen, keep it real and help you turn negative into positive. Any time, day or night. From $8 a month.">
+<meta name="theme-color" content="#080809">
+<meta property="og:title" content="Friendy — AI friends who always show up">
+<meta property="og:description" content="Five AI friends who listen, keep it real and help you turn negative into positive. From $8 a month.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hsw365.github.io/FRIENDY/">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://hsw365.github.io/FRIENDY/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f11'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='40' font-weight='900' font-style='italic' text-anchor='middle' fill='%237c6af7'%3EF%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Friendy","applicationCategory":"LifestyleApplication","operatingSystem":"iOS","description":"AI companion app with 5 unique personas for conversation and support.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Friendy","applicationCategory":"LifestyleApplication","operatingSystem":"Web","description":"AI companion app with five distinct AI friends for conversation, encouragement and perspective.","offers":{"@type":"AggregateOffer","lowPrice":"8","highPrice":"15","priceCurrency":"USD","offerCount":"3"},"publisher":{"@type":"Organization","name":"HSW365 Media LLC","email":"hsw365media@gmail.com"}}
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700;1,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700;1,9..144,900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#080809; --s1:#0f0f11; --s2:#141417; --s3:#1c1c21; --s4:#242429;
-  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.1);
-  --text:#e8e6f0; --muted:#5a5a6e; --fog:#333340;
-  --accent:#7c6af7; --accent2:#9d8fff; --accentGlow:rgba(124,106,247,0.2);
-  --pink:#d45f8a; --gold:#c9a84c; --green:#3dba7b;
+:root{
+  --bg:#080809;--s1:#0f0f11;--s2:#141417;--s3:#1c1c21;--s4:#242429;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);--border3:rgba(255,255,255,0.16);
+  --text:#e8e6f0;--soft:#a9a7b8;--muted:#77768a;--fog:#333340;
+  --accent:#7c6af7;--accent2:#9d8fff;--pink:#d45f8a;--pink2:#e07aa0;--gold:#c9a84c;--green:#3dba7b;--red:#f87171;
+  --cash:#00d64f;
+  --serif:'Fraunces',Georgia,serif;--sans:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  --pad:48px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.035;pointer-events:none;z-index:9998;}
+button{font-family:inherit;color:inherit;}
+a{color:var(--accent2);}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;border-radius:6px;}
+[hidden]{display:none !important;}
 
-@keyframes rise{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes popIn{from{opacity:0;transform:scale(0.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.3;}40%{transform:translateY(-8px);opacity:1;}}
-@keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes rise{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes popIn{from{opacity:0;transform:scale(0.96) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.3;}40%{transform:translateY(-6px);opacity:1;}}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 @keyframes overlayIn{from{opacity:0;}to{opacity:1;}}
-@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 @keyframes lineGrow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
-@keyframes successPop{0%{transform:scale(0) rotate(-10deg);}60%{transform:scale(1.15) rotate(3deg);}100%{transform:scale(1) rotate(0deg);}}
-@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:.8;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes glow{0%,100%{opacity:.55;}50%{opacity:1;}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}}
 
-/* ── PAGES ─────────────────────────────────────────────────────── */
-.page{display:none;}
+/* pages */
+.page{display:none;position:relative;overflow-x:clip;}
 .page.active{display:flex;flex-direction:column;min-height:100vh;}
-#chat-page.active{min-height:100vh;height:100vh;}
-
-/* ── AMBIENT ───────────────────────────────────────────────────── */
+#chat-page.active{height:100vh;height:100dvh;min-height:0;}
 .amb{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
-.amb1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,106,247,0.1) 0%,transparent 70%);top:-200px;right:-200px;}
-.amb2{width:500px;height:500px;background:radial-gradient(circle,rgba(212,95,138,0.06) 0%,transparent 70%);bottom:-100px;left:-150px;}
+.amb1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,106,247,0.12) 0%,transparent 70%);top:-220px;right:-220px;}
+.amb2{width:520px;height:520px;background:radial-gradient(circle,rgba(212,95,138,0.07) 0%,transparent 70%);top:520px;left:-200px;}
 
-/* ── NAV ───────────────────────────────────────────────────────── */
-nav{padding:26px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;border-bottom:1px solid var(--border);animation:rise 0.6s both;}
-.wordmark{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);letter-spacing:-0.03em;}
+/* nav */
+nav{padding:22px var(--pad);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;border-bottom:1px solid var(--border);gap:16px;}
+.wordmark{font-family:var(--serif);font-size:23px;font-weight:900;color:var(--text);letter-spacing:-0.03em;cursor:pointer;background:none;border:none;}
 .wordmark span{color:var(--accent);font-style:italic;}
-.nav-right{display:flex;gap:12px;align-items:center;}
-.nav-badge{font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;letter-spacing:0.08em;text-transform:uppercase;display:none;border:1px solid;}
-.nav-badge.show{display:block;}
-.nb-basic{background:rgba(124,106,247,0.08);color:var(--accent2);border-color:rgba(124,106,247,0.2);}
-.nb-plus{background:rgba(212,95,138,0.08);color:#e07aa0;border-color:rgba(212,95,138,0.2);}
-.nb-prem{background:rgba(201,168,76,0.08);color:var(--gold);border-color:rgba(201,168,76,0.2);}
-.nav-user{font-size:12px;color:var(--muted);display:none;}
-.nav-user.show{display:block;}
-.nav-logout{font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);padding:6px 12px;border-radius:6px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;display:none;}
-.nav-logout.show{display:block;}
-.nav-logout:hover{color:var(--text);border-color:var(--border2);}
+.nav-right{display:flex;gap:10px;align-items:center;}
+.nav-link{font-size:13px;font-weight:600;color:var(--soft);background:none;border:none;cursor:pointer;padding:8px 10px;border-radius:8px;transition:color .2s;}
+.nav-link:hover{color:var(--text);}
+.badge{font-size:10px;font-weight:800;padding:6px 12px;border-radius:6px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid;white-space:nowrap;}
+.b-basic{background:rgba(124,106,247,0.08);color:var(--accent2);border-color:rgba(124,106,247,0.22);}
+.b-plus{background:rgba(212,95,138,0.08);color:var(--pink2);border-color:rgba(212,95,138,0.22);}
+.b-premium{background:rgba(201,168,76,0.08);color:var(--gold);border-color:rgba(201,168,76,0.25);}
+.b-none{background:var(--s2);color:var(--muted);border-color:var(--border2);}
+.b-owner{background:rgba(61,186,123,0.08);color:var(--green);border-color:rgba(61,186,123,0.25);}
 
-/* ── HERO ──────────────────────────────────────────────────────── */
-.hero{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 48px;position:relative;z-index:2;overflow:hidden;}
-.hero-kicker{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:12px;animation:rise 0.8s 0.2s both;}
-.hero-kicker::before{content:'';width:32px;height:1px;background:var(--accent);display:block;}
-.hero-h1{font-family:'Fraunces',serif;font-size:clamp(48px,7vw,92px);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:var(--text);max-width:780px;animation:rise 0.8s 0.35s both;}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:700;border-radius:10px;border:1px solid transparent;cursor:pointer;padding:13px 22px;transition:background .2s,transform .15s,box-shadow .2s,border-color .2s,color .2s;text-decoration:none;white-space:nowrap;}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important;}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 28px rgba(124,106,247,0.32);}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 14px 40px rgba(124,106,247,0.42);}
+.btn-ghost{background:transparent;color:var(--soft);border-color:var(--border2);}
+.btn-ghost:hover{color:var(--text);border-color:var(--border3);}
+.btn-cash{background:var(--cash);color:#03210e;font-weight:800;box-shadow:0 8px 28px rgba(0,214,79,0.22);}
+.btn-cash:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.btn-gold{background:var(--gold);color:#0a0800;font-weight:800;}
+.btn-danger{background:transparent;color:var(--red);border-color:rgba(248,113,113,0.3);}
+.btn-danger:hover{background:rgba(248,113,113,0.08);}
+.btn-lg{padding:17px 34px;font-size:15px;}
+.btn-sm{padding:8px 14px;font-size:12px;border-radius:8px;}
+.btn-block{width:100%;}
+.spinner{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;animation:spin .7s linear infinite;display:inline-block;}
+
+/* hero */
+.hero{padding:88px var(--pad) 72px;position:relative;z-index:2;}
+.kicker{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent2);margin-bottom:28px;display:flex;align-items:center;gap:12px;animation:rise .7s .1s both;}
+.kicker::before{content:'';width:32px;height:1px;background:var(--accent);}
+.hero-h1{font-family:var(--serif);font-size:clamp(46px,7.2vw,96px);font-weight:900;line-height:0.96;letter-spacing:-0.04em;max-width:820px;animation:rise .7s .2s both;}
 .hero-h1 em{font-style:italic;color:var(--accent2);}
-.hero-h1 .lined{position:relative;display:inline-block;}
-.hero-h1 .lined::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink));transform-origin:left;animation:lineGrow 1s 1.2s both;}
-.hero-sub{margin-top:28px;font-size:17px;line-height:1.75;color:var(--muted);max-width:500px;font-weight:400;animation:rise 0.8s 0.5s both;}
-.hero-actions{display:flex;gap:14px;margin-top:48px;align-items:center;animation:rise 0.8s 0.65s both;}
-.btn-primary{background:var(--accent);color:white;padding:16px 36px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 8px 32px rgba(124,106,247,0.35);}
-.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 16px 48px rgba(124,106,247,0.45);}
-.btn-ghost{color:var(--muted);font-size:14px;font-weight:600;background:transparent;border:1px solid var(--border2);padding:16px 28px;border-radius:8px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color 0.2s,border-color 0.2s;}
-.btn-ghost:hover{color:var(--text);}
-.hero-stats{display:flex;gap:48px;margin-top:80px;padding-top:48px;border-top:1px solid var(--border);animation:rise 0.8s 0.8s both;flex-wrap:wrap;}
-.stat-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--text);letter-spacing:-0.03em;}
-.stat-label{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:0.04em;}
+.lined{position:relative;display:inline-block;}
+.lined::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--pink));transform-origin:left;animation:lineGrow 1s 1s both;}
+.hero-sub{margin-top:28px;font-size:18px;line-height:1.7;color:var(--soft);max-width:540px;animation:rise .7s .35s both;}
+.hero-actions{display:flex;gap:14px;margin-top:40px;align-items:center;flex-wrap:wrap;animation:rise .7s .5s both;}
+.hero-note{margin-top:18px;font-size:12px;color:var(--muted);animation:rise .7s .6s both;}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:72px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:rise .7s .7s both;}
+.fact{background:var(--s1);padding:26px 28px;}
+.fact-num{font-family:var(--serif);font-size:34px;font-weight:900;letter-spacing:-0.03em;}
+.fact-label{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:0.03em;}
 
-/* ── FRIENDS SECTION ───────────────────────────────────────────── */
-.friends-section{padding:90px 48px;position:relative;z-index:2;border-top:1px solid var(--border);}
-.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
-.sec-title{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-0.03em;color:var(--text);line-height:1.1;}
+/* sections */
+.section{padding:88px var(--pad);position:relative;z-index:2;border-top:1px solid var(--border);}
+.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;gap:24px;}
+.sec-title{font-family:var(--serif);font-size:clamp(30px,4.2vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;}
 .sec-title em{font-style:italic;color:var(--accent2);}
-.sec-sub{font-size:13px;color:var(--muted);max-width:280px;text-align:right;line-height:1.6;}
+.sec-sub{font-size:14px;color:var(--muted);max-width:320px;text-align:right;line-height:1.6;}
+
+/* friends */
 .friends-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
-.friend-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:28px 22px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
-.friend-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
+.friend-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:26px 22px;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden;text-align:left;display:flex;flex-direction:column;align-items:flex-start;width:100%;}
+.friend-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
 .friend-card:hover{transform:translateY(-4px);}
-.fc-basic::before{background:linear-gradient(135deg,rgba(124,106,247,0.06) 0%,transparent 60%);}
-.fc-plus::before{background:linear-gradient(135deg,rgba(212,95,138,0.06) 0%,transparent 60%);}
-.fc-prem::before{background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);}
-.friend-card:hover.fc-basic{border-color:rgba(124,106,247,0.35);box-shadow:0 16px 48px rgba(124,106,247,0.12);}
-.friend-card:hover.fc-plus{border-color:rgba(212,95,138,0.35);box-shadow:0 16px 48px rgba(212,95,138,0.1);}
-.friend-card:hover.fc-prem{border-color:rgba(201,168,76,0.3);box-shadow:0 16px 48px rgba(201,168,76,0.08);}
 .friend-card:hover::before{opacity:1;}
-.fc-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;display:inline-block;border:1px solid;}
-.tag-basic{background:rgba(124,106,247,0.1);color:var(--accent2);border-color:rgba(124,106,247,0.2);}
-.tag-plus{background:rgba(212,95,138,0.1);color:#e07aa0;border-color:rgba(212,95,138,0.2);}
-.tag-prem{background:rgba(201,168,76,0.1);color:var(--gold);border-color:rgba(201,168,76,0.2);}
-.fc-lock{position:absolute;top:12px;right:12px;font-size:14px;opacity:0.4;}
-.fc-av{width:48px;height:48px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
-.av-b{background:linear-gradient(135deg,rgba(124,106,247,0.3),rgba(124,106,247,0.1));}
-.av-p{background:linear-gradient(135deg,rgba(212,95,138,0.3),rgba(212,95,138,0.1));}
-.av-r{background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.1));}
-.fc-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px;}
-.fc-vibe{font-size:12px;color:var(--muted);line-height:1.55;}
-.fc-price{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);margin-top:20px;letter-spacing:-0.02em;}
-.fc-price span{font-size:12px;color:var(--muted);font-weight:400;font-family:'Plus Jakarta Sans',sans-serif;}
+.fc-basic::before{background:linear-gradient(135deg,rgba(124,106,247,0.08),transparent 60%);}
+.fc-plus::before{background:linear-gradient(135deg,rgba(212,95,138,0.08),transparent 60%);}
+.fc-premium::before{background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent 60%);}
+.fc-basic:hover{border-color:rgba(124,106,247,0.4);box-shadow:0 16px 48px rgba(124,106,247,0.14);}
+.fc-plus:hover{border-color:rgba(212,95,138,0.4);box-shadow:0 16px 48px rgba(212,95,138,0.12);}
+.fc-premium:hover{border-color:rgba(201,168,76,0.35);box-shadow:0 16px 48px rgba(201,168,76,0.1);}
+.friend-card > *{position:relative;}
+.fc-top{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:20px;}
+.fc-lock{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.av{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.62);flex-shrink:0;}
+.av-basic{background:linear-gradient(135deg,rgba(124,106,247,0.38),rgba(124,106,247,0.1));}
+.av-plus{background:linear-gradient(135deg,rgba(212,95,138,0.38),rgba(212,95,138,0.1));}
+.av-premium{background:linear-gradient(135deg,rgba(201,168,76,0.38),rgba(201,168,76,0.1));}
+.fc-name{font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:-0.02em;margin:16px 0 6px;}
+.fc-vibe{font-size:13px;color:var(--muted);line-height:1.55;flex:1;}
+.fc-cta{font-size:12px;font-weight:700;color:var(--soft);margin-top:18px;letter-spacing:0.02em;}
+.friend-card.locked .av{filter:grayscale(.5);opacity:.65;}
+.friend-card.locked .fc-name{color:var(--soft);}
 
-/* ── WHY SECTION ───────────────────────────────────────────────── */
-.why-section{padding:0 48px 90px;position:relative;z-index:2;}
-.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
-.why-card{background:var(--s1);padding:36px 32px;}
-.why-num{font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:var(--fog);letter-spacing:-0.04em;margin-bottom:16px;}
-.why-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;}
-.why-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+/* why / steps */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.cell{background:var(--s1);padding:34px 30px;}
+.cell-num{font-family:var(--serif);font-size:46px;font-weight:900;color:var(--fog);letter-spacing:-0.04em;margin-bottom:14px;}
+.cell-title{font-size:16px;font-weight:700;margin-bottom:10px;}
+.cell-desc{font-size:14px;color:var(--muted);line-height:1.7;}
 
-/* ── MODALS ────────────────────────────────────────────────────── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(4,4,5,0.92);backdrop-filter:blur(16px);z-index:1000;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.open{display:flex;animation:overlayIn 0.3s both;}
-.modal-box{background:var(--s1);border:1px solid var(--border2);border-radius:20px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 40px 120px rgba(0,0,0,0.8);animation:modalIn 0.4s both;position:relative;}
-.modal-box::-webkit-scrollbar{width:3px;}
-.modal-box::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px;}
-.pricing-box{max-width:900px;}
-.login-box{max-width:440px;}
-.modal-close{position:absolute;top:20px;right:20px;width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--s2);cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2;}
-.modal-close:hover{background:var(--s3);color:var(--text);}
-
-/* PRICING */
-.modal-top{padding:44px 44px 28px;border-bottom:1px solid var(--border);}
-.modal-top h2{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:var(--text);letter-spacing:-0.03em;margin-bottom:8px;}
-.modal-top h2 em{font-style:italic;color:var(--accent2);}
-.modal-top p{font-size:14px;color:var(--muted);}
-.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:32px 44px 44px;}
-.plan-card{border:1px solid var(--border);border-radius:16px;padding:28px 24px;background:var(--s2);display:flex;flex-direction:column;position:relative;cursor:pointer;transition:all 0.2s;}
-.plan-card:hover{transform:translateY(-2px);}
-.plan-card.pop{border-color:rgba(124,106,247,0.3);box-shadow:0 0 0 1px rgba(124,106,247,0.15) inset;}
-.plan-card.prem{border-color:rgba(201,168,76,0.25);}
-.plan-hot{position:absolute;top:-12px;left:24px;background:var(--accent);color:white;font-size:10px;font-weight:800;padding:3px 14px;border-radius:4px;letter-spacing:0.1em;text-transform:uppercase;}
-.plan-label{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block;}
-.plan-price{font-family:'Fraunces',serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.04em;color:var(--text);}
+/* pricing */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.plan-card{border:1px solid var(--border);border-radius:18px;padding:30px 26px;background:var(--s1);display:flex;flex-direction:column;position:relative;transition:transform .2s,border-color .2s;}
+.plan-card:hover{transform:translateY(-3px);}
+.plan-card.pop{border-color:rgba(124,106,247,0.38);box-shadow:0 0 0 1px rgba(124,106,247,0.16) inset,0 24px 70px rgba(124,106,247,0.1);}
+.plan-card.prem{border-color:rgba(201,168,76,0.28);}
+.plan-hot{position:absolute;top:-11px;left:26px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:5px;letter-spacing:0.1em;text-transform:uppercase;}
+.plan-label{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.plan-price{font-family:var(--serif);font-size:58px;font-weight:900;line-height:1;letter-spacing:-0.04em;}
+.plan-price small{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:4px;}
 .plan-card.pop .plan-price{color:var(--accent2);}
 .plan-card.prem .plan-price{color:var(--gold);}
-.plan-mo{font-size:12px;color:var(--muted);margin:4px 0 8px;}
-.plan-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px;}
-.plan-tagline{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
-.plan-div{height:1px;background:var(--border);margin-bottom:20px;}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;flex:1;}
-.plan-features li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
-.plan-features li::before{content:'—';font-size:11px;flex-shrink:0;margin-top:1px;font-weight:700;}
-.plan-card.pop .plan-features li::before{color:var(--accent2);}
-.plan-card.prem .plan-features li::before{color:var(--gold);}
-.plan-card:not(.pop):not(.prem) .plan-features li::before{color:var(--green);}
-.plan-btn{width:100%;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;border-radius:8px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border2);background:transparent;color:var(--text);}
-.plan-btn:hover{background:var(--s3);}
-.plan-card.pop .plan-btn{background:var(--accent);color:white;border-color:transparent;box-shadow:0 8px 24px rgba(124,106,247,0.3);}
-.plan-card.pop .plan-btn:hover{background:var(--accent2);}
-.plan-card.prem .plan-btn{background:var(--gold);color:#0a0800;border-color:transparent;font-weight:800;}
+.plan-name{font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:-0.02em;margin:14px 0 4px;}
+.plan-tagline{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;flex:1;border-top:1px solid var(--border);padding-top:20px;}
+.plan-features li{font-size:13px;color:var(--soft);display:flex;gap:10px;line-height:1.5;}
+.plan-features li::before{content:'';width:6px;height:6px;border-radius:50%;margin-top:7px;flex-shrink:0;background:var(--green);}
+.plan-card.pop .plan-features li::before{background:var(--accent2);}
+.plan-card.prem .plan-features li::before{background:var(--gold);}
+.pay-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;font-size:13px;color:var(--muted);flex-wrap:wrap;text-align:center;}
+.cash-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(0,214,79,0.08);border:1px solid rgba(0,214,79,0.25);color:var(--cash);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;}
+.cash-dot{width:14px;height:14px;border-radius:4px;background:var(--cash);color:#03210e;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;line-height:1;}
 
-/* LOGIN MODAL */
-.login-inner{padding:44px;}
-.login-inner h2{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--text);letter-spacing:-0.02em;margin-bottom:8px;}
-.login-inner h2 em{font-style:italic;color:var(--accent2);}
-.login-inner p{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
-.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
-.form-field label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
-.form-field input{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:13px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
-.form-field input::placeholder{color:var(--muted);}
-.form-field input:focus{border-color:rgba(124,106,247,0.4);}
-.login-btn{width:100%;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:var(--accent);color:white;transition:all 0.2s;box-shadow:0 8px 24px rgba(124,106,247,0.3);margin-top:4px;}
-.login-btn:hover{background:var(--accent2);}
-.login-btn:disabled{opacity:0.5;cursor:not-allowed;}
-.login-err{font-size:13px;color:#f87171;margin-top:12px;display:none;padding:10px 14px;background:rgba(248,113,113,0.08);border-radius:8px;border:1px solid rgba(248,113,113,0.2);}
-.login-err.show{display:block;}
-.login-divider{text-align:center;font-size:12px;color:var(--muted);margin:20px 0;}
-.login-signup{text-align:center;font-size:13px;color:var(--muted);}
-.login-signup a{color:var(--accent2);cursor:pointer;font-weight:600;text-decoration:none;}
-.login-signup a:hover{color:var(--accent);}
+/* faq */
+.faq{max-width:820px;}
+.faq details{border-bottom:1px solid var(--border);padding:20px 0;}
+.faq summary{cursor:pointer;font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center;}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:'+';font-size:22px;color:var(--muted);font-weight:300;transition:transform .2s;flex-shrink:0;}
+.faq details[open] summary::after{transform:rotate(45deg);}
+.faq p{font-size:14px;color:var(--muted);line-height:1.75;margin-top:12px;max-width:680px;}
 
-/* ── CHAT PAGE ─────────────────────────────────────────────────── */
+/* final cta + footer */
+.final{text-align:center;padding:96px var(--pad);}
+.final h2{font-family:var(--serif);font-size:clamp(34px,5vw,60px);font-weight:900;letter-spacing:-0.035em;line-height:1.02;}
+.final h2 em{font-style:italic;color:var(--accent2);}
+.final p{color:var(--muted);margin:18px auto 34px;max-width:440px;font-size:15px;}
+footer{border-top:1px solid var(--border);padding:36px var(--pad) 44px;position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;}
+.foot-top{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap;}
+.foot-links a,.foot-links button{font-size:13px;color:var(--soft);background:none;border:none;cursor:pointer;text-decoration:none;font-family:inherit;}
+.foot-links a:hover,.foot-links button:hover{color:var(--text);}
+.foot-note{font-size:12px;color:var(--muted);line-height:1.7;max-width:820px;}
+.foot-note strong{color:var(--soft);font-weight:600;}
+
+/* home (signed in) */
+.home-wrap{padding:44px var(--pad) 72px;position:relative;z-index:2;flex:1;}
+.home-hi{font-family:var(--serif);font-size:clamp(30px,4.4vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;}
+.home-hi em{font-style:italic;color:var(--accent2);}
+.home-sub{color:var(--muted);font-size:15px;margin-top:10px;}
+.banner{margin-top:28px;border:1px solid var(--border2);background:var(--s1);border-radius:16px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;animation:popIn .3s both;}
+.banner h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+.banner p{font-size:13px;color:var(--muted);line-height:1.6;max-width:560px;}
+.banner-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.banner.b-pending{border-color:rgba(0,214,79,0.28);background:linear-gradient(135deg,rgba(0,214,79,0.05),var(--s1) 55%);}
+.banner.b-warn{border-color:rgba(201,168,76,0.3);}
+.banner.b-start{border-color:rgba(124,106,247,0.35);background:linear-gradient(135deg,rgba(124,106,247,0.08),var(--s1) 60%);}
+.pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cash);margin-right:8px;animation:glow 1.6s ease-in-out infinite;}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;color:var(--text);background:var(--s3);border:1px solid var(--border2);padding:2px 8px;border-radius:6px;font-size:13px;letter-spacing:0.04em;}
+.home-h2{font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin:44px 0 16px;}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.tool{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;justify-content:space-between;align-items:center;gap:18px;}
+.tool h4{font-size:15px;font-weight:700;margin-bottom:4px;}
+.tool p{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* modals */
+.overlay{display:none;position:fixed;inset:0;background:rgba(4,4,5,0.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;animation:overlayIn .25s both;}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:460px;max-height:92vh;max-height:92dvh;overflow-y:auto;box-shadow:0 40px 120px rgba(0,0,0,0.8);animation:modalIn .3s both;position:relative;}
+.modal.wide{max-width:560px;}
+.modal::-webkit-scrollbar{width:3px;}
+.modal::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px;}
+.modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--s2);cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2;}
+.modal-close:hover{background:var(--s3);color:var(--text);}
+.modal-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;}
+.modal-in{padding:40px;}
+.modal h2{font-family:var(--serif);font-size:28px;font-weight:900;letter-spacing:-0.025em;margin-bottom:8px;padding-right:36px;line-height:1.1;}
+.modal h2 em{font-style:italic;color:var(--accent2);}
+.modal-lead{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.tabs{display:flex;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:22px;}
+.tab{flex:1;padding:10px;font-size:13px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:7px;cursor:pointer;transition:all .2s;}
+.tab.on{background:var(--s4);color:var(--text);}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.field label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.field input{background:var(--s2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;font-family:var(--sans);font-size:16px;color:var(--text);outline:none;transition:border-color .2s;width:100%;}
+.field input::placeholder{color:var(--muted);}
+.field input:focus{border-color:rgba(124,106,247,0.55);}
+.field input[readonly]{color:var(--soft);background:var(--s3);}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--soft);line-height:1.55;margin:6px 0 18px;cursor:pointer;}
+.check input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex-shrink:0;}
+.check button{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:inherit;padding:0;text-decoration:underline;}
+.err{font-size:13px;color:#fca5a5;margin:0 0 14px;display:none;padding:11px 14px;background:rgba(248,113,113,0.08);border-radius:10px;border:1px solid rgba(248,113,113,0.22);line-height:1.5;}
+.err.show{display:block;}
+.fine{font-size:12px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;}
+.fine button{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:inherit;font-weight:600;padding:0;}
+
+/* checkout */
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--s2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;cursor:pointer;margin-bottom:8px;transition:border-color .2s,background .2s;}
+.opt:hover{border-color:var(--border3);}
+.opt.on{border-color:var(--accent);background:rgba(124,106,247,0.08);}
+.opt.on.cash{border-color:var(--cash);background:rgba(0,214,79,0.06);}
+.opt-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--fog);flex-shrink:0;position:relative;}
+.opt.on .opt-radio{border-color:var(--accent);}
+.opt.on.cash .opt-radio{border-color:var(--cash);}
+.opt.on .opt-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--accent);}
+.opt.on.cash .opt-radio::after{background:var(--cash);}
+.opt-main{flex:1;min-width:0;}
+.opt-title{font-size:14px;font-weight:700;}
+.opt-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.opt-price{font-family:var(--serif);font-size:22px;font-weight:900;letter-spacing:-0.02em;}
+.opt-price small{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:500;}
+.step-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;}
+.paybox{background:var(--s2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.payrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid var(--border);}
+.payrow:last-child{border-bottom:none;}
+.payrow-k{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.payrow-v{font-family:var(--serif);font-size:24px;font-weight:900;letter-spacing:-0.02em;}
+.payrow-v.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;letter-spacing:0.06em;}
+.payrow-v.green{color:var(--cash);}
+.copy{font-size:11px;font-weight:700;color:var(--soft);background:var(--s3);border:1px solid var(--border2);padding:6px 11px;border-radius:7px;cursor:pointer;}
+.copy:hover{color:var(--text);}
+.steps-ol{list-style:none;counter-reset:s;margin:0 0 18px;display:flex;flex-direction:column;gap:9px;}
+.steps-ol li{counter-increment:s;font-size:13px;color:var(--soft);display:flex;gap:11px;line-height:1.55;}
+.steps-ol li::before{content:counter(s);width:20px;height:20px;border-radius:50%;background:var(--s3);border:1px solid var(--border2);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text);margin-top:1px;}
+.done-mark{width:56px;height:56px;border-radius:16px;background:rgba(0,214,79,0.1);border:1px solid rgba(0,214,79,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.done-mark svg{width:26px;height:26px;stroke:var(--cash);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+
+/* account */
+.kv{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--border);font-size:14px;align-items:center;}
+.kv span:first-child{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:0.04em;}
+.kv span:last-child{text-align:right;word-break:break-word;}
+.acct-sec{margin-top:26px;}
+.acct-sec h4{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.insight-text{white-space:pre-wrap;font-size:15px;line-height:1.8;color:var(--text);}
+.legal h3{font-size:14px;font-weight:700;margin:20px 0 6px;}
+.legal p{font-size:13px;color:var(--soft);line-height:1.75;}
+
+/* chat */
 #chat-page{background:var(--bg);overflow:hidden;}
-.chat-header{padding:16px 24px;background:var(--s1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;}
-.back-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all 0.2s;flex-shrink:0;}
-.back-btn:hover{background:var(--s2);color:var(--text);}
-.chat-av{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
-.chat-fn{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
-.chat-status{font-size:11px;color:var(--green);font-weight:500;margin-top:1px;display:flex;align-items:center;gap:5px;}
-.chat-status::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block;}
-.chat-plan-chip{margin-left:auto;font-size:10px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;border:1px solid;}
-.messages{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
+.chat-header{padding:14px 20px;background:var(--s1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:13px;flex-shrink:0;padding-top:max(14px,env(safe-area-inset-top));}
+.icon-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s;flex-shrink:0;}
+.icon-btn:hover{background:var(--s2);color:var(--text);}
+.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.chat-av{width:40px;height:40px;border-radius:10px;font-size:11px;}
+.chat-fn{font-family:var(--serif);font-size:17px;font-weight:700;letter-spacing:-0.01em;}
+.chat-status{font-size:11px;color:var(--green);font-weight:500;margin-top:1px;display:flex;align-items:center;gap:6px;}
+.chat-status::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;}
+.chat-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.messages{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:13px;-webkit-overflow-scrolling:touch;}
 .messages::-webkit-scrollbar{width:3px;}
 .messages::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px;}
-.msg-row{display:flex;gap:10px;animation:popIn 0.3s ease both;}
+.msgs-inner{max-width:820px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:13px;}
+.msg-row{display:flex;gap:10px;animation:popIn .25s ease both;}
 .msg-row.user{flex-direction:row-reverse;}
-.msg-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;align-self:flex-end;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.5);}
-.msg-av.u{background:var(--accent);color:white;font-size:11px;}
-.bubble{max-width:72%;padding:13px 17px;border-radius:14px;font-size:14px;line-height:1.7;font-weight:400;}
-.bubble.ai{background:var(--s2);color:var(--text);border-radius:14px 14px 14px 4px;border:1px solid var(--border);}
-.bubble.user{background:var(--accent);color:white;border-radius:14px 14px 4px 14px;}
-.msg-col{display:flex;flex-direction:column;}
+.msg-av{width:30px;height:30px;border-radius:8px;font-size:9px;align-self:flex-end;}
+.msg-av.u{background:var(--accent);color:#fff;}
+.msg-col{display:flex;flex-direction:column;max-width:74%;}
+.bubble{padding:13px 17px;border-radius:15px;font-size:15px;line-height:1.65;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;}
+.bubble.ai{background:var(--s2);border:1px solid var(--border);border-radius:15px 15px 15px 4px;}
+.bubble.user{background:var(--accent);color:#fff;border-radius:15px 15px 4px 15px;}
+.bubble.sys{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.22);color:#fca5a5;font-size:13px;}
 .msg-time{font-size:10px;color:var(--muted);margin-top:5px;padding:0 4px;letter-spacing:0.04em;}
 .msg-row.user .msg-time{text-align:right;}
-.date-div{text-align:center;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin:4px 0;display:flex;align-items:center;gap:10px;}
+.date-div{text-align:center;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin:6px 0;display:flex;align-items:center;gap:10px;}
 .date-div::before,.date-div::after{content:'';flex:1;height:1px;background:var(--border);}
-.typing-indicator{display:none;gap:10px;align-items:center;padding:0 4px;}
-.typing-indicator.visible{display:flex;}
-.typing-bubble{background:var(--s2);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 16px;display:flex;gap:5px;align-items:center;}
+.typing{display:none;gap:10px;align-items:center;}
+.typing.on{display:flex;}
+.typing-bubble{background:var(--s2);border:1px solid var(--border);border-radius:15px 15px 15px 4px;padding:13px 16px;display:flex;gap:5px;align-items:center;}
 .dot{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce 1.2s ease-in-out infinite;}
-.dot:nth-child(2){animation-delay:0.2s;}
-.dot:nth-child(3){animation-delay:0.4s;}
-.chat-input-area{padding:14px 20px 18px;background:var(--s1);border-top:1px solid var(--border);flex-shrink:0;}
-.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:10px 10px 10px 16px;transition:border-color 0.2s;}
-.input-row:focus-within{border-color:rgba(124,106,247,0.35);}
-#msg-input{flex:1;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);resize:none;outline:none;line-height:1.5;max-height:120px;min-height:22px;overflow-y:auto;}
+.dot:nth-child(2){animation-delay:.2s;}
+.dot:nth-child(3){animation-delay:.4s;}
+.chat-foot{background:var(--s1);border-top:1px solid var(--border);flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom));}
+.chat-foot-in{max-width:864px;margin:0 auto;padding:0 22px;}
+.quick{display:flex;gap:8px;padding:12px 0 0;overflow-x:auto;scrollbar-width:none;}
+.quick::-webkit-scrollbar{display:none;}
+.chip{background:var(--s2);border:1px solid var(--border);color:var(--soft);font-size:12px;font-weight:500;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.chip:hover{background:var(--s3);border-color:rgba(124,106,247,0.35);color:var(--text);}
+.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--s2);border:1px solid var(--border2);border-radius:15px;padding:9px 9px 9px 16px;margin-top:12px;transition:border-color .2s;}
+.input-row:focus-within{border-color:rgba(124,106,247,0.5);}
+#msg-input{flex:1;border:none;background:transparent;font-family:var(--sans);font-size:16px;color:var(--text);resize:none;outline:none;line-height:1.5;max-height:130px;min-height:24px;padding:5px 0;}
 #msg-input::placeholder{color:var(--muted);}
-.send-btn{width:34px;height:34px;border-radius:8px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s,transform 0.15s;flex-shrink:0;}
-.send-btn:hover{background:var(--accent2);transform:scale(1.05);}
-.send-btn:active{transform:scale(0.95);}
-.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.send-icon{width:14px;height:14px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.quick-prompts{display:flex;gap:8px;padding:10px 20px 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
-.quick-prompts::-webkit-scrollbar{display:none;}
-.prompt-chip{background:var(--s2);border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:500;padding:7px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;}
-.prompt-chip:hover{background:var(--s3);border-color:rgba(124,106,247,0.3);color:var(--text);}
-.input-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:0.03em;}
+.send-btn{width:38px;height:38px;border-radius:10px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;flex-shrink:0;}
+.send-btn:hover{background:var(--accent2);}
+.send-btn:disabled{opacity:.4;cursor:not-allowed;}
+.send-btn svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.input-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:9px;line-height:1.5;}
 
-/* ERROR TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;transition:transform 0.3s,opacity 0.3s;opacity:0;white-space:nowrap;}
+/* owner panel */
+.admin-wrap{padding:36px var(--pad) 72px;position:relative;z-index:2;flex:1;}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px;}
+.tile{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px 22px;}
+.tile-k{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.tile-v{font-family:var(--serif);font-size:34px;font-weight:900;letter-spacing:-0.03em;margin-top:6px;}
+.tile-v.green{color:var(--cash);}
+.alert{border:1px solid rgba(201,168,76,0.35);background:rgba(201,168,76,0.06);border-radius:14px;padding:16px 20px;font-size:13px;color:var(--soft);line-height:1.65;margin-top:14px;}
+.alert strong{color:var(--gold);}
+.alert code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--s3);padding:2px 6px;border-radius:5px;color:var(--text);overflow-wrap:anywhere;}
+.panel{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.prow{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.prow:last-child{border-bottom:none;}
+.prow-main{flex:1;min-width:200px;}
+.prow-title{font-size:14px;font-weight:700;word-break:break-all;}
+.prow-sub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;}
+.prow-amt{font-family:var(--serif);font-size:24px;font-weight:900;letter-spacing:-0.02em;color:var(--cash);}
+.empty{padding:34px 20px;text-align:center;color:var(--muted);font-size:13px;}
+.status{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:5px;border:1px solid;}
+.st-approved{color:var(--green);border-color:rgba(61,186,123,0.3);background:rgba(61,186,123,0.07);}
+.st-rejected{color:var(--muted);border-color:var(--border2);}
+.st-pending{color:var(--gold);border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.07);}
+.st-paid_unclaimed{color:var(--accent2);border-color:rgba(124,106,247,0.3);}
+select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:8px 10px;font-family:var(--sans);font-size:12px;}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--s3);border:1px solid var(--border3);color:var(--text);padding:13px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:9999;transition:transform .3s,opacity .3s;opacity:0;max-width:calc(100vw - 32px);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast.error{border-color:rgba(248,113,113,0.3);color:#fca5a5;}
-.toast.success{border-color:rgba(61,186,123,0.3);color:#6ee7b7;}
+.toast.error{border-color:rgba(248,113,113,0.35);color:#fca5a5;}
+.toast.success{border-color:rgba(61,186,123,0.35);color:#6ee7b7;}
 
+@media(max-width:1000px){
+  .friends-grid{grid-template-columns:repeat(3,1fr);}
+  .tiles{grid-template-columns:repeat(2,1fr);}
+}
 @media(max-width:768px){
-  nav{padding:18px 20px;}
-  .hero{padding:50px 20px 60px;}
-  .friends-section,.why-section{padding:50px 20px;}
-  .friends-grid{grid-template-columns:repeat(2,1fr);}
-  .why-grid{grid-template-columns:1fr;}
-  .hero-stats{gap:24px;}
-  .plans-grid{grid-template-columns:1fr;padding:24px;}
-  .modal-top{padding:28px 24px 20px;}
+  :root{--pad:20px;}
+  nav{padding:16px var(--pad);}
+  .nav-hide{display:none;}
+  .hero{padding:52px var(--pad) 48px;}
+  .hero-sub{font-size:16px;}
+  .hero-actions .btn{flex:1;}
+  .facts{grid-template-columns:repeat(2,1fr);margin-top:48px;}
+  .fact{padding:20px;}
+  .fact-num{font-size:28px;}
+  .section{padding:56px var(--pad);}
+  .sec-header{flex-direction:column;align-items:flex-start;margin-bottom:30px;}
+  .sec-sub{text-align:left;}
+  .friends-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .friend-card{padding:20px 16px;}
+  .grid3,.plans-grid,.tools{grid-template-columns:1fr;}
+  .plans-grid{gap:20px;}
+  .final{padding:64px var(--pad);}
+  .modal-in{padding:30px 22px;}
+  .modal h2{font-size:25px;}
   .messages{padding:14px;}
-  .bubble{max-width:86%;}
-  .chat-input-area{padding:10px 14px 14px;}
+  .msg-col{max-width:86%;}
+  .chat-foot-in{padding:0 14px;}
+  .home-wrap,.admin-wrap{padding:30px var(--pad) 56px;}
+  .tool{flex-direction:column;align-items:flex-start;}
+  .banner{padding:18px;}
+  .banner-actions{width:100%;}
+  .banner-actions .btn{flex:1;}
+  .overlay{padding:10px;align-items:flex-end;}
+  .toast{bottom:auto;top:14px;transform:translateX(-50%) translateY(-90px);}
+  .modal{border-radius:20px 20px 14px 14px;}
 }
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- ===== LANDING PAGE ===== -->
+<!-- ═══════════ LANDING ═══════════ -->
 <div class="page active" id="landing-page">
   <div class="amb amb1"></div><div class="amb amb2"></div>
 
   <nav>
-    <div class="wordmark">Friend<span>y</span></div>
+    <button class="wordmark" onclick="goHome()" aria-label="Friendy home">Friend<span>y</span></button>
     <div class="nav-right">
-      <div class="nav-badge" id="nav-badge"></div>
-      <div class="nav-user" id="nav-user"></div>
-      <button class="nav-logout" id="nav-logout" onclick="logout()">Sign Out</button>
-      <button class="btn-primary" id="nav-login-btn" onclick="openLogin()" style="padding:10px 20px;font-size:13px;">Sign In</button>
+      <button class="nav-link nav-hide" onclick="scrollToId('friends')">Friends</button>
+      <button class="nav-link nav-hide" onclick="scrollToId('pricing')">Pricing</button>
+      <button class="nav-link" onclick="openAuth('signin')">Sign in</button>
+      <button class="btn btn-primary btn-sm" onclick="startPlan('plus')">Get started</button>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-kicker">Always in your corner</div>
-    <h1 class="hero-h1">
-      The friend who<br>
-      <span class="lined">always shows up.</span><br>
-      <em>No exceptions.</em>
-    </h1>
-    <p class="hero-sub">Talk about anything. Get real advice, real encouragement, and a genuine perspective shift — every single time.</p>
+    <div class="kicker">Always in your corner</div>
+    <h1 class="hero-h1">The friend who<br><span class="lined">always shows up.</span><br><em>No exceptions.</em></h1>
+    <p class="hero-sub">Five AI friends who actually listen. Talk about anything and walk away with real encouragement, straight talk and a way to turn the negative into something you can use.</p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="handleMainCTA()">Meet Your Friend →</button>
-      <button class="btn-ghost" onclick="document.querySelector('.friends-section').scrollIntoView({behavior:'smooth'})">See Who's Available</button>
+      <button class="btn btn-primary btn-lg" onclick="startPlan('plus')">Meet your friend</button>
+      <button class="btn btn-ghost btn-lg" onclick="scrollToId('friends')">See who's here</button>
     </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Active members</div></div>
-      <div class="stat"><div class="stat-num">97%</div><div class="stat-label">Feel better after talking</div></div>
-      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Never unavailable</div></div>
-      <div class="stat"><div class="stat-num">4.9</div><div class="stat-label">Average rating</div></div>
+    <p class="hero-note">From $8 a month. Pay with Cash App or card. No contract.</p>
+    <div class="facts">
+      <div class="fact"><div class="fact-num">5</div><div class="fact-label">AI friends, five personalities</div></div>
+      <div class="fact"><div class="fact-num">24/7</div><div class="fact-label">Awake whenever you are</div></div>
+      <div class="fact"><div class="fact-num">$8</div><div class="fact-label">A month to start</div></div>
+      <div class="fact"><div class="fact-num">0</div><div class="fact-label">Judgment. Ever.</div></div>
     </div>
   </section>
 
-  <section class="friends-section">
+  <section class="section" id="friends">
     <div class="sec-header">
       <h2 class="sec-title">Pick your<br><em>friend.</em></h2>
-      <p class="sec-sub">Five distinct personalities. Each one trained to flip your mindset and keep it real.</p>
+      <p class="sec-sub">Each one has a different way of showing up. Find the voice you need today.</p>
     </div>
-    <div class="friends-grid">
-      <div class="friend-card fc-basic" onclick="tryFriend('Maya')">
-        <div class="fc-tag tag-basic">$8 · Basic</div>
-        <div class="fc-av av-b">MA</div>
-        <div class="fc-name">Maya</div>
-        <div class="fc-vibe">Warm, ride-or-die energy. Always in your corner no matter what.</div>
-        <div class="fc-price">$8<span>/mo</span></div>
-      </div>
-      <div class="friend-card fc-basic" onclick="tryFriend('Dre')">
-        <div class="fc-tag tag-basic">$8 · Basic</div>
-        <div class="fc-av av-b">DR</div>
-        <div class="fc-name">Dre</div>
-        <div class="fc-vibe">Straight talk. No sugar coating. Loyalty above everything.</div>
-        <div class="fc-price">$8<span>/mo</span></div>
-      </div>
-      <div class="friend-card fc-plus" onclick="tryFriend('Sage')">
-        <div class="fc-tag tag-plus">$12 · Plus</div>
-        <div class="fc-av av-p">SG</div>
-        <div class="fc-name">Sage</div>
-        <div class="fc-vibe">Deep, grounded wisdom. Helps you see what you've been missing.</div>
-        <div class="fc-price">$12<span>/mo</span></div>
-      </div>
-      <div class="friend-card fc-plus" onclick="tryFriend('Kai')">
-        <div class="fc-tag tag-plus">$12 · Plus</div>
-        <div class="fc-av av-p">KA</div>
-        <div class="fc-name">Kai</div>
-        <div class="fc-vibe">Pure hype. Turns your doubts into fuel and your excuses into action.</div>
-        <div class="fc-price">$12<span>/mo</span></div>
-      </div>
-      <div class="friend-card fc-prem" onclick="tryFriend('Nova')">
-        <div class="fc-tag tag-prem">$15 · Premium</div>
-        <div class="fc-av av-r">NV</div>
-        <div class="fc-name">Nova</div>
-        <div class="fc-vibe">Psychology-level insight delivered like a real conversation. Goes deep.</div>
-        <div class="fc-price">$15<span>/mo</span></div>
-      </div>
+    <div class="friends-grid" id="landing-friends"></div>
+  </section>
+
+  <section class="section">
+    <div class="sec-header">
+      <h2 class="sec-title">Why it <em>works.</em></h2>
+      <p class="sec-sub">Built on one idea: turn negative into positive, without ever faking it.</p>
+    </div>
+    <div class="grid3">
+      <div class="cell"><div class="cell-num">01</div><div class="cell-title">They listen first</div><div class="cell-desc">Your friend hears you out before saying a word about what to do. No lectures. No therapy-speak. Just someone paying attention.</div></div>
+      <div class="cell"><div class="cell-num">02</div><div class="cell-title">Then they flip it</div><div class="cell-desc">Reframing techniques drawn from CBT, mindfulness and strength-based thinking, delivered the way a sharp friend would say it.</div></div>
+      <div class="cell"><div class="cell-num">03</div><div class="cell-title">Zero judgment, any hour</div><div class="cell-desc">Say the thing you can't say out loud. Your friend never gets tired, never rolls their eyes and is there at 3am.</div></div>
     </div>
   </section>
 
-  <section class="why-section">
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-num">01</div>
-        <div class="why-title">Flips Every Negative</div>
-        <div class="why-desc">Every response is engineered to reframe your thinking. Cognitive behavioral techniques woven into real conversation — not therapy speak.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-num">02</div>
-        <div class="why-title">Psychology That Actually Works</div>
-        <div class="why-desc">CBT, strength-based thinking, mindfulness — delivered the way a brilliant friend would. No clinical walls. Just results.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-num">03</div>
-        <div class="why-title">Zero Judgment. Always.</div>
-        <div class="why-desc">Say anything. Your friend never gets tired, never judges, never tells anyone. Available every day, every hour, no exceptions.</div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ===== PRICING MODAL ===== -->
-<div class="modal-overlay" id="pricing-overlay" onclick="closePricingOutside(event)">
-  <div class="modal-box pricing-box">
-    <button class="modal-close" onclick="closePricing()">✕</button>
-    <div class="modal-top">
-      <h2>Choose your <em>plan</em></h2>
-      <p>Every plan gets a real friend. No free tier. Cancel anytime via Stripe.</p>
+  <section class="section" id="pricing">
+    <div class="sec-header">
+      <h2 class="sec-title">Simple <em>plans.</em></h2>
+      <p class="sec-sub">Every plan is unlimited conversation. Pick how many friends you want in your corner.</p>
     </div>
     <div class="plans-grid">
-      <div class="plan-card" onclick="goToStripe('basic')">
-        <span class="plan-label">Starter</span>
-        <div class="plan-price">$8</div>
-        <div class="plan-mo">per month</div>
+      <div class="plan-card">
+        <div class="plan-label">Starter</div>
+        <div class="plan-price">$8<small>/ month</small></div>
         <div class="plan-name">Basic</div>
         <div class="plan-tagline">Two friends. Unlimited conversations.</div>
-        <div class="plan-div"></div>
         <ul class="plan-features">
-          <li>Maya & Dre unlocked</li>
-          <li>Unlimited daily messages</li>
-          <li>Positive reframing on every reply</li>
-          <li>Psychology-backed advice</li>
-          <li>Card · Apple Pay · Google Pay</li>
+          <li>Maya and Dre</li>
+          <li>Unlimited conversations</li>
+          <li>Positive reframing in every reply</li>
+          <li>Private chats, saved to your account</li>
         </ul>
-        <button class="plan-btn">Get Basic →</button>
+        <button class="btn btn-ghost btn-block" onclick="startPlan('basic')">Get Basic</button>
       </div>
       <div class="plan-card pop">
-        <div class="plan-hot">Most Popular</div>
-        <span class="plan-label">Best Value</span>
-        <div class="plan-price">$12</div>
-        <div class="plan-mo">per month</div>
+        <div class="plan-hot">Most popular</div>
+        <div class="plan-label">Best value</div>
+        <div class="plan-price">$12<small>/ month</small></div>
         <div class="plan-name">Plus</div>
-        <div class="plan-tagline">Four friends. Deeper conversations.</div>
-        <div class="plan-div"></div>
+        <div class="plan-tagline">Four friends who remember your story.</div>
         <ul class="plan-features">
-          <li>Maya, Dre, Sage & Kai unlocked</li>
-          <li>Unlimited messages</li>
-          <li>Memory — they remember your story</li>
-          <li>Advanced CBT + mindfulness tools</li>
+          <li>Maya, Dre, Sage and Kai</li>
+          <li>Unlimited conversations</li>
+          <li>Memory: they pick up where you left off</li>
           <li>Weekly growth check-in</li>
-          <li>Card · Apple Pay · Google Pay</li>
         </ul>
-        <button class="plan-btn" onclick="goToStripe('plus')">Get Plus →</button>
+        <button class="btn btn-primary btn-block" onclick="startPlan('plus')">Get Plus</button>
       </div>
       <div class="plan-card prem">
-        <span class="plan-label">Elite</span>
-        <div class="plan-price">$15</div>
-        <div class="plan-mo">per month</div>
+        <div class="plan-label">Everything</div>
+        <div class="plan-price">$15<small>/ month</small></div>
         <div class="plan-name">Premium</div>
-        <div class="plan-tagline">All 5 friends. The deepest level.</div>
-        <div class="plan-div"></div>
+        <div class="plan-tagline">All five friends. The deepest level.</div>
         <ul class="plan-features">
-          <li>All 5 friends including Nova</li>
-          <li>Unlimited everything</li>
-          <li>Deep psychology mode</li>
-          <li>Personalized monthly growth plan</li>
-          <li>Priority response speed</li>
-          <li>Custom friend builder (coming soon)</li>
-          <li>Card · Apple Pay · Google Pay</li>
+          <li>All five friends, including Nova</li>
+          <li>Everything in Plus</li>
+          <li>Nova's psychology-level insight</li>
+          <li>Personal 30-day growth plan</li>
+          <li>Our most advanced AI model</li>
         </ul>
-        <button class="plan-btn" onclick="goToStripe('premium')">Get Premium →</button>
+        <button class="btn btn-gold btn-block" onclick="startPlan('premium')">Get Premium</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- ===== LOGIN MODAL ===== -->
-<div class="modal-overlay" id="login-overlay" onclick="closeLoginOutside(event)">
-  <div class="modal-box login-box">
-    <button class="modal-close" onclick="closeLogin()">✕</button>
-    <div class="login-inner">
-      <h2>Welcome back to <em>Friendy</em></h2>
-      <p>Enter the email you used when subscribing to sign in.</p>
-      <div class="form-field">
-        <label>Email Address</label>
-        <input type="email" id="login-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
-      <div class="login-err" id="login-err"></div>
-      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
-      <div class="login-divider">— or —</div>
-      <div class="login-signup">Don't have an account? <a onclick="closeLogin();openPricing()">Choose a plan →</a></div>
+    <div class="pay-row">
+      <span class="cash-chip"><span class="cash-dot">$</span>Cash App</span>
+      <span>or debit / credit card. Cash App payments cover 30 days and never auto-renew.</span>
     </div>
-  </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-header"><h2 class="sec-title">Three steps.<br><em>That's it.</em></h2></div>
+    <div class="grid3">
+      <div class="cell"><div class="cell-num">01</div><div class="cell-title">Create your account</div><div class="cell-desc">Email and a password. Takes about twenty seconds.</div></div>
+      <div class="cell"><div class="cell-num">02</div><div class="cell-title">Choose a plan and pay</div><div class="cell-desc">Send it on Cash App to <strong id="cashtag-inline">$hsw365</strong> with your order code, or pay by card.</div></div>
+      <div class="cell"><div class="cell-num">03</div><div class="cell-title">Start talking</div><div class="cell-desc">Your friends unlock as soon as your payment is confirmed. Say whatever is on your mind.</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-header"><h2 class="sec-title">Good <em>questions.</em></h2></div>
+    <div class="faq">
+      <details><summary>Am I talking to a real person?</summary><p>No. Maya, Dre, Sage, Kai and Nova are AI companions. They are built to listen, encourage and help you see things differently, and they will always tell you they are AI if you ask.</p></details>
+      <details><summary>Is this therapy?</summary><p>No. Friendy is a supportive companion, not a therapist, doctor or crisis service, and it does not diagnose or treat anything. If you are in crisis or thinking about harming yourself, call or text 988 in the US, or your local emergency number.</p></details>
+      <details><summary>How does paying with Cash App work?</summary><p>Pick a plan and you'll get an order code. Send the plan amount to <strong>$hsw365</strong> on Cash App with that code in the note. We match the payment to your account and unlock your friends. Each payment covers 30 days and nothing renews on its own.</p></details>
+      <details><summary>Are my conversations private?</summary><p>Your chats are saved to your account so your friends can keep up with your story, and only you can see them when signed in. Messages are processed by our AI provider to write replies. You can clear a conversation or delete your whole account at any time from your account screen.</p></details>
+      <details><summary>Can I switch plans or stop?</summary><p>Yes. Cash App plans simply end after 30 days unless you renew. Card subscriptions renew monthly until you cancel; email us and we'll take care of it.</p></details>
+      <details><summary>Who can use Friendy?</summary><p>Friendy is for adults 18 and older.</p></details>
+    </div>
+  </section>
+
+  <section class="section final">
+    <h2>Somebody's got <em>your back.</em></h2>
+    <p>Create your account, pick your friend and say what's really going on.</p>
+    <button class="btn btn-primary btn-lg" onclick="startPlan('plus')">Get started</button>
+  </section>
+
+  <footer>
+    <div class="foot-top">
+      <button class="wordmark" onclick="window.scrollTo({top:0,behavior:'smooth'})">Friend<span>y</span></button>
+      <div class="foot-links">
+        <button onclick="openLegal('terms')">Terms</button>
+        <button onclick="openLegal('privacy')">Privacy</button>
+        <a href="mailto:hsw365media@gmail.com">hsw365media@gmail.com</a>
+      </div>
+    </div>
+    <p class="foot-note"><strong>Friendy is an AI companion, not a person and not a substitute for professional care.</strong> It does not provide medical, mental health, legal or financial advice. If you are in crisis or thinking about hurting yourself, call or text <strong>988</strong> (US Suicide and Crisis Lifeline) or call your local emergency number. For adults 18+.</p>
+    <p class="foot-note">&copy; <span id="year"></span> HSW365 Media LLC. Turn Negative Into Positive.</p>
+  </footer>
 </div>
 
-<!-- ===== CHAT PAGE ===== -->
+<!-- ═══════════ HOME (signed in) ═══════════ -->
+<div class="page" id="home-page">
+  <div class="amb amb1"></div>
+  <nav>
+    <button class="wordmark" onclick="goHome()" aria-label="Friendy home">Friend<span>y</span></button>
+    <div class="nav-right">
+      <span class="badge b-none" id="home-badge">No plan</span>
+      <button class="nav-link" id="owner-btn" onclick="openAdmin()" hidden>Owner panel</button>
+      <button class="nav-link" onclick="openAccount()">Account</button>
+    </div>
+  </nav>
+  <div class="home-wrap">
+    <h1 class="home-hi" id="home-hi">Welcome.</h1>
+    <p class="home-sub" id="home-sub"></p>
+    <div id="home-banner"></div>
+    <div class="home-h2">Your friends</div>
+    <div class="friends-grid" id="home-friends"></div>
+    <div id="home-tools"></div>
+  </div>
+  <footer>
+    <p class="foot-note"><strong>Friendy is an AI companion, not a therapist or crisis service.</strong> In crisis, call or text <strong>988</strong> (US) or your local emergency number. Need help with your account? <a href="mailto:hsw365media@gmail.com">hsw365media@gmail.com</a></p>
+  </footer>
+</div>
+
+<!-- ═══════════ CHAT ═══════════ -->
 <div class="page" id="chat-page">
   <div class="chat-header">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="chat-av" id="chat-av">MA</div>
+    <button class="icon-btn" onclick="leaveChat()" aria-label="Back to friends"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="av chat-av" id="chat-av">MA</div>
     <div>
       <div class="chat-fn" id="chat-fn">Maya</div>
-      <div class="chat-status">Online — here for you</div>
+      <div class="chat-status">AI friend, here for you</div>
     </div>
-    <div class="chat-plan-chip" id="chat-chip">Basic</div>
-  </div>
-
-  <div class="messages" id="messages"></div>
-
-  <div class="typing-indicator" id="typing">
-    <div class="msg-av" id="typing-av">MA</div>
-    <div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  </div>
-
-  <div class="quick-prompts" id="quick-prompts">
-    <button class="prompt-chip" onclick="sendQuick(this)">I'm stressed and overwhelmed</button>
-    <button class="prompt-chip" onclick="sendQuick(this)">I feel like I'm failing</button>
-    <button class="prompt-chip" onclick="sendQuick(this)">I need someone to talk to</button>
-    <button class="prompt-chip" onclick="sendQuick(this)">I keep doubting myself</button>
-    <button class="prompt-chip" onclick="sendQuick(this)">Something good happened</button>
-    <button class="prompt-chip" onclick="sendQuick(this)">Help me see the bright side</button>
-  </div>
-
-  <div class="chat-input-area">
-    <div class="input-row">
-      <textarea id="msg-input" placeholder="Talk to me..." rows="1"></textarea>
-      <button class="send-btn" id="send-btn" onclick="sendMessage()">
-        <svg class="send-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-      </button>
+    <div class="chat-right">
+      <span class="badge b-basic nav-hide" id="chat-badge">Basic</span>
+      <button class="icon-btn" onclick="clearChat()" aria-label="Clear this conversation" title="Clear this conversation"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
     </div>
-    <div class="input-hint">Friendy · Always positive · Always in your corner</div>
+  </div>
+  <div class="messages" id="messages"><div class="msgs-inner" id="msgs-inner"></div></div>
+  <div class="chat-foot">
+    <div class="chat-foot-in">
+      <div class="quick" id="quick">
+        <button class="chip">I'm stressed and overwhelmed</button>
+        <button class="chip">I feel like I'm failing</button>
+        <button class="chip">I need someone to talk to</button>
+        <button class="chip">I keep doubting myself</button>
+        <button class="chip">Something good happened</button>
+        <button class="chip">Help me see the bright side</button>
+      </div>
+      <div class="input-row">
+        <textarea id="msg-input" placeholder="Talk to me..." rows="1" maxlength="2000" aria-label="Message"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" aria-label="Send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+      <div class="input-hint">AI companion, not a therapist. In crisis, call or text 988.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ OWNER PANEL ═══════════ -->
+<div class="page" id="admin-page">
+  <nav>
+    <button class="wordmark" onclick="goHome()">Friend<span>y</span></button>
+    <div class="nav-right">
+      <span class="badge b-owner">Owner</span>
+      <button class="nav-link" onclick="loadAdmin(true)">Refresh</button>
+      <button class="nav-link" onclick="goHome()">Back to app</button>
+    </div>
+  </nav>
+  <div class="admin-wrap" id="admin-body"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- ═══════════ AUTH MODAL ═══════════ -->
+<div class="overlay" id="auth-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <button class="modal-close" onclick="closeModal('auth-overlay')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-in">
+      <h2 id="auth-title">Join <em>Friendy</em></h2>
+      <p class="modal-lead" id="auth-lead">Create your account, then pick your plan.</p>
+      <div class="tabs" id="auth-tabs">
+        <button class="tab on" id="tab-signup" onclick="setAuthMode('signup')">Create account</button>
+        <button class="tab" id="tab-signin" onclick="setAuthMode('signin')">Sign in</button>
+      </div>
+      <form id="auth-form" onsubmit="submitAuth(event)" novalidate>
+        <div class="field" id="f-name"><label for="auth-name">First name</label><input id="auth-name" type="text" autocomplete="given-name" maxlength="40" placeholder="What should your friends call you?"></div>
+        <div class="field"><label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com" required></div>
+        <div class="field"><label for="auth-pass">Password</label><input id="auth-pass" type="password" autocomplete="new-password" placeholder="At least 8 characters" required minlength="8"></div>
+        <label class="check" id="f-adult"><input type="checkbox" id="auth-adult"><span>I'm 18 or older and I agree to the <button type="button" onclick="openLegal('terms')">Terms</button> and <button type="button" onclick="openLegal('privacy')">Privacy Policy</button>. I understand my friends are AI.</span></label>
+        <div class="err" id="auth-err" role="alert"></div>
+        <button class="btn btn-primary btn-block btn-lg" id="auth-btn" type="submit">Create account</button>
+      </form>
+      <p class="fine" id="auth-fine">Forgot your password? Email <a href="mailto:hsw365media@gmail.com">hsw365media@gmail.com</a> from your account email.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CHECKOUT MODAL ═══════════ -->
+<div class="overlay" id="checkout-overlay">
+  <div class="modal wide" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('checkout-overlay')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-in" id="checkout-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════ ACCOUNT MODAL ═══════════ -->
+<div class="overlay" id="account-overlay">
+  <div class="modal wide" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('account-overlay')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-in" id="account-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════ GENERIC MODAL (insights, legal) ═══════════ -->
+<div class="overlay" id="info-overlay">
+  <div class="modal wide" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('info-overlay')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-in" id="info-body"></div>
   </div>
 </div>
 
 <script>
-// ── CONFIG — UPDATE THESE ─────────────────────────────────────────
+'use strict';
+// ── CONFIG ────────────────────────────────────────────────────────
 const API = 'https://ucgymjcenpddqshokybj.supabase.co/functions/v1/friendy-api';
+const SUPPORT = 'hsw365media@gmail.com';
+let CASHTAG = '$hsw365';
 
-const STRIPE_LINKS = {
-  basic:   'https://buy.stripe.com/fZu7sLb9tgZ0g2W9ZV3VC04',
-  plus:    'https://buy.stripe.com/fZu3cv4L5bEG4keb3Z3VC05',
-  premium: 'https://buy.stripe.com/eVq14n6Td2461823Bx3VC06'
+const PLANS = {
+  basic:   { label:'Basic',   price:8,  rank:1, desc:'Maya and Dre' },
+  plus:    { label:'Plus',    price:12, rank:2, desc:'Maya, Dre, Sage and Kai, with memory' },
+  premium: { label:'Premium', price:15, rank:3, desc:'All five friends, including Nova' }
+};
+const FRIENDS = {
+  Maya:{ initials:'MA', plan:'basic',   vibe:'Warm, ride-or-die energy. In your corner no matter what.',
+         hello:"Hey, really glad you're here. This is your space. No filter, no judgment. What's going on?" },
+  Dre: { initials:'DR', plan:'basic',   vibe:'Straight talk, no sugar coating. Loyalty above everything.',
+         hello:"What's good? Real talk, whatever you're dealing with, I'm here for it. What's on your mind?" },
+  Sage:{ initials:'SG', plan:'plus',    vibe:"Calm, grounded wisdom. Helps you see what you've been missing.",
+         hello:"Hey. Take a second to settle in, there's no rush here. What's been weighing on you lately?" },
+  Kai: { initials:'KA', plan:'plus',    vibe:'Pure hype. Turns doubt into fuel and excuses into action.',
+         hello:"Let's go. You showed up, and that already says a lot. What's happening in your world right now?" },
+  Nova:{ initials:'NV', plan:'premium', vibe:'Psychology-level insight, delivered like a real conversation.',
+         hello:"Hey, I'm glad you reached out. We can go as deep as you want here and figure it out together. What's been going on?" }
 };
 
-const PLAN_FRIENDS = { basic:['Maya','Dre'], plus:['Maya','Dre','Sage','Kai'], premium:['Maya','Dre','Sage','Kai','Nova'] };
-const PLAN_RANK = { basic:1, plus:2, premium:3 };
-
-const FRIEND_META = {
-  Maya:{ initials:'MA', plan:'basic', avClass:'av-b' },
-  Dre: { initials:'DR', plan:'basic', avClass:'av-b' },
-  Sage:{ initials:'SG', plan:'plus',  avClass:'av-p' },
-  Kai: { initials:'KA', plan:'plus',  avClass:'av-p' },
-  Nova:{ initials:'NV', plan:'premium', avClass:'av-r' }
+// ── STATE ─────────────────────────────────────────────────────────
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
 };
+const APP = { token: store.get('friendy_token'), user: null, friend: null, sending: false, afterAuth: null, authMode: 'signup', setupCode: null, poll: null,
+              checkout: { plan:'plus', method:'cashapp' } };
 
-const AV_STYLES = {
-  'av-b':'linear-gradient(135deg,rgba(124,106,247,0.3),rgba(124,106,247,0.1))',
-  'av-p':'linear-gradient(135deg,rgba(212,95,138,0.3),rgba(212,95,138,0.1))',
-  'av-r':'linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.1))'
-};
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => '$' + (Number.isInteger(n) ? n : Number(n).toFixed(2));
+const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+const fmtDate = d => d ? new Date(d).toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' }) : '';
+const fmtWhen = d => d ? new Date(d).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }) : '';
+const daysLeft = d => d ? Math.ceil((new Date(d).getTime() - Date.now()) / 86400000) : null;
 
-// ── APP STATE ─────────────────────────────────────────────────────
-const APP = {
-  token: localStorage.getItem('friendy_token'),
-  user: JSON.parse(localStorage.getItem('friendy_user') || 'null'),
-  friend: null, history: [], isTyping: false
-};
-
-// ── INIT ──────────────────────────────────────────────────────────
-window.addEventListener('load', async () => {
-  // Check if returning from Stripe with session_id
-  const params = new URLSearchParams(window.location.search);
-  const sessionId = params.get('session_id');
-  if (sessionId) {
-    history.replaceState({}, '', window.location.pathname);
-    await verifyStripeSession(sessionId);
-    return;
-  }
-  // Validate existing token
-  if (APP.token) await validateToken();
-  updateUI();
-});
-
-async function verifyStripeSession(sessionId) {
-  showToast('Activating your plan...', false);
+async function api(path, opts = {}) {
+  const headers = { 'Content-Type':'application/json' };
+  if (APP.token) headers.Authorization = 'Bearer ' + APP.token;
+  let res;
   try {
-    const res = await fetch(`${API}/auth/verify-payment`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId })
-    });
-    const data = await res.json();
-    if (data.token) {
-      APP.token = data.token; APP.user = data.user;
-      localStorage.setItem('friendy_token', data.token);
-      localStorage.setItem('friendy_user', JSON.stringify(data.user));
-      showToast('Welcome to Friendy! Pick your friend.', true);
-      updateUI();
-    } else {
-      showToast('Payment received — sign in with your email to access.', true);
-    }
-  } catch (err) {
-    showToast('Could not verify payment. Please sign in with your email.', false);
-  }
-}
-
-async function validateToken() {
-  try {
-    const res = await fetch(`${API}/auth/me`, { headers: { 'Authorization': `Bearer ${APP.token}` } });
-    if (res.ok) {
-      APP.user = await res.json();
-      localStorage.setItem('friendy_user', JSON.stringify(APP.user));
-    } else {
-      logout(true);
-    }
-  } catch (err) { /* keep local state */ }
-}
-
-function updateUI() {
-  const loggedIn = APP.token && APP.user;
-  const plan = APP.user?.plan;
-
-  // Nav
-  document.getElementById('nav-login-btn').style.display = loggedIn ? 'none' : 'block';
-  document.getElementById('nav-logout').classList.toggle('show', !!loggedIn);
-  document.getElementById('nav-user').classList.toggle('show', !!loggedIn);
-  if (loggedIn) document.getElementById('nav-user').textContent = APP.user.email;
-
-  const badge = document.getElementById('nav-badge');
-  if (loggedIn && plan) {
-    badge.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
-    badge.className = `nav-badge show nb-${plan === 'premium' ? 'prem' : plan}`;
-  } else {
-    badge.className = 'nav-badge';
-  }
-}
-
-// ── NAVIGATION ────────────────────────────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function handleMainCTA() {
-  if (APP.token && APP.user) {
-    document.querySelector('.friends-section').scrollIntoView({ behavior: 'smooth' });
-  } else {
-    openPricing();
-  }
-}
-
-// ── PRICING ───────────────────────────────────────────────────────
-function openPricing() { document.getElementById('pricing-overlay').classList.add('open'); }
-function closePricing() { document.getElementById('pricing-overlay').classList.remove('open'); }
-function closePricingOutside(e) { if (e.target === document.getElementById('pricing-overlay')) closePricing(); }
-
-function goToStripe(plan) {
-  // Append success URL so we can verify session after payment
-  const successUrl = encodeURIComponent(window.location.href + '?session_id={CHECKOUT_SESSION_ID}');
-  window.location.href = STRIPE_LINKS[plan];
-}
-
-// ── LOGIN ─────────────────────────────────────────────────────────
-function openLogin() { document.getElementById('login-overlay').classList.add('open'); setTimeout(()=>document.getElementById('login-email').focus(), 300); }
-function closeLogin() { document.getElementById('login-overlay').classList.remove('open'); }
-function closeLoginOutside(e) { if (e.target === document.getElementById('login-overlay')) closeLogin(); }
-
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const err = document.getElementById('login-err');
-  const btn = document.getElementById('login-btn');
-  err.classList.remove('show');
-  if (!email) { err.textContent = 'Please enter your email.'; err.classList.add('show'); return; }
-
-  btn.disabled = true; btn.textContent = 'Signing in...';
-  try {
-    const res = await fetch(`${API}/auth/login`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    const data = await res.json();
-    if (data.token) {
-      APP.token = data.token; APP.user = data.user;
-      localStorage.setItem('friendy_token', data.token);
-      localStorage.setItem('friendy_user', JSON.stringify(data.user));
-      closeLogin();
-      updateUI();
-      showToast('Welcome back!', true);
-    } else {
-      err.textContent = data.error || 'Sign in failed.';
-      if (data.code === 'SUBSCRIPTION_REQUIRED') err.textContent = 'No active subscription found. Please subscribe first.';
-      err.classList.add('show');
-    }
+    res = await fetch(API + path, { method: opts.method || 'GET', headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
   } catch (e) {
-    err.textContent = 'Connection error. Try again.'; err.classList.add('show');
+    throw Object.assign(new Error("Can't reach Friendy. Check your connection and try again."), { network:true });
   }
-  btn.disabled = false; btn.textContent = 'Sign In →';
-}
-
-function logout(silent = false) {
-  APP.token = null; APP.user = null;
-  localStorage.removeItem('friendy_token'); localStorage.removeItem('friendy_user');
-  showPage('landing-page');
-  updateUI();
-  if (!silent) showToast('Signed out.', false);
-}
-
-// ── FRIENDS ───────────────────────────────────────────────────────
-function tryFriend(name) {
-  if (!APP.token || !APP.user) { openLogin(); return; }
-  const required = FRIEND_META[name].plan;
-  if (PLAN_RANK[APP.user.plan] < PLAN_RANK[required]) {
-    showToast(`${name} requires ${required.charAt(0).toUpperCase()+required.slice(1)} plan. Upgrade to unlock.`, false);
-    openPricing(); return;
+  let data = {};
+  try { data = await res.json(); } catch(e) {}
+  if (!res.ok) {
+    if (res.status === 401 && data.code === 'UNAUTHORIZED') { signOut(true); }
+    throw Object.assign(new Error(data.error || 'Something went wrong. Try again.'), { status: res.status, code: data.code });
   }
-  openChat(name);
+  return data;
 }
 
-function openChat(name) {
-  const meta = FRIEND_META[name];
-  APP.friend = { name, ...meta }; APP.history = [];
+// ── TOAST / MODALS / NAV ──────────────────────────────────────────
+let toastTimer;
+function toast(msg, ok = true) {
+  const t = $('toast'); t.textContent = msg; t.className = 'toast ' + (ok ? 'success' : 'error') + ' show';
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 4200);
+}
+function openModal(id){ $(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal(id){ $(id).classList.remove('open'); if (!document.querySelector('.overlay.open')) document.body.style.overflow = ''; }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target === o) closeModal(o.id); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const o = [...document.querySelectorAll('.overlay.open')].pop(); if (o) closeModal(o.id); } });
 
-  const avEl = document.getElementById('chat-av');
-  avEl.textContent = meta.initials;
-  avEl.style.background = AV_STYLES[meta.avClass];
-
-  const tav = document.getElementById('typing-av');
-  tav.textContent = meta.initials;
-  tav.style.background = AV_STYLES[meta.avClass];
-
-  document.getElementById('chat-fn').textContent = name;
-
-  const chip = document.getElementById('chat-chip');
-  const plan = APP.user.plan;
-  chip.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
-  chip.style.background = plan==='premium'?'rgba(201,168,76,0.1)':plan==='plus'?'rgba(212,95,138,0.1)':'rgba(124,106,247,0.1)';
-  chip.style.color = plan==='premium'?'var(--gold)':plan==='plus'?'#e07aa0':'var(--accent2)';
-  chip.style.borderColor = plan==='premium'?'rgba(201,168,76,0.2)':plan==='plus'?'rgba(212,95,138,0.2)':'rgba(124,106,247,0.2)';
-
-  document.getElementById('messages').innerHTML = '';
-  document.getElementById('quick-prompts').style.display = 'flex';
-
-  const div = document.createElement('div'); div.className = 'date-div'; div.textContent = 'Today';
-  document.getElementById('messages').appendChild(div);
-
-  showPage('chat-page');
-
-  const greetings = {
-    Maya: `Hey — really glad you're here. This is your space. No filter, no judgment. What's going on?`,
-    Dre:  `Yo. What's good? Real talk — whatever you're dealing with, I'm here for it. What's on your mind?`,
-    Sage: `Hey. Take a moment to settle in — there's no rush here. What's been weighing on you lately?`,
-    Kai:  `Let's go — you showed up and that already says a lot. What's happening in your world right now?`,
-    Nova: `Hey, really glad you reached out. This is a space where we can go deep and figure things out together. What's been going on?`
-  };
-  setTimeout(() => addAI(greetings[name]), 700);
+function showPage(id){ document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id)); window.scrollTo(0,0); }
+function scrollToId(id){ const el = $(id); if (el) el.scrollIntoView({ behavior:'smooth' }); }
+function goHome(){ APP.friend = null; if (APP.user) { renderHome(); showPage('home-page'); } else showPage('landing-page'); }
+function setBusy(btn, busy, label){ if (!btn) return; if (busy) { btn.dataset.label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>' + (label ? ' ' + esc(label) : ''); } else { btn.disabled = false; if (btn.dataset.label) btn.innerHTML = btn.dataset.label; } }
+async function copyText(text, btn){
+  try { await navigator.clipboard.writeText(text); }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(_){} ta.remove(); }
+  if (btn) { const old = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = old, 1400); }
 }
 
-function goBack() {
+// ── FRIEND CARDS ──────────────────────────────────────────────────
+const LOCK_SVG = '<svg class="fc-lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+function friendCard(name, mode) {
+  const f = FRIENDS[name], plan = PLANS[f.plan];
+  const unlocked = mode === 'home' && APP.user && APP.user.friends.includes(name);
+  const locked = mode === 'home' && !unlocked;
+  let cta;
+  if (mode === 'landing') cta = 'Included in ' + plan.label + ' · ' + money(plan.price) + '/mo';
+  else if (unlocked) cta = 'Talk to ' + name;
+  else cta = 'Unlock with ' + plan.label;
+  return `<button class="friend-card fc-${f.plan}${locked ? ' locked' : ''}" onclick="pickFriend('${name}')">
+    <div class="fc-top"><span class="badge b-${f.plan}">${plan.label}</span>${locked ? LOCK_SVG : ''}</div>
+    <div class="av av-${f.plan}">${f.initials}</div>
+    <div class="fc-name">${name}</div>
+    <div class="fc-vibe">${esc(f.vibe)}</div>
+    <div class="fc-cta">${esc(cta)}</div>
+  </button>`;
+}
+function pickFriend(name) {
+  const need = FRIENDS[name].plan;
+  if (!APP.user) return startPlan(need);
+  if (APP.user.friends.includes(name)) return openChat(name);
+  if (APP.user.pendingOrder && !APP.user.plan) return toast("Your payment is being confirmed. Your friends unlock as soon as it clears.", true);
+  openCheckout(need);
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────
+function startPlan(plan) {
+  APP.checkout.plan = plan || 'plus';
+  if (APP.user) return openCheckout(APP.checkout.plan);
+  APP.afterAuth = () => { if (!APP.user.plan && !APP.user.pendingOrder && !APP.user.isOwner) openCheckout(APP.checkout.plan); };
+  openAuth('signup');
+}
+function openAuth(mode) { setAuthMode(mode || 'signup'); $('auth-err').classList.remove('show'); openModal('auth-overlay'); setTimeout(() => (mode === 'signin' || APP.setupCode ? $('auth-email') : $('auth-name')).focus(), 250); }
+function setAuthMode(mode) {
+  APP.authMode = mode;
+  const up = mode === 'signup';
+  $('tab-signup').classList.toggle('on', up); $('tab-signin').classList.toggle('on', !up);
+  $('f-name').hidden = !up; $('f-adult').hidden = !up; $('auth-fine').hidden = up;
+  $('auth-title').innerHTML = APP.setupCode ? 'Claim your <em>account</em>' : up ? 'Join <em>Friendy</em>' : 'Welcome <em>back</em>';
+  $('auth-lead').textContent = APP.setupCode ? 'Set a password to finish setting up your owner account.' : up ? 'Create your account, then pick your plan.' : 'Sign in to pick up where you left off.';
+  $('auth-btn').textContent = up ? 'Create account' : 'Sign in';
+  $('auth-pass').autocomplete = up ? 'new-password' : 'current-password';
+  $('auth-pass').placeholder = up ? 'At least 8 characters' : 'Your password';
+  $('auth-tabs').hidden = !!APP.setupCode;
+  $('auth-err').classList.remove('show');
+}
+async function submitAuth(e) {
+  e.preventDefault();
+  const err = $('auth-err'), btn = $('auth-btn'); err.classList.remove('show');
+  const email = $('auth-email').value.trim(), password = $('auth-pass').value, up = APP.authMode === 'signup';
+  const showErr = m => { err.textContent = m; err.classList.add('show'); };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return showErr('Enter a valid email address.');
+  if (up && password.length < 8) return showErr('Password must be at least 8 characters.');
+  if (!password) return showErr('Enter your password.');
+  if (up && !$('auth-adult').checked) return showErr('Please confirm you are 18 or older and agree to the terms.');
+  setBusy(btn, true);
+  try {
+    const body = up ? { email, password, name: $('auth-name').value.trim(), adult: true, setupCode: APP.setupCode || undefined } : { email, password };
+    const data = await api(up ? '/auth/signup' : '/auth/login', { method:'POST', body });
+    APP.token = data.token; APP.user = data.user; store.set('friendy_token', data.token);
+    APP.setupCode = null; $('auth-email').readOnly = false; $('auth-form').reset();
+    closeModal('auth-overlay');
+    goHome(); syncPolling();
+    toast(up ? 'Account created. Welcome to Friendy.' : 'Welcome back.', true);
+    const next = APP.afterAuth; APP.afterAuth = null; if (next) next();
+  } catch (ex) {
+    if (ex.code === 'EXISTS') { setAuthMode('signin'); showErr('You already have an account. Enter your password to sign in.'); }
+    else showErr(ex.message);
+  } finally { setBusy(btn, false); $('auth-btn').textContent = APP.authMode === 'signup' ? 'Create account' : 'Sign in'; }
+}
+function signOut(silent) {
+  APP.token = null; APP.user = null; APP.friend = null; store.del('friendy_token'); clearInterval(APP.poll); APP.poll = null;
+  document.querySelectorAll('.overlay.open').forEach(o => closeModal(o.id));
   showPage('landing-page');
-  APP.friend = null; APP.history = [];
+  if (!silent) toast('Signed out.', true);
+}
+async function refreshUser() {
+  if (!APP.token) return null;
+  try { APP.user = await api('/auth/me'); } catch (e) { if (!e.network) return null; }
+  return APP.user;
+}
+function syncPolling() {
+  clearInterval(APP.poll); APP.poll = null;
+  if (!APP.user || !APP.user.pendingOrder) return;
+  APP.poll = setInterval(async () => {
+    if (document.hidden) return;
+    const had = APP.user && APP.user.pendingOrder, before = APP.user && APP.user.plan;
+    await refreshUser();
+    if (!APP.user) return;
+    if (had && !APP.user.pendingOrder) {
+      clearInterval(APP.poll); APP.poll = null;
+      if (APP.user.plan && APP.user.plan !== before) { toast('Payment confirmed. Your friends are unlocked.', true); closeModal('checkout-overlay'); }
+      if ($('home-page').classList.contains('active')) renderHome();
+    }
+  }, 20000);
 }
 
-// ── MESSAGES ──────────────────────────────────────────────────────
-function addAI(text) {
-  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-  const row = document.createElement('div'); row.className = 'msg-row';
-  row.innerHTML = `
-    <div class="msg-av" style="background:${AV_STYLES[APP.friend.avClass]};font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.5);">${APP.friend.initials}</div>
-    <div class="msg-col"><div class="bubble ai">${text}</div><div class="msg-time">${time}</div></div>`;
-  document.getElementById('messages').appendChild(row);
-  scrollBot();
+// ── HOME ──────────────────────────────────────────────────────────
+function renderHome() {
+  const u = APP.user; if (!u) return;
+  const badge = $('home-badge');
+  badge.className = 'badge ' + (u.isOwner ? 'b-owner' : u.plan ? 'b-' + u.plan : 'b-none');
+  badge.textContent = u.isOwner ? 'Owner' : u.plan ? PLANS[u.plan].label : 'No plan';
+  $('owner-btn').hidden = !u.isOwner;
+  $('home-hi').innerHTML = u.name ? `Hey <em>${esc(u.name)}.</em>` : 'Hey, <em>you made it.</em>';
+  $('home-sub').textContent = u.plan ? "Who do you want to talk to?" : "You're one step away from meeting your friends.";
+
+  let banner = '';
+  const p = u.pendingOrder, left = daysLeft(u.planExpiresAt);
+  if (p) {
+    const cash = p.method === 'cashapp';
+    banner = `<div class="banner b-pending"><div>
+        <h3><span class="pulse-dot"></span>Confirming your ${esc(PLANS[p.plan].label)} payment</h3>
+        <p>${cash ? `Send <strong>${money(p.amount)}</strong> to <strong>${esc(p.cashapp.cashtag)}</strong> on Cash App with <span class="code">${esc(p.code)}</span> in the note. Your friends unlock as soon as it's confirmed.` : `If you finished paying by card, you're all set. Your friends unlock as soon as the payment is confirmed. Order <span class="code">${esc(p.code)}</span>.`}</p>
+      </div><div class="banner-actions">
+        ${cash ? `<button class="btn btn-cash btn-sm" onclick="openCheckout()">Payment details</button>` : `<button class="btn btn-ghost btn-sm" onclick="openCheckout()">Pay another way</button>`}
+        <button class="btn btn-ghost btn-sm" onclick="cancelOrder()">Cancel</button>
+      </div></div>`;
+  } else if (!u.plan && u.planStatus === 'expired') {
+    banner = `<div class="banner b-warn"><div><h3>Your ${esc(PLANS[u.lastPlan].label)} plan ended</h3><p>Your conversations are saved. Renew to pick up right where you left off.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('${u.lastPlan}')">Renew ${esc(PLANS[u.lastPlan].label)}</button></div></div>`;
+  } else if (!u.plan) {
+    banner = `<div class="banner b-start"><div><h3>Choose a plan to start talking</h3><p>Plans start at $8 a month. Pay with Cash App or card and your friends unlock as soon as it's confirmed.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout()">Choose a plan</button></div></div>`;
+  } else if (!u.isOwner && u.paymentMethod !== 'card' && left !== null && left <= 5) {
+    banner = `<div class="banner b-warn"><div><h3>${left <= 0 ? 'Your plan ends today' : left === 1 ? '1 day left on your plan' : left + ' days left on your plan'}</h3><p>Renew now and the 30 days are added on top of what you have left.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('${u.plan}')">Renew</button></div></div>`;
+  }
+  $('home-banner').innerHTML = banner;
+  $('home-friends').innerHTML = Object.keys(FRIENDS).map(n => friendCard(n, 'home')).join('');
+
+  let tools = '';
+  if (u.plan) {
+    const rank = PLANS[u.plan].rank;
+    tools = `<div class="home-h2">Your growth</div><div class="tools">
+      <div class="tool"><div><h4>Weekly check-in</h4><p>${rank >= 2 ? 'A short reflection on what you carried this week and what to try next.' : 'A weekly reflection built from your own conversations. Included in Plus.'}</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="${rank >= 2 ? "runInsight('checkin',this)" : "openCheckout('plus')"}">${rank >= 2 ? 'Check in' : 'Unlock'}</button></div>
+      <div class="tool"><div><h4>30-day growth plan</h4><p>${rank >= 3 ? 'Nova reads your last month and writes a plan that is actually about you.' : 'A personal plan from Nova based on your last month. Included in Premium.'}</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="${rank >= 3 ? "runInsight('plan',this)" : "openCheckout('premium')"}">${rank >= 3 ? 'Build my plan' : 'Unlock'}</button></div>
+    </div>`;
+  }
+  $('home-tools').innerHTML = tools;
 }
 
-function addUser(text) {
-  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-  const row = document.createElement('div'); row.className = 'msg-row user';
-  row.innerHTML = `
-    <div class="msg-col"><div class="bubble user">${text}</div><div class="msg-time">${time}</div></div>
-    <div class="msg-av u">You</div>`;
-  document.getElementById('messages').appendChild(row);
-  scrollBot();
+async function runInsight(type, btn) {
+  setBusy(btn, true);
+  try {
+    const d = await api('/insights', { method:'POST', body:{ type } });
+    $('info-body').innerHTML = `<h2>${type === 'plan' ? 'Your <em>growth plan</em>' : 'Your weekly <em>check-in</em>'}</h2>
+      <p class="modal-lead">${type === 'plan' ? 'Written by Nova from your last 30 days.' : 'From your conversations over the last 7 days.'}</p>
+      <div class="insight-text">${esc(d.text)}</div>
+      <p class="fine">Written by AI from your own conversations. Not medical or mental health advice.</p>`;
+    openModal('info-overlay');
+  } catch (e) { toast(e.message, false); }
+  finally { setBusy(btn, false); }
 }
 
-function scrollBot() { const m = document.getElementById('messages'); setTimeout(() => m.scrollTop = m.scrollHeight, 50); }
+// ── CHECKOUT ──────────────────────────────────────────────────────
+function openCheckout(plan) {
+  if (!APP.user) return startPlan(plan);
+  if (APP.user.isOwner) return toast('Owner accounts already have every friend unlocked.', true);
+  if (plan && PLANS[plan]) APP.checkout.plan = plan;
+  const p = APP.user.pendingOrder;
+  if (p && p.method === 'cashapp' && !plan) renderCashStep(p); else renderPlanStep();
+  openModal('checkout-overlay');
+}
+function renderPlanStep() {
+  const c = APP.checkout;
+  $('checkout-body').innerHTML = `
+    <h2>Choose your <em>plan</em></h2>
+    <p class="modal-lead">Unlimited conversations on every plan.</p>
+    ${Object.entries(PLANS).map(([k,v]) => `<button class="opt${c.plan === k ? ' on' : ''}" onclick="APP.checkout.plan='${k}';renderPlanStep()">
+        <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">${v.label}</span><br><span class="opt-desc">${esc(v.desc)}</span></span>
+        <span class="opt-price">${money(v.price)}<small> /mo</small></span></button>`).join('')}
+    <div class="step-label">How do you want to pay?</div>
+    <button class="opt cash${c.method === 'cashapp' ? ' on' : ''}" onclick="APP.checkout.method='cashapp';renderPlanStep()">
+      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Cash App</span><br><span class="opt-desc">Send to ${esc(CASHTAG)}. Covers 30 days, never auto-renews.</span></span></button>
+    <button class="opt${c.method === 'card' ? ' on' : ''}" onclick="APP.checkout.method='card';renderPlanStep()">
+      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Debit or credit card</span><br><span class="opt-desc">Secure checkout by Stripe. Renews monthly until you cancel.</span></span></button>
+    <div class="err" id="co-err" role="alert"></div>
+    <button class="btn ${c.method === 'cashapp' ? 'btn-cash' : 'btn-primary'} btn-block btn-lg" style="margin-top:14px" onclick="createOrder(this)">
+      ${c.method === 'cashapp' ? 'Pay ' + money(PLANS[c.plan].price) + ' with Cash App' : 'Continue to card checkout'}</button>
+    <p class="fine">Signed in as ${esc(APP.user.email)}</p>`;
+}
+async function createOrder(btn) {
+  const c = APP.checkout, err = $('co-err'); err.classList.remove('show');
+  setBusy(btn, true);
+  try {
+    const d = await api('/orders', { method:'POST', body:{ plan:c.plan, method:c.method } });
+    APP.user.pendingOrder = d.order; syncPolling(); renderHome();
+    if (c.method === 'card') { window.location.href = d.cardUrl; return; }
+    renderCashStep(d.order);
+  } catch (e) { err.textContent = e.message; err.classList.add('show'); setBusy(btn, false); }
+}
+function renderCashStep(o) {
+  $('checkout-body').innerHTML = `
+    <h2>Pay with <em>Cash App</em></h2>
+    <p class="modal-lead">${esc(PLANS[o.plan].label)} plan, 30 days. Three quick steps.</p>
+    <div class="paybox">
+      <div class="payrow"><div><div class="payrow-k">Send to</div><div class="payrow-v green">${esc(o.cashapp.cashtag)}</div></div><button class="copy" onclick="copyText('${esc(o.cashapp.cashtag)}',this)">Copy</button></div>
+      <div class="payrow"><div><div class="payrow-k">Amount</div><div class="payrow-v">${money(o.amount)}</div></div></div>
+      <div class="payrow"><div><div class="payrow-k">Put this in the note</div><div class="payrow-v mono">${esc(o.code)}</div></div><button class="copy" onclick="copyText('${esc(o.code)}',this)">Copy</button></div>
+    </div>
+    <ol class="steps-ol">
+      <li>Open Cash App and send ${money(o.amount)} to ${esc(o.cashapp.cashtag)}.</li>
+      <li>Type ${esc(o.code)} in the "For" note so we can match it to you.</li>
+      <li>Come back here and tell us you sent it.</li>
+    </ol>
+    <a class="btn btn-cash btn-block btn-lg" href="${esc(o.cashapp.url)}" target="_blank" rel="noopener">Open Cash App</a>
+    <div class="field" style="margin-top:18px"><label for="co-handle">Your $cashtag (helps us find your payment)</label><input id="co-handle" type="text" placeholder="$yourcashtag" maxlength="40" autocapitalize="none" autocomplete="off" value="${esc(o.payerHandle || '')}"></div>
+    <div class="err" id="co-err" role="alert"></div>
+    <button class="btn btn-primary btn-block" onclick="markSent('${o.id}',this)">I sent it</button>
+    <p class="fine"><button onclick="renderPlanStep()">Change plan or pay by card</button></p>`;
+}
+async function markSent(id, btn) {
+  setBusy(btn, true);
+  try {
+    const handle = $('co-handle').value.trim();
+    await api(`/orders/${id}/sent`, { method:'POST', body:{ payerHandle: handle } });
+    if (APP.user.pendingOrder) APP.user.pendingOrder.payerHandle = handle;
+    $('checkout-body').innerHTML = `
+      <div class="done-mark"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>Got it. <em>Confirming now.</em></h2>
+      <p class="modal-lead">We're matching your Cash App payment to your account. Your friends unlock as soon as it's confirmed, and this page updates on its own. You can close this and come back any time.</p>
+      <div class="paybox"><div class="payrow"><div><div class="payrow-k">Order code</div><div class="payrow-v mono">${esc(APP.user.pendingOrder ? APP.user.pendingOrder.code : '')}</div></div></div></div>
+      <button class="btn btn-ghost btn-block" onclick="closeModal('checkout-overlay')">Done</button>
+      <p class="fine">Questions about a payment? <a href="mailto:${SUPPORT}">${SUPPORT}</a></p>`;
+    syncPolling();
+  } catch (e) { const err = $('co-err'); err.textContent = e.message; err.classList.add('show'); setBusy(btn, false); }
+}
+async function cancelOrder() {
+  const p = APP.user && APP.user.pendingOrder; if (!p) return;
+  if (!confirm('Cancel this order? If you already sent the payment, keep it open so we can match it.')) return;
+  try { await api(`/orders/${p.id}/cancel`, { method:'POST' }); APP.user.pendingOrder = null; syncPolling(); renderHome(); toast('Order cancelled.', true); }
+  catch (e) { toast(e.message, false); }
+}
 
 // ── CHAT ──────────────────────────────────────────────────────────
+function timeLabel(d){ return new Date(d || Date.now()).toLocaleTimeString([], { hour:'numeric', minute:'2-digit' }); }
+function dayLabel(d){
+  const dt = new Date(d), now = new Date(), y = new Date(); y.setDate(now.getDate() - 1);
+  if (dt.toDateString() === now.toDateString()) return 'Today';
+  if (dt.toDateString() === y.toDateString()) return 'Yesterday';
+  return dt.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
+}
+let lastDay = null;
+function addDivider(text){ const d = document.createElement('div'); d.className = 'date-div'; d.textContent = text; $('msgs-inner').appendChild(d); }
+function addMsg(role, text, at) {
+  const day = dayLabel(at || Date.now());
+  if (day !== lastDay) { addDivider(day); lastDay = day; }
+  const f = APP.friend, row = document.createElement('div');
+  row.className = 'msg-row' + (role === 'user' ? ' user' : '');
+  const av = document.createElement('div');
+  av.className = role === 'user' ? 'av msg-av u' : 'av msg-av av-' + f.plan;
+  av.textContent = role === 'user' ? 'You' : f.initials;
+  const col = document.createElement('div'); col.className = 'msg-col';
+  const b = document.createElement('div'); b.className = 'bubble ' + (role === 'user' ? 'user' : role === 'sys' ? 'ai sys' : 'ai'); b.textContent = text;
+  const t = document.createElement('div'); t.className = 'msg-time'; t.textContent = timeLabel(at);
+  col.append(b, t); row.append(av, col);
+  $('msgs-inner').appendChild(row); scrollBottom();
+  return row;
+}
+function scrollBottom(){ const m = $('messages'); requestAnimationFrame(() => { m.scrollTop = m.scrollHeight; }); }
+function setTyping(on) {
+  let t = $('typing');
+  if (!t) { t = document.createElement('div'); t.id = 'typing'; t.className = 'typing';
+    t.innerHTML = '<div class="av msg-av" id="typing-av"></div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>'; }
+  if (on) { $('msgs-inner').appendChild(t); const a = t.querySelector('#typing-av'); a.className = 'av msg-av av-' + APP.friend.plan; a.textContent = APP.friend.initials; }
+  t.classList.toggle('on', on); if (!on && t.parentNode) t.remove(); scrollBottom();
+}
+async function openChat(name) {
+  APP.friend = { name, ...FRIENDS[name] }; APP.sending = false; lastDay = null;
+  $('chat-av').className = 'av chat-av av-' + APP.friend.plan; $('chat-av').textContent = APP.friend.initials;
+  $('chat-fn').textContent = name;
+  const plan = APP.user.plan || 'basic';
+  $('chat-badge').className = 'badge nav-hide b-' + plan; $('chat-badge').textContent = PLANS[plan].label;
+  $('msgs-inner').innerHTML = ''; $('quick').hidden = true; $('send-btn').disabled = false;
+  showPage('chat-page');
+  let msgs = [];
+  try { msgs = (await api('/chat/history?friend=' + encodeURIComponent(name))).messages || []; } catch (e) { if (!APP.user) return; }
+  if (!APP.friend || APP.friend.name !== name) return;
+  if (msgs.length) msgs.forEach(m => addMsg(m.role === 'user' ? 'user' : 'ai', m.content, m.created_at));
+  else { addMsg('ai', APP.friend.hello); $('quick').hidden = false; }
+  if (window.matchMedia('(min-width:769px)').matches) $('msg-input').focus();
+}
+function leaveChat(){ APP.friend = null; goHome(); refreshUser().then(() => { if (APP.user && $('home-page').classList.contains('active')) renderHome(); }); }
 async function sendMessage() {
-  const input = document.getElementById('msg-input');
-  const text = input.value.trim();
-  if (!text || APP.isTyping) return;
-  document.getElementById('quick-prompts').style.display = 'none';
+  const input = $('msg-input'), text = input.value.trim();
+  if (!text || APP.sending || !APP.friend) return;
+  const friend = APP.friend.name;
+  APP.sending = true; $('send-btn').disabled = true; $('quick').hidden = true;
   input.value = ''; input.style.height = 'auto';
-  addUser(text);
-  APP.history.push({ role:'user', content:text });
-  APP.isTyping = true;
-  document.getElementById('send-btn').disabled = true;
-  document.getElementById('typing').classList.add('visible');
-  scrollBot();
+  const row = addMsg('user', text);
+  setTyping(true);
+  const started = Date.now();
   try {
-    const res = await fetch(`${API}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${APP.token}` },
-      body: JSON.stringify({ friend: APP.friend.name, messages: APP.history })
-    });
+    const d = await api('/chat', { method:'POST', body:{ friend, message: text } });
+    const wait = Math.max(0, 700 - (Date.now() - started));
+    await new Promise(r => setTimeout(r, wait));
+    if (!APP.friend || APP.friend.name !== friend) return;
+    setTyping(false); addMsg('ai', d.reply);
+  } catch (e) {
+    if (!APP.friend || APP.friend.name !== friend) return;
+    setTyping(false);
+    if (e.code === 'SUBSCRIPTION_REQUIRED') { row.remove(); await refreshUser(); goHome(); toast('Your plan has ended. Renew to keep talking.', false); if (APP.user) openCheckout(APP.user.lastPlan || 'plus'); return; }
+    if (e.code === 'UPGRADE_REQUIRED') { row.remove(); goHome(); toast(e.message, false); openCheckout(FRIENDS[friend].plan); return; }
+    if (e.code === 'UNAUTHORIZED') return;
+    row.remove(); input.value = text; autoGrow();
+    addMsg('sys', e.code === 'AI_NOT_CONFIGURED' ? "Your friends are being set up and will be online shortly. Your message wasn't sent." : e.message + " Your message wasn't sent.");
+  } finally { APP.sending = false; $('send-btn').disabled = false; }
+}
+async function clearChat() {
+  if (!APP.friend) return;
+  if (!confirm(`Clear your whole conversation with ${APP.friend.name}? This can't be undone.`)) return;
+  try { await api('/chat/history?friend=' + encodeURIComponent(APP.friend.name), { method:'DELETE' }); lastDay = null; $('msgs-inner').innerHTML = ''; addMsg('ai', APP.friend.hello); $('quick').hidden = false; toast('Conversation cleared.', true); }
+  catch (e) { toast(e.message, false); }
+}
+function autoGrow(){ const i = $('msg-input'); i.style.height = 'auto'; i.style.height = Math.min(i.scrollHeight, 130) + 'px'; }
+$('msg-input').addEventListener('input', autoGrow);
+$('msg-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendMessage(); } });
+$('quick').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) { $('msg-input').value = c.textContent; sendMessage(); } });
 
-    if (res.status === 401 || res.status === 403) {
-      const data = await res.json();
-      document.getElementById('typing').classList.remove('visible');
-      if (data.code === 'SUBSCRIPTION_REQUIRED') {
-        showToast('Your subscription expired. Please renew.', false);
-        logout(true); return;
-      }
-      if (data.code === 'UPGRADE_REQUIRED') {
-        showToast(data.error, false); goBack(); openPricing(); return;
-      }
-      showToast('Session expired. Please sign in again.', false);
-      logout(true); return;
-    }
+// ── ACCOUNT ───────────────────────────────────────────────────────
+function openAccount() {
+  const u = APP.user; if (!u) return;
+  const left = daysLeft(u.planExpiresAt);
+  const planLine = u.isOwner ? 'Premium (owner, never expires)' : u.plan ? PLANS[u.plan].label + ' · ' + money(PLANS[u.plan].price) + '/mo' : u.planStatus === 'expired' ? 'Ended' : 'None yet';
+  const renewLine = u.isOwner || !u.plan ? '' : u.paymentMethod === 'card'
+    ? `<div class="kv"><span>Billing</span><span>Card, renews monthly</span></div>`
+    : `<div class="kv"><span>Access through</span><span>${esc(fmtDate(u.planExpiresAt))}${left !== null ? ' (' + Math.max(left,0) + (left === 1 ? ' day' : ' days') + ' left)' : ''}</span></div>`;
+  $('account-body').innerHTML = `
+    <h2>Your <em>account</em></h2>
+    <div class="kv"><span>Email</span><span>${esc(u.email)}</span></div>
+    <div class="kv"><span>Plan</span><span>${esc(planLine)}</span></div>
+    ${renewLine}
+    ${u.isOwner ? '' : `<div class="row-btns" style="margin-top:18px"><button class="btn btn-primary btn-sm" onclick="closeModal('account-overlay');openCheckout('${u.plan || u.lastPlan || 'plus'}')">${u.plan ? 'Renew or change plan' : 'Choose a plan'}</button></div>`}
+    ${u.paymentMethod === 'card' && !u.isOwner ? `<p class="fine" style="text-align:left">To cancel card billing, email <a href="mailto:${SUPPORT}?subject=Cancel%20my%20Friendy%20subscription">${SUPPORT}</a> from this address.</p>` : ''}
 
-    const data = await res.json();
-    const reply = data.reply || 'Still right here with you.';
-    APP.history.push({ role:'assistant', content:reply });
-    const delay = Math.min(900 + reply.length * 14, 3200);
-    setTimeout(() => {
-      document.getElementById('typing').classList.remove('visible');
-      addAI(reply); APP.isTyping = false;
-      document.getElementById('send-btn').disabled = false;
-    }, delay);
-  } catch (err) {
-    setTimeout(() => {
-      document.getElementById('typing').classList.remove('visible');
-      addAI("Connection hiccupped — but I didn't. What were you saying?");
-      APP.isTyping = false; document.getElementById('send-btn').disabled = false;
-    }, 1000);
+    <div class="acct-sec"><h4>Name</h4>
+      <div class="field"><input id="ac-name" type="text" maxlength="40" placeholder="What should your friends call you?" value="${esc(u.name || '')}"></div>
+      <button class="btn btn-ghost btn-sm" onclick="saveName(this)">Save name</button></div>
+
+    <div class="acct-sec"><h4>Change password</h4>
+      <div class="field"><input id="ac-cur" type="password" autocomplete="current-password" placeholder="Current password"></div>
+      <div class="field"><input id="ac-new" type="password" autocomplete="new-password" placeholder="New password, at least 8 characters"></div>
+      <button class="btn btn-ghost btn-sm" onclick="savePassword(this)">Update password</button></div>
+
+    <div class="acct-sec"><h4>Session</h4>
+      <div class="row-btns"><button class="btn btn-ghost btn-sm" onclick="signOut()">Sign out</button>
+      ${u.isOwner ? '' : `<button class="btn btn-danger btn-sm" onclick="deleteAccount()">Delete account</button>`}</div></div>
+    <p class="fine" style="text-align:left;margin-top:22px">Need help? <a href="mailto:${SUPPORT}">${SUPPORT}</a> · <button onclick="openLegal('terms')">Terms</button> · <button onclick="openLegal('privacy')">Privacy</button></p>`;
+  openModal('account-overlay');
+}
+async function saveName(btn) {
+  setBusy(btn, true);
+  try { APP.user = await api('/auth/profile', { method:'POST', body:{ name: $('ac-name').value.trim() } }); renderHome(); toast('Saved.', true); }
+  catch (e) { toast(e.message, false); } finally { setBusy(btn, false); }
+}
+async function savePassword(btn) {
+  const current = $('ac-cur').value, next = $('ac-new').value;
+  if (next.length < 8) return toast('New password must be at least 8 characters.', false);
+  setBusy(btn, true);
+  try { await api('/auth/password', { method:'POST', body:{ current, next } }); $('ac-cur').value = ''; $('ac-new').value = ''; toast('Password updated.', true); }
+  catch (e) { toast(e.message, false); } finally { setBusy(btn, false); }
+}
+async function deleteAccount() {
+  const password = prompt('This permanently deletes your account and every conversation. Enter your password to confirm.');
+  if (!password) return;
+  try { await api('/account', { method:'DELETE', body:{ password } }); signOut(true); toast('Your account and conversations were deleted.', true); }
+  catch (e) { toast(e.message, false); }
+}
+
+// ── LEGAL ─────────────────────────────────────────────────────────
+function openLegal(which) {
+  const terms = `<h2>Terms of <em>use</em></h2><div class="legal">
+    <p>Friendy is operated by HSW365 Media LLC. By creating an account you agree to the following.</p>
+    <h3>What Friendy is</h3><p>Friendy is an AI companion service. Maya, Dre, Sage, Kai and Nova are artificial intelligence, not people. Replies are generated by AI and can be wrong. Friendy is for encouragement and conversation only. It is not therapy, counseling, medical care, legal advice or financial advice, and it is not a crisis service.</p>
+    <h3>If you are in crisis</h3><p>If you are thinking about harming yourself or someone else, call or text 988 in the United States, call 911, or contact your local emergency number right away.</p>
+    <h3>Who can use it</h3><p>You must be 18 or older.</p>
+    <h3>Plans and payment</h3><p>Plans are $8, $12 and $15 per month. A Cash App payment covers 30 days of access from the time it is confirmed and does not renew automatically. Card subscriptions are processed by Stripe and renew monthly until cancelled; to cancel, email ${SUPPORT}. Access begins once payment is confirmed. For any question about a charge or a refund, email ${SUPPORT}.</p>
+    <h3>Fair use</h3><p>Conversations are unlimited for normal personal use. We may limit automated or abusive usage. Do not use Friendy to break the law or to harass or harm anyone.</p>
+    <h3>Your account</h3><p>Keep your password private. You can delete your account and all conversations at any time from the account screen.</p>
+    <h3>Contact</h3><p>${SUPPORT}</p></div>`;
+  const privacy = `<h2>Privacy <em>policy</em></h2><div class="legal">
+    <h3>What we store</h3><p>Your email, your first name if you give one, a one-way hash of your password (never the password itself), your plan and payment status, your Cash App handle if you share it, and the messages in your conversations.</p>
+    <h3>How it is used</h3><p>To run your account, confirm payments, and let your friends reply and keep up with your story. We do not sell your information or use your conversations for advertising.</p>
+    <h3>AI processing</h3><p>To write replies, your messages are sent to our AI provider, Anthropic. Card payments are handled by Stripe; we never see your card number. Data is stored with Supabase.</p>
+    <h3>Your controls</h3><p>You can clear any conversation from the chat screen and delete your account, with every conversation, from the account screen at any time.</p>
+    <h3>Contact</h3><p>${SUPPORT}</p></div>`;
+  $('info-body').innerHTML = which === 'privacy' ? privacy : terms;
+  openModal('info-overlay');
+}
+
+// ── OWNER PANEL ───────────────────────────────────────────────────
+function openAdmin(){ showPage('admin-page'); loadAdmin(); }
+async function loadAdmin(announce) {
+  const body = $('admin-body');
+  let d;
+  try { d = await api('/admin/overview'); } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  const s = d.stats, pending = d.orders.filter(o => o.status === 'pending'), history = d.orders.filter(o => o.status !== 'pending').slice(0, 40);
+  const alerts = [];
+  if (!d.health.chatReady) alerts.push(`<div class="alert"><strong>Chat is offline.</strong> Members can sign up and pay, but nobody can talk until you add your Anthropic API key. In Supabase, open project <code>friendy</code> &rarr; Edge Functions &rarr; Secrets and add a secret named <code>ANTHROPIC_API_KEY</code>.</div>`);
+  if (!d.health.cardAutoActivation) alerts.push(`<div class="alert"><strong>Card payments need your approval.</strong> Card orders show up below as pending; check the payment in Stripe, then approve. To make cards unlock automatically, add a Stripe webhook to <code>${API}/webhook</code> for checkout.session.completed, invoice.paid, invoice.payment_failed and customer.subscription.deleted, then save its signing secret in Supabase as <code>STRIPE_WEBHOOK_SECRET</code>.</div>`);
+  body.innerHTML = `
+    <h1 class="home-hi">Owner <em>panel.</em></h1>
+    <p class="home-sub">Cash App payments land in ${esc(d.health.cashtag)}. Match the order code in the note, then approve.</p>
+    ${alerts.join('')}
+    <div class="tiles">
+      <div class="tile"><div class="tile-k">Paying members</div><div class="tile-v">${s.paying}</div></div>
+      <div class="tile"><div class="tile-k">Monthly run rate</div><div class="tile-v green">${money(s.monthlyRevenue)}</div></div>
+      <div class="tile"><div class="tile-k">Collected, all time</div><div class="tile-v">${money(s.collected)}</div></div>
+      <div class="tile"><div class="tile-k">Messages, last 24h</div><div class="tile-v">${s.messages24h}</div></div>
+    </div>
+    <div class="home-h2">Waiting on you (${pending.length})</div>
+    <div class="panel">${pending.length ? pending.map(o => `<div class="prow">
+        <div class="prow-amt">${money(o.amount)}</div>
+        <div class="prow-main"><div class="prow-title">${esc(o.email)}</div>
+          <div class="prow-sub">${esc(PLANS[o.plan].label)} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · note <span class="code">${esc(o.code)}</span>${o.payerHandle ? ' · from ' + esc(o.payerHandle) : ''}<br>${esc(fmtWhen(o.createdAt))}${o.note === 'member marked as sent' ? ' · member says it was sent' : ''}</div></div>
+        <div class="row-btns"><button class="btn btn-cash btn-sm" onclick="reviewOrder('${o.id}','approve',this)">Approve</button><button class="btn btn-ghost btn-sm" onclick="reviewOrder('${o.id}','reject',this)">Not received</button></div>
+      </div>`).join('') : '<div class="empty">No payments waiting. New orders show up here.</div>'}</div>
+    <div class="home-h2">Members (${s.members})</div>
+    <div class="panel">${d.members.map(m => `<div class="prow">
+        <div class="prow-main"><div class="prow-title">${esc(m.email)}${m.name ? ' · ' + esc(m.name) : ''}</div>
+          <div class="prow-sub">Joined ${esc(fmtDate(m.createdAt))}${m.lastSeenAt ? ' · last seen ' + esc(fmtWhen(m.lastSeenAt)) : ''}${m.expiresAt && m.plan ? ' · through ' + esc(fmtDate(m.expiresAt)) : ''}${m.method && !m.isOwner ? ' · ' + esc(m.method) : ''}</div></div>
+        <span class="badge ${m.isOwner ? 'b-owner' : m.plan ? 'b-' + m.plan : 'b-none'}">${m.isOwner ? 'Owner' : m.plan ? PLANS[m.plan].label : 'No plan'}</span>
+        ${m.isOwner ? '' : `<div class="row-btns"><select class="sel" id="g-${m.id}" aria-label="Plan to grant"><option value="basic">Basic</option><option value="plus" selected>Plus</option><option value="premium">Premium</option></select>
+          <button class="btn btn-ghost btn-sm" onclick="grantMember('${m.id}',this)">Give 30 days</button>${m.plan ? `<button class="btn btn-danger btn-sm" onclick="revokeMember('${m.id}',this)">End access</button>` : ''}</div>`}
+      </div>`).join('')}</div>
+    <div class="home-h2">Order history</div>
+    <div class="panel">${history.length ? history.map(o => `<div class="prow">
+        <div class="prow-main"><div class="prow-title">${money(o.amount)} · ${esc(o.email)}</div><div class="prow-sub">${esc(PLANS[o.plan].label)} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · <span class="code">${esc(o.code)}</span> · ${esc(fmtWhen(o.createdAt))}${o.note ? ' · ' + esc(o.note) : ''}</div></div>
+        <span class="status st-${o.status}">${esc(o.status.replace('_',' '))}</span></div>`).join('') : '<div class="empty">Nothing yet.</div>'}</div>`;
+  if (announce) toast('Updated.', true);
+}
+async function reviewOrder(id, action, btn) {
+  if (action === 'reject' && !confirm('Mark this payment as not received? The member will have to order again.')) return;
+  setBusy(btn, true);
+  try { await api(`/admin/orders/${id}/${action}`, { method:'POST' }); toast(action === 'approve' ? 'Approved. Their friends are unlocked.' : 'Marked as not received.', true); loadAdmin(); }
+  catch (e) { toast(e.message, false); setBusy(btn, false); }
+}
+async function grantMember(id, btn) {
+  setBusy(btn, true);
+  try { await api(`/admin/members/${id}/grant`, { method:'POST', body:{ plan: $('g-' + id).value, days: 30 } }); toast('30 days added.', true); loadAdmin(); }
+  catch (e) { toast(e.message, false); setBusy(btn, false); }
+}
+async function revokeMember(id, btn) {
+  if (!confirm("End this member's access now?")) return;
+  setBusy(btn, true);
+  try { await api(`/admin/members/${id}/revoke`, { method:'POST' }); toast('Access ended.', true); loadAdmin(); }
+  catch (e) { toast(e.message, false); setBusy(btn, false); }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+(async function init() {
+  $('year').textContent = new Date().getFullYear();
+  $('landing-friends').innerHTML = Object.keys(FRIENDS).map(n => friendCard(n, 'landing')).join('');
+
+  const params = new URLSearchParams(location.search);
+  const claim = params.get('claim'), claimEmail = params.get('email');
+  if (params.toString()) history.replaceState({}, '', location.pathname);
+
+  if (claim && claimEmail) {
+    signOut(true);
+    APP.setupCode = claim; $('auth-email').value = claimEmail; $('auth-email').readOnly = true;
+    openAuth('signup');
+    return;
   }
-}
 
-function sendQuick(el) { document.getElementById('msg-input').value = el.textContent; sendMessage(); }
-
-// ── TOAST ─────────────────────────────────────────────────────────
-function showToast(msg, success = true) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${success ? 'success' : 'error'} show`;
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-// ── INPUT ─────────────────────────────────────────────────────────
-document.getElementById('msg-input').addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-});
-document.getElementById('msg-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
+  if (APP.token) {
+    await refreshUser();
+    if (APP.user) { goHome(); syncPolling(); }
+  }
+  api('/config').then(c => { if (c.cashtag) { CASHTAG = c.cashtag; $('cashtag-inline').textContent = c.cashtag; } }).catch(() => {});
+  document.addEventListener('visibilitychange', async () => {
+    if (document.hidden || !APP.user || !$('home-page').classList.contains('active')) return;
+    await refreshUser(); if (APP.user) { renderHome(); syncPolling(); }
+  });
+})();
 </script>
 </body>
 </html>
