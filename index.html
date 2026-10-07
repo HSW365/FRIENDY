@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Friendy — AI friends who always show up</title>
-<meta name="description" content="Friendy gives you five AI friends — Maya, Dre, Sage, Kai and Nova — who listen, keep it real and help you turn negative into positive. Any time, day or night. From $8 a month.">
+<title>Friendy — Someone to talk to, always there</title>
+<meta name="description" content="Someone to talk to, any hour. Maya, Dre, Sage, Kai and Nova listen, keep it real and help you turn negative into positive. Start with 3 days free.">
 <meta name="theme-color" content="#080809">
-<meta property="og:title" content="Friendy — AI friends who always show up">
-<meta property="og:description" content="Five AI friends who listen, keep it real and help you turn negative into positive. From $8 a month.">
+<meta property="og:title" content="Friendy — Someone to talk to, always there">
+<meta property="og:description" content="Five friends who listen, keep it real and help you turn negative into positive. Start with 3 days free.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hsw365.github.io/FRIENDY/">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://hsw365.github.io/FRIENDY/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f11'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='40' font-weight='900' font-style='italic' text-anchor='middle' fill='%237c6af7'%3EF%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Friendy","applicationCategory":"LifestyleApplication","operatingSystem":"Web","description":"AI companion app with five distinct AI friends for conversation, encouragement and perspective.","offers":{"@type":"AggregateOffer","lowPrice":"8","highPrice":"15","priceCurrency":"USD","offerCount":"3"},"publisher":{"@type":"Organization","name":"HSW365 Media LLC","email":"hsw365media@gmail.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Friendy","applicationCategory":"LifestyleApplication","operatingSystem":"Web","description":"Friendy is a companion app for conversation, encouragement and perspective, any hour of the day.","offers":{"@type":"AggregateOffer","lowPrice":"8","highPrice":"15","priceCurrency":"USD","offerCount":"3"},"publisher":{"@type":"Organization","name":"HSW365 Media LLC","email":"hsw365media@gmail.com"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,6 +161,13 @@ nav{padding:22px var(--pad);display:flex;justify-content:space-between;align-ite
 .plan-features li::before{content:'';width:6px;height:6px;border-radius:50%;margin-top:7px;flex-shrink:0;background:var(--green);}
 .plan-card.pop .plan-features li::before{background:var(--accent2);}
 .plan-card.prem .plan-features li::before{background:var(--gold);}
+.bill-toggle{display:flex;width:max-content;max-width:100%;margin:0 auto 34px;background:var(--s2);border:1px solid var(--border);border-radius:999px;padding:4px;}
+.bill-opt{padding:9px 20px;font-size:13px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:999px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;}
+.bill-opt.on{background:var(--s4);color:var(--text);}
+.bill-save{font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--green);}
+.plan-per{font-size:12px;color:var(--muted);min-height:18px;margin-top:8px;}
+.plan-trial{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;}
+.modal .bill-toggle{margin:0 0 16px;}
 .pay-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;font-size:13px;color:var(--muted);flex-wrap:wrap;text-align:center;}
 .cash-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(0,214,79,0.08);border:1px solid rgba(0,214,79,0.25);color:var(--cash);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;}
 .cash-dot{width:14px;height:14px;border-radius:4px;background:var(--cash);color:#03210e;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;line-height:1;}
@@ -332,7 +339,7 @@ footer{border-top:1px solid var(--border);padding:36px var(--pad) 44px;position:
 
 /* owner panel */
 .admin-wrap{padding:36px var(--pad) 72px;position:relative;z-index:2;flex:1;}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px;}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:24px 0 8px;}
 .tile{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px 22px;}
 .tile-k{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
 .tile-v{font-family:var(--serif);font-size:34px;font-weight:900;letter-spacing:-0.03em;margin-top:6px;}
@@ -412,24 +419,24 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
     <div class="nav-right">
       <button class="nav-link nav-hide" onclick="scrollToId('friends')">Friends</button>
       <button class="nav-link nav-hide" onclick="scrollToId('pricing')">Pricing</button>
-      <button class="nav-link" onclick="openAuth('signin')">Sign in</button>
-      <button class="btn btn-primary btn-sm" onclick="startPlan('plus')">Get started</button>
+      <button class="nav-link" onclick="APP.authIntent=null;openAuth('signin')">Sign in</button>
+      <button class="btn btn-primary btn-sm" onclick="startTrial()">Start free</button>
     </div>
   </nav>
 
   <section class="hero">
     <div class="kicker">Always in your corner</div>
     <h1 class="hero-h1">The friend who<br><span class="lined">always shows up.</span><br><em>No exceptions.</em></h1>
-    <p class="hero-sub">Five AI friends who actually listen. Talk about anything and walk away with real encouragement, straight talk and a way to turn the negative into something you can use.</p>
+    <p class="hero-sub">Five friends who actually listen. Talk about anything and walk away with real encouragement, straight talk and a way to turn the negative into something you can use.</p>
     <div class="hero-actions">
-      <button class="btn btn-primary btn-lg" onclick="startPlan('plus')">Meet your friend</button>
+      <button class="btn btn-primary btn-lg" onclick="startTrial()">Start my 3 free days</button>
       <button class="btn btn-ghost btn-lg" onclick="scrollToId('friends')">See who's here</button>
     </div>
-    <p class="hero-note">From $8 a month. Pay with Cash App or card. No contract.</p>
+    <p class="hero-note">3 days free, no card. Then from $8 a month on Cash App or card. No contract.</p>
     <div class="facts">
-      <div class="fact"><div class="fact-num">5</div><div class="fact-label">AI friends, five personalities</div></div>
+      <div class="fact"><div class="fact-num">5</div><div class="fact-label">Friends, five personalities</div></div>
       <div class="fact"><div class="fact-num">24/7</div><div class="fact-label">Awake whenever you are</div></div>
-      <div class="fact"><div class="fact-num">$8</div><div class="fact-label">A month to start</div></div>
+      <div class="fact"><div class="fact-num">3</div><div class="fact-label">Days free to start</div></div>
       <div class="fact"><div class="fact-num">0</div><div class="fact-label">Judgment. Ever.</div></div>
     </div>
   </section>
@@ -459,10 +466,15 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
       <h2 class="sec-title">Simple <em>plans.</em></h2>
       <p class="sec-sub">Every plan is unlimited conversation. Pick how many friends you want in your corner.</p>
     </div>
+    <div class="bill-toggle" role="group" aria-label="Billing period">
+      <button class="bill-opt on" id="bill-monthly" onclick="setBilling('monthly')">Monthly</button>
+      <button class="bill-opt" id="bill-annual" onclick="setBilling('annual')">Yearly <span class="bill-save">about 40% off</span></button>
+    </div>
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-label">Starter</div>
-        <div class="plan-price">$8<small>/ month</small></div>
+        <div class="plan-price" data-price="basic">$8<small>/ month</small></div>
+        <div class="plan-per" data-per="basic"></div>
         <div class="plan-name">Basic</div>
         <div class="plan-tagline">Two friends. Unlimited conversations.</div>
         <ul class="plan-features">
@@ -476,7 +488,8 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
       <div class="plan-card pop">
         <div class="plan-hot">Most popular</div>
         <div class="plan-label">Best value</div>
-        <div class="plan-price">$12<small>/ month</small></div>
+        <div class="plan-price" data-price="plus">$12<small>/ month</small></div>
+        <div class="plan-per" data-per="plus"></div>
         <div class="plan-name">Plus</div>
         <div class="plan-tagline">Four friends who remember your story.</div>
         <ul class="plan-features">
@@ -485,11 +498,13 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
           <li>Memory: they pick up where you left off</li>
           <li>Weekly growth check-in</li>
         </ul>
-        <button class="btn btn-primary btn-block" onclick="startPlan('plus')">Get Plus</button>
+        <button class="btn btn-primary btn-block" id="plus-cta" onclick="plusCta()">Start 3 days free</button>
+        <div class="plan-trial" id="plus-trial-note">No card. Then $12 a month if you stay.</div>
       </div>
       <div class="plan-card prem">
         <div class="plan-label">Everything</div>
-        <div class="plan-price">$15<small>/ month</small></div>
+        <div class="plan-price" data-price="premium">$15<small>/ month</small></div>
+        <div class="plan-per" data-per="premium"></div>
         <div class="plan-name">Premium</div>
         <div class="plan-tagline">All five friends. The deepest level.</div>
         <ul class="plan-features">
@@ -497,14 +512,13 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
           <li>Everything in Plus</li>
           <li>Nova's psychology-level insight</li>
           <li>Personal 30-day growth plan</li>
-          <li>Our most advanced AI model</li>
         </ul>
         <button class="btn btn-gold btn-block" onclick="startPlan('premium')">Get Premium</button>
       </div>
     </div>
     <div class="pay-row">
       <span class="cash-chip"><span class="cash-dot">$</span>Cash App</span>
-      <span>or debit / credit card. Cash App payments cover 30 days and never auto-renew.</span>
+      <span>or debit / credit card. Cash App payments never auto-renew. Yearly plans are paid with Cash App.</span>
     </div>
   </section>
 
@@ -512,8 +526,8 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
     <div class="sec-header"><h2 class="sec-title">Three steps.<br><em>That's it.</em></h2></div>
     <div class="grid3">
       <div class="cell"><div class="cell-num">01</div><div class="cell-title">Create your account</div><div class="cell-desc">Email and a password. Takes about twenty seconds.</div></div>
-      <div class="cell"><div class="cell-num">02</div><div class="cell-title">Choose a plan and pay</div><div class="cell-desc">Send it on Cash App to <strong id="cashtag-inline">$hsw365</strong> with your order code, or pay by card.</div></div>
-      <div class="cell"><div class="cell-num">03</div><div class="cell-title">Start talking</div><div class="cell-desc">Your friends unlock as soon as your payment is confirmed. Say whatever is on your mind.</div></div>
+      <div class="cell"><div class="cell-num">02</div><div class="cell-title">Start talking, free</div><div class="cell-desc">Your 3 free days on Plus start right away. No card, nothing to cancel.</div></div>
+      <div class="cell"><div class="cell-num">03</div><div class="cell-title">Stay if it helps</div><div class="cell-desc">Pick a plan from $8 a month. Send it on Cash App to <strong id="cashtag-inline">$hsw365</strong> with your order code, or pay by card.</div></div>
     </div>
   </section>
 
@@ -522,17 +536,18 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
     <div class="faq">
       <details><summary>Am I talking to a real person?</summary><p>No. Maya, Dre, Sage, Kai and Nova are AI companions. They are built to listen, encourage and help you see things differently, and they will always tell you they are AI if you ask.</p></details>
       <details><summary>Is this therapy?</summary><p>No. Friendy is a supportive companion, not a therapist, doctor or crisis service, and it does not diagnose or treat anything. If you are in crisis or thinking about harming yourself, call or text 988 in the US, or your local emergency number.</p></details>
-      <details><summary>How does paying with Cash App work?</summary><p>Pick a plan and you'll get an order code. Send the plan amount to <strong>$hsw365</strong> on Cash App with that code in the note. We match the payment to your account and unlock your friends. Each payment covers 30 days and nothing renews on its own.</p></details>
+      <details><summary>How do the 3 free days work?</summary><p>Create an account and you get 3 days of Plus: Maya, Dre, Sage and Kai, with memory. No card and nothing to cancel. When the 3 days end, access simply stops until you pick a plan. One free trial per person, with a daily message limit.</p></details>
+      <details><summary>How does paying with Cash App work?</summary><p>Pick a plan and you'll get an order code. Send the plan amount to <strong>$hsw365</strong> on Cash App with that code in the note. We match the payment to your account and unlock your friends. A monthly payment covers 30 days, a yearly payment covers 365, and nothing renews on its own.</p></details>
       <details><summary>Are my conversations private?</summary><p>Your chats are saved to your account so your friends can keep up with your story, and only you can see them when signed in. Messages are processed by our AI provider to write replies. You can clear a conversation or delete your whole account at any time from your account screen.</p></details>
-      <details><summary>Can I switch plans or stop?</summary><p>Yes. Cash App plans simply end after 30 days unless you renew. Card subscriptions renew monthly until you cancel; email us and we'll take care of it.</p></details>
+      <details><summary>Can I switch plans or stop?</summary><p>Yes. Cash App plans simply end when the time you paid for runs out, unless you renew. Card subscriptions renew monthly until you cancel; email us and we'll take care of it.</p></details>
       <details><summary>Who can use Friendy?</summary><p>Friendy is for adults 18 and older.</p></details>
     </div>
   </section>
 
   <section class="section final">
     <h2>Somebody's got <em>your back.</em></h2>
-    <p>Create your account, pick your friend and say what's really going on.</p>
-    <button class="btn btn-primary btn-lg" onclick="startPlan('plus')">Get started</button>
+    <p>Create your account, pick your friend and say what's really going on. Your first 3 days are free.</p>
+    <button class="btn btn-primary btn-lg" onclick="startTrial()">Start my 3 free days</button>
   </section>
 
   <footer>
@@ -580,7 +595,7 @@ select.sel{background:var(--s2);border:1px solid var(--border2);color:var(--text
     <div class="av chat-av" id="chat-av">MA</div>
     <div>
       <div class="chat-fn" id="chat-fn">Maya</div>
-      <div class="chat-status">AI friend, here for you</div>
+      <div class="chat-status">Here for you</div>
     </div>
     <div class="chat-right">
       <span class="badge b-basic nav-hide" id="chat-badge">Basic</span>
@@ -676,9 +691,9 @@ const SUPPORT = 'hsw365media@gmail.com';
 let CASHTAG = '$hsw365';
 
 const PLANS = {
-  basic:   { label:'Basic',   price:8,  rank:1, desc:'Maya and Dre' },
-  plus:    { label:'Plus',    price:12, rank:2, desc:'Maya, Dre, Sage and Kai, with memory' },
-  premium: { label:'Premium', price:15, rank:3, desc:'All five friends, including Nova' }
+  basic:   { label:'Basic',   price:8,  year:57.99,  rank:1, desc:'Maya and Dre' },
+  plus:    { label:'Plus',    price:12, year:86.99,  rank:2, desc:'Maya, Dre, Sage and Kai, with memory' },
+  premium: { label:'Premium', price:15, year:107.99, rank:3, desc:'All five friends, including Nova' }
 };
 const FRIENDS = {
   Maya:{ initials:'MA', plan:'basic',   vibe:'Warm, ride-or-die energy. In your corner no matter what.',
@@ -700,7 +715,7 @@ const store = {
   del(k){ try { localStorage.removeItem(k); } catch(e){} }
 };
 const APP = { token: store.get('friendy_token'), user: null, friend: null, sending: false, afterAuth: null, authMode: 'signup', setupCode: null, poll: null,
-              checkout: { plan:'plus', method:'cashapp' } };
+              checkout: { plan:'plus', method:'cashapp', billing:'monthly' }, authIntent: null };
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -769,9 +784,10 @@ function friendCard(name, mode) {
 }
 function pickFriend(name) {
   const need = FRIENDS[name].plan;
-  if (!APP.user) return startPlan(need);
+  if (!APP.user) return need === 'premium' ? startPlan(need) : startTrial();
   if (APP.user.friends.includes(name)) return openChat(name);
   if (APP.user.pendingOrder && !APP.user.plan) return toast("Your payment is being confirmed. Your friends unlock as soon as it clears.", true);
+  if (!APP.user.plan && APP.user.trialAvailable && need !== 'premium') return claimTrial();
   openCheckout(need);
 }
 
@@ -779,18 +795,56 @@ function pickFriend(name) {
 function startPlan(plan) {
   APP.checkout.plan = plan || 'plus';
   if (APP.user) return openCheckout(APP.checkout.plan);
+  APP.authIntent = null;
   APP.afterAuth = () => { if (!APP.user.plan && !APP.user.pendingOrder && !APP.user.isOwner) openCheckout(APP.checkout.plan); };
   openAuth('signup');
 }
+// 3 free days on Plus: one per account, no card.
+function startTrial() {
+  if (APP.user) return claimTrial();
+  APP.authIntent = 'trial';
+  APP.afterAuth = () => claimTrial();
+  openAuth('signup');
+}
+async function claimTrial(btn) {
+  const u = APP.user; if (!u) return startTrial();
+  if (u.isOwner || u.plan) return goHome();
+  if (u.pendingOrder) return openCheckout();
+  if (!u.trialAvailable) return openCheckout('plus');
+  setBusy(btn, true);
+  try {
+    const d = await api('/trial', { method:'POST' });
+    APP.user = d.user; goHome();
+    toast('Your 3 free days just started. Pick who you want to talk to.', true);
+  } catch (e) {
+    setBusy(btn, false); toast(e.message, false);
+    if (e.code === 'TRIAL_USED') { await refreshUser(); renderHome(); openCheckout('plus'); }
+  }
+}
+function plusCta() { return APP.checkout.billing === 'annual' ? startPlan('plus') : startTrial(); }
+function perMonth(k) { return money(Math.round(PLANS[k].year / 12 * 100) / 100); }
+function setBilling(b) {
+  APP.checkout.billing = b === 'annual' ? 'annual' : 'monthly';
+  const yr = APP.checkout.billing === 'annual';
+  $('bill-monthly').classList.toggle('on', !yr); $('bill-annual').classList.toggle('on', yr);
+  Object.keys(PLANS).forEach(k => {
+    const price = document.querySelector('[data-price="' + k + '"]'), per = document.querySelector('[data-per="' + k + '"]');
+    if (price) price.innerHTML = yr ? money(PLANS[k].year) + '<small>/ year</small>' : money(PLANS[k].price) + '<small>/ month</small>';
+    if (per) per.textContent = yr ? 'Works out to ' + perMonth(k) + ' a month. Paid once with Cash App.' : '';
+  });
+  $('plus-cta').textContent = yr ? 'Get Plus for the year' : 'Start 3 days free';
+  $('plus-trial-note').textContent = yr ? 'Want to try it first? Switch to monthly for 3 free days.' : 'No card. Then $12 a month if you stay.';
+}
 function openAuth(mode) { setAuthMode(mode || 'signup'); $('auth-err').classList.remove('show'); openModal('auth-overlay'); setTimeout(() => (mode === 'signin' || APP.setupCode ? $('auth-email') : $('auth-name')).focus(), 250); }
+function authBtnLabel() { return APP.authMode !== 'signup' ? 'Sign in' : APP.authIntent === 'trial' && !APP.setupCode ? 'Start my 3 free days' : 'Create account'; }
 function setAuthMode(mode) {
   APP.authMode = mode;
   const up = mode === 'signup';
   $('tab-signup').classList.toggle('on', up); $('tab-signin').classList.toggle('on', !up);
   $('f-name').hidden = !up; $('f-adult').hidden = !up; $('auth-fine').hidden = up;
   $('auth-title').innerHTML = APP.setupCode ? 'Claim your <em>account</em>' : up ? 'Join <em>Friendy</em>' : 'Welcome <em>back</em>';
-  $('auth-lead').textContent = APP.setupCode ? 'Set a password to finish setting up your owner account.' : up ? 'Create your account, then pick your plan.' : 'Sign in to pick up where you left off.';
-  $('auth-btn').textContent = up ? 'Create account' : 'Sign in';
+  $('auth-lead').textContent = APP.setupCode ? 'Set a password to finish setting up your owner account.' : up ? (APP.authIntent === 'trial' ? 'Create your account and your 3 free days start. No card needed.' : 'Create your account, then pick your plan.') : 'Sign in to pick up where you left off.';
+  $('auth-btn').textContent = authBtnLabel();
   $('auth-pass').autocomplete = up ? 'new-password' : 'current-password';
   $('auth-pass').placeholder = up ? 'At least 8 characters' : 'Your password';
   $('auth-tabs').hidden = !!APP.setupCode;
@@ -818,7 +872,7 @@ async function submitAuth(e) {
   } catch (ex) {
     if (ex.code === 'EXISTS') { setAuthMode('signin'); showErr('You already have an account. Enter your password to sign in.'); }
     else showErr(ex.message);
-  } finally { setBusy(btn, false); $('auth-btn').textContent = APP.authMode === 'signup' ? 'Create account' : 'Sign in'; }
+  } finally { setBusy(btn, false); $('auth-btn').textContent = authBtnLabel(); }
 }
 function signOut(silent) {
   APP.token = null; APP.user = null; APP.friend = null; store.del('friendy_token'); clearInterval(APP.poll); APP.poll = null;
@@ -852,10 +906,10 @@ function renderHome() {
   const u = APP.user; if (!u) return;
   const badge = $('home-badge');
   badge.className = 'badge ' + (u.isOwner ? 'b-owner' : u.plan ? 'b-' + u.plan : 'b-none');
-  badge.textContent = u.isOwner ? 'Owner' : u.plan ? PLANS[u.plan].label : 'No plan';
+  badge.textContent = u.isOwner ? 'Owner' : u.onTrial ? 'Free trial' : u.plan ? PLANS[u.plan].label : 'No plan';
   $('owner-btn').hidden = !u.isOwner;
   $('home-hi').innerHTML = u.name ? `Hey <em>${esc(u.name)}.</em>` : 'Hey, <em>you made it.</em>';
-  $('home-sub').textContent = u.plan ? "Who do you want to talk to?" : "You're one step away from meeting your friends.";
+  $('home-sub').textContent = u.plan ? "Who do you want to talk to?" : u.trialAvailable ? "Your 3 free days are waiting. No card needed." : "You're one step away from meeting your friends.";
 
   let banner = '';
   const p = u.pendingOrder, left = daysLeft(u.planExpiresAt);
@@ -868,6 +922,15 @@ function renderHome() {
         ${cash ? `<button class="btn btn-cash btn-sm" onclick="openCheckout()">Payment details</button>` : `<button class="btn btn-ghost btn-sm" onclick="openCheckout()">Pay another way</button>`}
         <button class="btn btn-ghost btn-sm" onclick="cancelOrder()">Cancel</button>
       </div></div>`;
+  } else if (!u.plan && u.trialAvailable) {
+    banner = `<div class="banner b-start"><div><h3>Your 3 free days are ready</h3><p>Maya, Dre, Sage and Kai, as much as you want to talk. No card. After 3 days it's $12 a month if you want to stay.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="claimTrial(this)">Start my 3 free days</button><button class="btn btn-ghost btn-sm" onclick="openCheckout()">See plans</button></div></div>`;
+  } else if (!u.plan && u.planStatus === 'expired' && u.paymentMethod === 'trial') {
+    banner = `<div class="banner b-warn"><div><h3>Your free days ended</h3><p>Your conversations are saved. Keep Plus for $12 a month and pick up right where you left off, or choose any plan.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('plus')">Keep Plus</button></div></div>`;
+  } else if (u.onTrial) {
+    banner = `<div class="banner b-start"><div><h3>${left !== null && left <= 1 ? 'Last free day' : left + ' free days left'}</h3><p>Keep Plus for $12 a month. Pay any time and your 30 days of Plus start after your free days end.</p></div>
+      <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('plus')">Keep Plus</button></div></div>`;
   } else if (!u.plan && u.planStatus === 'expired') {
     banner = `<div class="banner b-warn"><div><h3>Your ${esc(PLANS[u.lastPlan].label)} plan ended</h3><p>Your conversations are saved. Renew to pick up right where you left off.</p></div>
       <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('${u.lastPlan}')">Renew ${esc(PLANS[u.lastPlan].label)}</button></div></div>`;
@@ -875,7 +938,7 @@ function renderHome() {
     banner = `<div class="banner b-start"><div><h3>Choose a plan to start talking</h3><p>Plans start at $8 a month. Pay with Cash App or card and your friends unlock as soon as it's confirmed.</p></div>
       <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout()">Choose a plan</button></div></div>`;
   } else if (!u.isOwner && u.paymentMethod !== 'card' && left !== null && left <= 5) {
-    banner = `<div class="banner b-warn"><div><h3>${left <= 0 ? 'Your plan ends today' : left === 1 ? '1 day left on your plan' : left + ' days left on your plan'}</h3><p>Renew now and the 30 days are added on top of what you have left.</p></div>
+    banner = `<div class="banner b-warn"><div><h3>${left <= 0 ? 'Your plan ends today' : left === 1 ? '1 day left on your plan' : left + ' days left on your plan'}</h3><p>Renew now and the new time is added on top of what you have left.</p></div>
       <div class="banner-actions"><button class="btn btn-primary btn-sm" onclick="openCheckout('${u.plan}')">Renew</button></div></div>`;
   }
   $('home-banner').innerHTML = banner;
@@ -917,28 +980,34 @@ function openCheckout(plan) {
   openModal('checkout-overlay');
 }
 function renderPlanStep() {
-  const c = APP.checkout;
+  const c = APP.checkout, yr = c.billing === 'annual';
+  if (yr) c.method = 'cashapp';
+  const due = yr ? PLANS[c.plan].year : PLANS[c.plan].price;
   $('checkout-body').innerHTML = `
     <h2>Choose your <em>plan</em></h2>
     <p class="modal-lead">Unlimited conversations on every plan.</p>
+    <div class="bill-toggle" role="group" aria-label="Billing period">
+      <button class="bill-opt${yr ? '' : ' on'}" onclick="APP.checkout.billing='monthly';renderPlanStep()">Monthly</button>
+      <button class="bill-opt${yr ? ' on' : ''}" onclick="APP.checkout.billing='annual';APP.checkout.method='cashapp';renderPlanStep()">Yearly <span class="bill-save">about 40% off</span></button>
+    </div>
     ${Object.entries(PLANS).map(([k,v]) => `<button class="opt${c.plan === k ? ' on' : ''}" onclick="APP.checkout.plan='${k}';renderPlanStep()">
         <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">${v.label}</span><br><span class="opt-desc">${esc(v.desc)}</span></span>
-        <span class="opt-price">${money(v.price)}<small> /mo</small></span></button>`).join('')}
+        <span class="opt-price">${money(yr ? v.year : v.price)}<small> ${yr ? '/yr' : '/mo'}</small></span></button>`).join('')}
     <div class="step-label">How do you want to pay?</div>
     <button class="opt cash${c.method === 'cashapp' ? ' on' : ''}" onclick="APP.checkout.method='cashapp';renderPlanStep()">
-      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Cash App</span><br><span class="opt-desc">Send to ${esc(CASHTAG)}. Covers 30 days, never auto-renews.</span></span></button>
-    <button class="opt${c.method === 'card' ? ' on' : ''}" onclick="APP.checkout.method='card';renderPlanStep()">
-      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Debit or credit card</span><br><span class="opt-desc">Secure checkout by Stripe. Renews monthly until you cancel.</span></span></button>
+      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Cash App</span><br><span class="opt-desc">Send to ${esc(CASHTAG)}. Covers ${yr ? 'a full year' : '30 days'}, never auto-renews.</span></span></button>
+    ${yr ? `<p class="fine" style="text-align:left;margin:4px 0 0">Yearly plans are paid with Cash App. To pay by card, switch to monthly.</p>` : `<button class="opt${c.method === 'card' ? ' on' : ''}" onclick="APP.checkout.method='card';renderPlanStep()">
+      <span class="opt-radio"></span><span class="opt-main"><span class="opt-title">Debit or credit card</span><br><span class="opt-desc">Secure checkout by Stripe. Renews monthly until you cancel.</span></span></button>`}
     <div class="err" id="co-err" role="alert"></div>
     <button class="btn ${c.method === 'cashapp' ? 'btn-cash' : 'btn-primary'} btn-block btn-lg" style="margin-top:14px" onclick="createOrder(this)">
-      ${c.method === 'cashapp' ? 'Pay ' + money(PLANS[c.plan].price) + ' with Cash App' : 'Continue to card checkout'}</button>
+      ${c.method === 'cashapp' ? 'Pay ' + money(due) + ' with Cash App' : 'Continue to card checkout'}</button>
     <p class="fine">Signed in as ${esc(APP.user.email)}</p>`;
 }
 async function createOrder(btn) {
   const c = APP.checkout, err = $('co-err'); err.classList.remove('show');
   setBusy(btn, true);
   try {
-    const d = await api('/orders', { method:'POST', body:{ plan:c.plan, method:c.method } });
+    const d = await api('/orders', { method:'POST', body:{ plan:c.plan, method:c.method, billing:c.billing } });
     APP.user.pendingOrder = d.order; syncPolling(); renderHome();
     if (c.method === 'card') { window.location.href = d.cardUrl; return; }
     renderCashStep(d.order);
@@ -947,7 +1016,7 @@ async function createOrder(btn) {
 function renderCashStep(o) {
   $('checkout-body').innerHTML = `
     <h2>Pay with <em>Cash App</em></h2>
-    <p class="modal-lead">${esc(PLANS[o.plan].label)} plan, 30 days. Three quick steps.</p>
+    <p class="modal-lead">${esc(PLANS[o.plan].label)} plan, ${o.billing === 'annual' ? 'one year' : '30 days'}. Three quick steps.</p>
     <div class="paybox">
       <div class="payrow"><div><div class="payrow-k">Send to</div><div class="payrow-v green">${esc(o.cashapp.cashtag)}</div></div><button class="copy" onclick="copyText('${esc(o.cashapp.cashtag)}',this)">Copy</button></div>
       <div class="payrow"><div><div class="payrow-k">Amount</div><div class="payrow-v">${money(o.amount)}</div></div></div>
@@ -1076,7 +1145,7 @@ $('quick').addEventListener('click', e => { const c = e.target.closest('.chip');
 function openAccount() {
   const u = APP.user; if (!u) return;
   const left = daysLeft(u.planExpiresAt);
-  const planLine = u.isOwner ? 'Premium (owner, never expires)' : u.plan ? PLANS[u.plan].label + ' · ' + money(PLANS[u.plan].price) + '/mo' : u.planStatus === 'expired' ? 'Ended' : 'None yet';
+  const planLine = u.isOwner ? 'Premium (owner, never expires)' : u.onTrial ? PLANS[u.plan].label + ' · free trial' : u.plan ? PLANS[u.plan].label + ' · ' + money(PLANS[u.plan].price) + '/mo' : u.planStatus === 'expired' ? 'Ended' : 'None yet';
   const renewLine = u.isOwner || !u.plan ? '' : u.paymentMethod === 'card'
     ? `<div class="kv"><span>Billing</span><span>Card, renews monthly</span></div>`
     : `<div class="kv"><span>Access through</span><span>${esc(fmtDate(u.planExpiresAt))}${left !== null ? ' (' + Math.max(left,0) + (left === 1 ? ' day' : ' days') + ' left)' : ''}</span></div>`;
@@ -1085,7 +1154,7 @@ function openAccount() {
     <div class="kv"><span>Email</span><span>${esc(u.email)}</span></div>
     <div class="kv"><span>Plan</span><span>${esc(planLine)}</span></div>
     ${renewLine}
-    ${u.isOwner ? '' : `<div class="row-btns" style="margin-top:18px"><button class="btn btn-primary btn-sm" onclick="closeModal('account-overlay');openCheckout('${u.plan || u.lastPlan || 'plus'}')">${u.plan ? 'Renew or change plan' : 'Choose a plan'}</button></div>`}
+    ${u.isOwner ? '' : `<div class="row-btns" style="margin-top:18px"><button class="btn btn-primary btn-sm" onclick="closeModal('account-overlay');openCheckout('${u.plan || u.lastPlan || 'plus'}')">${u.onTrial ? 'Keep my plan' : u.plan ? 'Renew or change plan' : 'Choose a plan'}</button></div>`}
     ${u.paymentMethod === 'card' && !u.isOwner ? `<p class="fine" style="text-align:left">To cancel card billing, email <a href="mailto:${SUPPORT}?subject=Cancel%20my%20Friendy%20subscription">${SUPPORT}</a> from this address.</p>` : ''}
 
     <div class="acct-sec"><h4>Name</h4>
@@ -1129,7 +1198,7 @@ function openLegal(which) {
     <h3>What Friendy is</h3><p>Friendy is an AI companion service. Maya, Dre, Sage, Kai and Nova are artificial intelligence, not people. Replies are generated by AI and can be wrong. Friendy is for encouragement and conversation only. It is not therapy, counseling, medical care, legal advice or financial advice, and it is not a crisis service.</p>
     <h3>If you are in crisis</h3><p>If you are thinking about harming yourself or someone else, call or text 988 in the United States, call 911, or contact your local emergency number right away.</p>
     <h3>Who can use it</h3><p>You must be 18 or older.</p>
-    <h3>Plans and payment</h3><p>Plans are $8, $12 and $15 per month. A Cash App payment covers 30 days of access from the time it is confirmed and does not renew automatically. Card subscriptions are processed by Stripe and renew monthly until cancelled; to cancel, email ${SUPPORT}. Access begins once payment is confirmed. For any question about a charge or a refund, email ${SUPPORT}.</p>
+    <h3>Plans and payment</h3><p>New accounts can start one free 3-day trial of Plus, with no payment details and a daily message limit; access stops when it ends unless you buy a plan. Plans are $8, $12 and $15 per month, or $57.99, $86.99 and $107.99 per year. A Cash App payment covers 30 days of access (365 days for a yearly plan) from the time it is confirmed and does not renew automatically. Yearly plans are paid with Cash App. Card subscriptions are processed by Stripe and renew monthly until cancelled; to cancel, email ${SUPPORT}. Access begins once payment is confirmed. For any question about a charge or a refund, email ${SUPPORT}.</p>
     <h3>Fair use</h3><p>Conversations are unlimited for normal personal use. We may limit automated or abusive usage. Do not use Friendy to break the law or to harass or harm anyone.</p>
     <h3>Your account</h3><p>Keep your password private. You can delete your account and all conversations at any time from the account screen.</p>
     <h3>Contact</h3><p>${SUPPORT}</p></div>`;
@@ -1159,6 +1228,7 @@ async function loadAdmin(announce) {
     ${alerts.join('')}
     <div class="tiles">
       <div class="tile"><div class="tile-k">Paying members</div><div class="tile-v">${s.paying}</div></div>
+      <div class="tile"><div class="tile-k">On free trial</div><div class="tile-v">${s.trialing || 0}</div></div>
       <div class="tile"><div class="tile-k">Monthly run rate</div><div class="tile-v green">${money(s.monthlyRevenue)}</div></div>
       <div class="tile"><div class="tile-k">Collected, all time</div><div class="tile-v">${money(s.collected)}</div></div>
       <div class="tile"><div class="tile-k">Messages, last 24h</div><div class="tile-v">${s.messages24h}</div></div>
@@ -1167,20 +1237,20 @@ async function loadAdmin(announce) {
     <div class="panel">${pending.length ? pending.map(o => `<div class="prow">
         <div class="prow-amt">${money(o.amount)}</div>
         <div class="prow-main"><div class="prow-title">${esc(o.email)}</div>
-          <div class="prow-sub">${esc(PLANS[o.plan].label)} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · note <span class="code">${esc(o.code)}</span>${o.payerHandle ? ' · from ' + esc(o.payerHandle) : ''}<br>${esc(fmtWhen(o.createdAt))}${o.note === 'member marked as sent' ? ' · member says it was sent' : ''}</div></div>
+          <div class="prow-sub">${esc(PLANS[o.plan].label)}${o.billing === 'annual' ? ' (1 year)' : ''} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · note <span class="code">${esc(o.code)}</span>${o.payerHandle ? ' · from ' + esc(o.payerHandle) : ''}<br>${esc(fmtWhen(o.createdAt))}${o.note === 'member marked as sent' ? ' · member says it was sent' : ''}</div></div>
         <div class="row-btns"><button class="btn btn-cash btn-sm" onclick="reviewOrder('${o.id}','approve',this)">Approve</button><button class="btn btn-ghost btn-sm" onclick="reviewOrder('${o.id}','reject',this)">Not received</button></div>
       </div>`).join('') : '<div class="empty">No payments waiting. New orders show up here.</div>'}</div>
     <div class="home-h2">Members (${s.members})</div>
     <div class="panel">${d.members.map(m => `<div class="prow">
         <div class="prow-main"><div class="prow-title">${esc(m.email)}${m.name ? ' · ' + esc(m.name) : ''}</div>
           <div class="prow-sub">Joined ${esc(fmtDate(m.createdAt))}${m.lastSeenAt ? ' · last seen ' + esc(fmtWhen(m.lastSeenAt)) : ''}${m.expiresAt && m.plan ? ' · through ' + esc(fmtDate(m.expiresAt)) : ''}${m.method && !m.isOwner ? ' · ' + esc(m.method) : ''}</div></div>
-        <span class="badge ${m.isOwner ? 'b-owner' : m.plan ? 'b-' + m.plan : 'b-none'}">${m.isOwner ? 'Owner' : m.plan ? PLANS[m.plan].label : 'No plan'}</span>
+        <span class="badge ${m.isOwner ? 'b-owner' : m.plan ? 'b-' + m.plan : 'b-none'}">${m.isOwner ? 'Owner' : m.plan && m.method === 'trial' ? 'Free trial' : m.plan ? PLANS[m.plan].label : 'No plan'}</span>
         ${m.isOwner ? '' : `<div class="row-btns"><select class="sel" id="g-${m.id}" aria-label="Plan to grant"><option value="basic">Basic</option><option value="plus" selected>Plus</option><option value="premium">Premium</option></select>
           <button class="btn btn-ghost btn-sm" onclick="grantMember('${m.id}',this)">Give 30 days</button>${m.plan ? `<button class="btn btn-danger btn-sm" onclick="revokeMember('${m.id}',this)">End access</button>` : ''}</div>`}
       </div>`).join('')}</div>
     <div class="home-h2">Order history</div>
     <div class="panel">${history.length ? history.map(o => `<div class="prow">
-        <div class="prow-main"><div class="prow-title">${money(o.amount)} · ${esc(o.email)}</div><div class="prow-sub">${esc(PLANS[o.plan].label)} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · <span class="code">${esc(o.code)}</span> · ${esc(fmtWhen(o.createdAt))}${o.note ? ' · ' + esc(o.note) : ''}</div></div>
+        <div class="prow-main"><div class="prow-title">${money(o.amount)} · ${esc(o.email)}</div><div class="prow-sub">${esc(PLANS[o.plan].label)}${o.billing === 'annual' ? ' (1 year)' : ''} · ${o.method === 'cashapp' ? 'Cash App' : 'Card'} · <span class="code">${esc(o.code)}</span> · ${esc(fmtWhen(o.createdAt))}${o.note ? ' · ' + esc(o.note) : ''}</div></div>
         <span class="status st-${o.status}">${esc(o.status.replace('_',' '))}</span></div>`).join('') : '<div class="empty">Nothing yet.</div>'}</div>`;
   if (announce) toast('Updated.', true);
 }

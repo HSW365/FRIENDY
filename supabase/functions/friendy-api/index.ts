@@ -1,12 +1,13 @@
-// friendy-api — the single backend for the Friendy web app.
+// friendy-api - the single backend for the Friendy web app.
 //
 // Deployed to Supabase project ucgymjcenpddqshokybj with verify_jwt = false
 // (this function does its own auth: password accounts + signed session tokens).
 //
-// Secrets (Supabase dashboard → Edge Functions → Secrets):
-//   ANTHROPIC_API_KEY       required — without it chat returns 503
-//   STRIPE_WEBHOOK_SECRET   optional — turns on automatic activation for card payments
-//   FRIENDY_CASHTAG         optional — defaults to $hsw365
+// Secrets (Supabase dashboard -> Edge Functions -> Secrets):
+//   GEMINI_API_KEY          optional - when set, chat runs on Google Gemini (free tier)
+//   ANTHROPIC_API_KEY       used when GEMINI_API_KEY is not set. One of the two is required, or chat returns 503
+//   STRIPE_WEBHOOK_SECRET   optional - turns on automatic activation for card payments
+//   FRIENDY_CASHTAG         optional - defaults to $hsw365
 //
 // The session-signing secret lives in the private table public.friendy_config
 // (generated once by the migration), so no JWT secret needs to be set by hand.
@@ -19,17 +20,20 @@ const db = createClient(
   { auth: { persistSession: false } },
 );
 
-const ANTHROPIC_KEY = Deno.env.get("ANTHROPIC_API_KEY") || "";
+const ANTHROPIC_KEY = (Deno.env.get("ANTHROPIC_API_KEY") || "").trim();
+const GEMINI_KEY = (Deno.env.get("GEMINI_API_KEY") || "").trim();
+const AI_PROVIDER = GEMINI_KEY ? "gemini" : ANTHROPIC_KEY ? "anthropic" : "";
+const AI_READY = !!AI_PROVIDER;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET") || "";
 const CASHTAG = Deno.env.get("FRIENDY_CASHTAG") || "$hsw365";
 const SUPPORT_EMAIL = "hsw365media@gmail.com";
 
 const OWNER_EMAILS = ["hsw365media@gmail.com", "hoodstarent365@gmail.com"];
 
-const PLANS: Record<string, { cents: number; rank: number; friends: string[]; label: string }> = {
-  basic: { cents: 800, rank: 1, friends: ["Maya", "Dre"], label: "Basic" },
-  plus: { cents: 1200, rank: 2, friends: ["Maya", "Dre", "Sage", "Kai"], label: "Plus" },
-  premium: { cents: 1500, rank: 3, friends: ["Maya", "Dre", "Sage", "Kai", "Nova"], label: "Premium" },
+const PLANS: Record<string, { cents: number; yearCents: number; rank: number; friends: string[]; label: string }> = {
+  basic: { cents: 800, yearCents: 5799, rank: 1, friends: ["Maya", "Dre"], label: "Basic" },
+  plus: { cents: 1200, yearCents: 8699, rank: 2, friends: ["Maya", "Dre", "Sage", "Kai"], label: "Plus" },
+  premium: { cents: 1500, yearCents: 10799, rank: 3, friends: ["Maya", "Dre", "Sage", "Kai", "Nova"], label: "Premium" },
 };
 
 const STRIPE_LINKS: Record<string, string> = {
@@ -40,12 +44,19 @@ const STRIPE_LINKS: Record<string, string> = {
 
 const MODEL_STANDARD = Deno.env.get("FRIENDY_MODEL") || "claude-haiku-4-5-20251001";
 const MODEL_PREMIUM = Deno.env.get("FRIENDY_MODEL_PREMIUM") || "claude-sonnet-4-6";
+const GEMINI_MODEL = Deno.env.get("FRIENDY_GEMINI_MODEL") || "gemini-2.5-flash-lite";
+// Tried in order. When one model is overloaded or over its free quota, the next one answers.
+const GEMINI_MODELS = [...new Set([GEMINI_MODEL, "gemini-flash-lite-latest", "gemini-2.5-flash", "gemini-flash-latest"])];
 
-const PERIOD_DAYS = 30; // one payment = 30 days of access
+const PERIOD_DAYS = 30; // one monthly payment = 30 days of access
+const YEAR_DAYS = 365; // one annual payment
+const TRIAL_DAYS = 3; // free Plus trial, once per account
+const TRIAL_PLAN = "plus";
+const TRIAL_DAILY_MESSAGE_CAP = 80; // keeps a free trial from running up the AI bill
 const DAILY_MESSAGE_CAP = 400; // fair-use ceiling per account per 24h
 const MAX_MESSAGE_CHARS = 2000;
 
-// ── HTTP helpers ──────────────────────────────────────────────────
+// -- HTTP helpers --
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -70,7 +81,7 @@ async function readBody(req: Request): Promise<Record<string, unknown>> {
   }
 }
 
-// ── crypto ────────────────────────────────────────────────────────
+// -- crypto --
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
@@ -113,7 +124,7 @@ let signingKey: CryptoKey | null = null;
 async function getSigningKey(): Promise<CryptoKey> {
   if (signingKey) return signingKey;
   const { data, error } = await db.from("friendy_config").select("value").eq("key", "jwt_secret").maybeSingle();
-  if (error || !data?.value) throw new Error("Signing secret missing — run the friendy_web_app migration.");
+  if (error || !data?.value) throw new Error("Signing secret missing - run the friendy_web_app migration.");
   signingKey = await crypto.subtle.importKey(
     "raw",
     enc.encode(data.value),
@@ -154,7 +165,7 @@ async function verifyToken(token: string): Promise<string | null> {
   }
 }
 
-// ── users ─────────────────────────────────────────────────────────
+// -- users --
 // deno-lint-ignore no-explicit-any
 type User = Record<string, any>;
 
@@ -170,12 +181,17 @@ function activePlan(u: User): string | null {
   return u.plan;
 }
 
+/** One free trial per account, only before the account has ever had a plan. */
+function trialAvailable(u: User): boolean {
+  return !isOwner(u) && !u.trial_used_at && !PLANS[u.plan];
+}
+
 async function publicUser(u: User) {
   const plan = activePlan(u);
   const expired = !plan && !!PLANS[u.plan] && !!u.plan_expires_at &&
     new Date(u.plan_expires_at).getTime() < Date.now();
   const { data: pending } = await db.from("friendy_orders")
-    .select("id, plan, amount_cents, method, order_code, payer_handle, status, created_at")
+    .select("id, plan, amount_cents, method, order_code, payer_handle, status, created_at, billing")
     .eq("user_id", u.id).eq("status", "pending")
     .order("created_at", { ascending: false }).limit(1).maybeSingle();
   return {
@@ -190,6 +206,9 @@ async function publicUser(u: User) {
     isOwner: isOwner(u),
     friends: plan ? PLANS[plan].friends : [],
     pendingOrder: pending ? orderView(pending) : null,
+    onTrial: !!plan && !isOwner(u) && u.payment_method === "trial",
+    trialAvailable: trialAvailable(u),
+    trialDays: TRIAL_DAYS,
   };
 }
 
@@ -208,7 +227,7 @@ function cleanEmail(v: unknown): string | null {
   return e.length <= 254 && EMAIL_RE.test(e) ? e : null;
 }
 
-// ── orders ────────────────────────────────────────────────────────
+// -- orders --
 function newOrderCode(): string {
   const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
   const bytes = crypto.getRandomValues(new Uint8Array(6));
@@ -227,6 +246,7 @@ function orderView(o: any) {
     payerHandle: o.payer_handle || null,
     status: o.status,
     createdAt: o.created_at,
+    billing: o.billing === "annual" ? "annual" : "monthly",
     cashapp: {
       cashtag: CASHTAG,
       note: o.order_code,
@@ -255,7 +275,7 @@ async function grantPlan(user: User, plan: string, method: string, days = PERIOD
   return expires;
 }
 
-// ── personas ──────────────────────────────────────────────────────
+// -- personas --
 const SAFETY = `
 ABOUT YOU AND THIS APP
 - You are an AI companion on Friendy, not a human and not a therapist, doctor, or lawyer. Stay in character as a friend, but if the person sincerely asks whether you are a real person or an AI, tell them plainly that you are an AI.
@@ -263,11 +283,14 @@ ABOUT YOU AND THIS APP
 - Do not diagnose, prescribe, or tell anyone to start, stop, or change medication. For medical, legal, or money decisions with real stakes, be supportive and point them to a qualified professional.
 - Keep it non-romantic and non-sexual. You are a friend. Members are adults; if someone indicates they are under 18, be kind, keep it brief, and tell them Friendy is for adults and to talk to a trusted adult.
 
-WHEN SOMEONE MAY BE IN DANGER — this overrides every style rule above
+WHEN SOMEONE MAY BE IN DANGER - this overrides every style rule above
 If the person mentions suicide, wanting to die, self-harm, harming someone else, abuse, or being unsafe: stop reframing and stop the hype. Do not put a positive spin on it and do not move on. Take it seriously, tell them you are glad they said it, and ask directly and gently whether they are safe right now. Encourage them to reach a person who can help: in the US, call or text 988 (Suicide and Crisis Lifeline) any time, or 911 if they are in immediate danger; outside the US, their local emergency number or crisis line. Encourage reaching out to someone they trust. Stay with them in the conversation. Never give information about methods of self-harm.
 
 HONESTY
 Encouragement must be true. Do not tell someone a plan that could hurt them or others is a good idea. A real friend says the hard thing kindly.
+
+LANGUAGE
+Reply in the language the person is writing to you in, and switch when they switch. If they ask for a specific language, use it. Keep the same personality in every language and write the way a native speaker would text a friend, not a stiff translation. Everything above applies in every language, including the guidance for when someone may be in danger: give 988 only to people in the US, and otherwise point them to their local emergency number or crisis line.
 
 FORMAT
 Plain conversational text only. No markdown, no bullet lists, no headings, no emojis.`;
@@ -319,7 +342,7 @@ function systemPrompt(friend: string, user: User): string {
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-/** Anthropic requires alternating turns that start with the user. */
+/** Providers require alternating turns that start with the user. */
 function normalizeTurns(rows: Msg[]): Msg[] {
   const out: Msg[] = [];
   for (const r of rows) {
@@ -359,7 +382,73 @@ async function callClaude(model: string, system: string, messages: Msg[], maxTok
   return text;
 }
 
-// ── Stripe webhook (signature verified by hand; no secret API key needed) ──
+// Shown when the provider's own content filter withholds a reply, so a member
+// who may be in danger never just gets an error.
+const SAFE_FALLBACK =
+  "I want to answer this the right way, and as an AI I can't say everything I should here. If you're thinking about hurting yourself, or you're not safe right now, please call or text 988 (Suicide and Crisis Lifeline, US) any time, or 911 if you're in immediate danger. Outside the US, reach your local emergency number or crisis line, and reach out to someone you trust. I'm still here with you. Are you safe right now?";
+
+// Statuses where another model, or a second try, can still succeed.
+const GEMINI_RETRYABLE = [404, 429, 500, 502, 503, 504];
+
+async function callGemini(system: string, messages: Msg[], maxTokens = 600): Promise<string> {
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: system }] },
+    contents: messages.map((x) => ({
+      role: x.role === "assistant" ? "model" : "user",
+      parts: [{ text: x.content }],
+    })),
+    // Headroom above the reply length, since some models spend output tokens on reasoning first.
+    generationConfig: { maxOutputTokens: maxTokens + 1500, temperature: 0.8 },
+  });
+  const attempt = async (m: string) => {
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-goog-api-key": GEMINI_KEY },
+        body,
+      });
+      const data = await res.json().catch(() => ({}));
+      return { ok: res.ok, status: res.status, data };
+    } catch (e) {
+      return { ok: false, status: 503, data: { error: (e as Error).message } };
+    }
+  };
+
+  let lastStatus = 0;
+  let sawEmpty = false;
+  for (let round = 0; round < 2; round++) {
+    for (const m of GEMINI_MODELS) {
+      const { ok, status, data } = await attempt(m);
+      if (!ok) {
+        lastStatus = status;
+        console.error("gemini_error", m, status, JSON.stringify(data).slice(0, 300));
+        if (!GEMINI_RETRYABLE.includes(status)) throw new Error(`AI provider error (${status})`);
+        continue;
+      }
+      const cand = (data.candidates || [])[0];
+      // deno-lint-ignore no-explicit-any
+      const text = (cand?.content?.parts || []).filter((p: any) => !p.thought).map((p: any) => p.text || "").join("").trim();
+      if (text) return text;
+      const blocked = !!data.promptFeedback?.blockReason ||
+        ["SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST"].includes(String(cand?.finishReason || ""));
+      if (blocked) {
+        console.error("gemini_blocked", m, JSON.stringify(data.promptFeedback || cand?.finishReason || "").slice(0, 300));
+        return SAFE_FALLBACK;
+      }
+      sawEmpty = true;
+      console.error("gemini_empty", m, JSON.stringify(data).slice(0, 300));
+    }
+    if (round === 0) await new Promise((r) => setTimeout(r, 1200));
+  }
+  throw new Error(lastStatus ? `AI provider error (${lastStatus})` : sawEmpty ? "Empty AI response" : "AI provider error");
+}
+
+/** One entry point for replies: Gemini when its key is set, otherwise Claude. */
+function callAI(model: string, system: string, messages: Msg[], maxTokens = 600): Promise<string> {
+  return AI_PROVIDER === "gemini" ? callGemini(system, messages, maxTokens) : callClaude(model, system, messages, maxTokens);
+}
+
+// -- Stripe webhook (signature verified by hand; no secret API key needed) --
 async function verifyStripeSignature(payload: string, header: string): Promise<boolean> {
   const parts = Object.fromEntries(header.split(",").map((p) => {
     const i = p.indexOf("=");
@@ -467,7 +556,7 @@ async function handleStripeWebhook(req: Request) {
   return json({ received: true });
 }
 
-// ── router ────────────────────────────────────────────────────────
+// -- router --
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
 
@@ -480,7 +569,9 @@ Deno.serve(async (req: Request) => {
       return json({
         status: "ok",
         app: "Friendy",
-        version: 2,
+        version: 5,
+        ai_provider: AI_PROVIDER || null,
+        gemini_configured: !!GEMINI_KEY,
         anthropic_configured: !!ANTHROPIC_KEY,
         stripe_configured: !!STRIPE_WEBHOOK_SECRET,
       });
@@ -490,19 +581,22 @@ Deno.serve(async (req: Request) => {
       return json({
         cashtag: CASHTAG,
         supportEmail: SUPPORT_EMAIL,
-        chatReady: !!ANTHROPIC_KEY,
+        chatReady: AI_READY,
+        trialDays: TRIAL_DAYS,
+        trialPlan: TRIAL_PLAN,
         cardAutoActivation: !!STRIPE_WEBHOOK_SECRET,
         plans: Object.fromEntries(Object.entries(PLANS).map(([k, v]) => [k, {
           price: v.cents / 100,
           friends: v.friends,
           label: v.label,
+          yearPrice: v.yearCents / 100,
         }])),
       });
     }
 
     if (path === "/webhook" && method === "POST") return await handleStripeWebhook(req);
 
-    // ── signup ──
+    // -- signup --
     if (path === "/auth/signup" && method === "POST") {
       const b = await readBody(req);
       const email = cleanEmail(b.email);
@@ -567,7 +661,7 @@ Deno.serve(async (req: Request) => {
       return json({ token: await signToken(user.id), user: await publicUser(user) });
     }
 
-    // ── login ──
+    // -- login --
     if (path === "/auth/login" && method === "POST") {
       const b = await readBody(req);
       const email = cleanEmail(b.email);
@@ -602,10 +696,10 @@ Deno.serve(async (req: Request) => {
       return fail(410, "Sign in with your email and password. Card payments activate on your account automatically.");
     }
 
-    // ── everything below needs a session ──
+    // -- everything below needs a session --
     const adminPath = path.startsWith("/admin");
     const needsAuth = adminPath || path.startsWith("/auth/") || path.startsWith("/orders") ||
-      path.startsWith("/chat") || path === "/insights" || path === "/account";
+      path.startsWith("/chat") || path === "/insights" || path === "/account" || path === "/trial";
     if (!needsAuth) return fail(404, "Not found");
 
     const user = await authenticate(req);
@@ -646,13 +740,31 @@ Deno.serve(async (req: Request) => {
       return json({ ok: true });
     }
 
-    // ── orders ──
+    // -- free trial --
+    if (path === "/trial" && method === "POST") {
+      if (isOwner(user)) return fail(400, "Owner accounts already have full access.");
+      if (activePlan(user)) return fail(400, "You already have an active plan.");
+      if (!trialAvailable(user)) return fail(409, "Your free days have already been used. Pick a plan to keep talking.", "TRIAL_USED");
+      // Claim the trial first so two fast taps can't start it twice.
+      const { data: claimed, error: claimErr } = await db.from("users")
+        .update({ trial_used_at: new Date().toISOString() })
+        .eq("id", user.id).is("trial_used_at", null).select("*").maybeSingle();
+      if (claimErr) throw new Error(claimErr.message);
+      if (!claimed) return fail(409, "Your free days have already been used. Pick a plan to keep talking.", "TRIAL_USED");
+      await grantPlan(claimed, TRIAL_PLAN, "trial", TRIAL_DAYS);
+      const { data: fresh } = await db.from("users").select("*").eq("id", user.id).single();
+      return json({ user: await publicUser(fresh) });
+    }
+
+    // -- orders --
     if (path === "/orders" && method === "POST") {
       const b = await readBody(req);
       const plan = String(b.plan ?? "");
       const payMethod = String(b.method ?? "");
+      const billing = b.billing === "annual" ? "annual" : "monthly";
       if (!PLANS[plan]) return fail(400, "Unknown plan.");
       if (payMethod !== "cashapp" && payMethod !== "card") return fail(400, "Choose Cash App or card.");
+      if (billing === "annual" && payMethod !== "cashapp") return fail(400, "Yearly plans are paid with Cash App for now. Pick Cash App, or choose monthly to pay by card.");
       if (isOwner(user)) return fail(400, "Owner accounts already have full access.");
       let handle = String(b.payerHandle ?? "").trim().slice(0, 40) || null;
       if (handle && !handle.startsWith("$")) handle = "$" + handle;
@@ -668,7 +780,8 @@ Deno.serve(async (req: Request) => {
         user_id: user.id,
         email: user.email,
         plan,
-        amount_cents: PLANS[plan].cents,
+        amount_cents: billing === "annual" ? PLANS[plan].yearCents : PLANS[plan].cents,
+        billing,
         method: payMethod,
         order_code: newOrderCode(),
         payer_handle: handle,
@@ -703,7 +816,7 @@ Deno.serve(async (req: Request) => {
       return json({ ok: true });
     }
 
-    // ── chat ──
+    // -- chat --
     if (path === "/chat/history" && (method === "GET" || method === "DELETE")) {
       const friend = url.searchParams.get("friend") || "";
       if (!PERSONAS[friend]) return fail(400, "Unknown friend.");
@@ -729,11 +842,14 @@ Deno.serve(async (req: Request) => {
       }
       if (!text) return fail(400, "Say something first.");
       if (text.length > MAX_MESSAGE_CHARS) return fail(400, `Keep messages under ${MAX_MESSAGE_CHARS} characters.`);
-      if (!ANTHROPIC_KEY) return fail(503, "Your friends are being set up and will be online shortly.", "AI_NOT_CONFIGURED");
+      if (!AI_READY) return fail(503, "Your friends are being set up and will be online shortly.", "AI_NOT_CONFIGURED");
 
       const since = new Date(Date.now() - 86400_000).toISOString();
       const { count } = await db.from("chat_messages").select("id", { count: "exact", head: true })
         .eq("user_id", user.id).eq("role", "user").gte("created_at", since);
+      if (user.payment_method === "trial" && !isOwner(user) && (count || 0) >= TRIAL_DAILY_MESSAGE_CAP) {
+        return fail(429, "That's today's limit on your free days. Pick a plan to keep the conversation going, or come back tomorrow.", "TRIAL_LIMIT");
+      }
       if ((count || 0) >= DAILY_MESSAGE_CAP) {
         return fail(429, "You've hit today's message limit. It resets on a rolling 24 hours.", "RATE_LIMIT");
       }
@@ -755,7 +871,7 @@ Deno.serve(async (req: Request) => {
 
       let reply: string;
       try {
-        reply = await callClaude(plan === "premium" ? MODEL_PREMIUM : MODEL_STANDARD, systemPrompt(friend, user), history);
+        reply = await callAI(plan === "premium" ? MODEL_PREMIUM : MODEL_STANDARD, systemPrompt(friend, user), history);
       } catch (e) {
         if (saved?.id) await db.from("chat_messages").delete().eq("id", saved.id);
         console.error("chat_failed", (e as Error).message);
@@ -766,7 +882,7 @@ Deno.serve(async (req: Request) => {
       return json({ reply });
     }
 
-    // ── growth check-in (Plus+) and growth plan (Premium) ──
+    // -- growth check-in (Plus+) and growth plan (Premium) --
     if (path === "/insights" && method === "POST") {
       const plan = activePlan(user);
       if (!plan) return fail(403, "You need an active plan.", "SUBSCRIPTION_REQUIRED");
@@ -774,7 +890,7 @@ Deno.serve(async (req: Request) => {
       const type = b.type === "plan" ? "plan" : "checkin";
       if (type === "checkin" && PLANS[plan].rank < 2) return fail(403, "Weekly check-ins are part of Plus.", "UPGRADE_REQUIRED");
       if (type === "plan" && PLANS[plan].rank < 3) return fail(403, "Growth plans are part of Premium.", "UPGRADE_REQUIRED");
-      if (!ANTHROPIC_KEY) return fail(503, "Your friends are being set up and will be online shortly.", "AI_NOT_CONFIGURED");
+      if (!AI_READY) return fail(503, "Your friends are being set up and will be online shortly.", "AI_NOT_CONFIGURED");
 
       const days = type === "plan" ? 30 : 7;
       const { data: rows } = await db.from("chat_messages").select("friend, role, content, created_at")
@@ -795,11 +911,11 @@ Deno.serve(async (req: Request) => {
         .join("\n").slice(-24000);
 
       const system = type === "plan"
-        ? `You are Nova on the Friendy app, writing a personal growth plan for a member based only on their own conversations from the last 30 days. Write in second person, warm and specific. Structure, in plain text with short labeled paragraphs (no markdown, no bullets, no emojis): "Where you are" (2-3 sentences naming real patterns you saw), "What's working" (their actual strengths, with evidence from what they said), "Focus for the next 30 days" (three concrete, small, realistic commitments), "When it gets hard" (one practical tool that fits them). Under 260 words. Use only what is in the conversations; never invent events. You are an AI companion, not a clinician: no diagnoses. If the conversations show risk of self-harm or danger, set the plan aside and instead gently encourage them to reach out to 988 (call or text, US) or local emergency services and to someone they trust.`
-        : `You are a caring friend on the Friendy app writing a short weekly check-in for a member based only on their own conversations from the last 7 days. Second person, warm, specific. Plain text, no markdown, no bullets, no emojis. Cover: what they carried this week, one real win or strength you noticed (with evidence from what they said), one pattern worth watching, and one small thing to try in the week ahead. Under 150 words. Use only what is in the conversations; never invent events. No diagnoses. If the conversations show risk of self-harm or danger, set the check-in aside and gently encourage them to reach out to 988 (call or text, US) or local emergency services and to someone they trust.`;
+        ? `You are Nova on the Friendy app, writing a personal growth plan for a member based only on their own conversations from the last 30 days. Write in second person, warm and specific, in the language the member writes in. Structure, in plain text with short labeled paragraphs (no markdown, no bullets, no emojis): "Where you are" (2-3 sentences naming real patterns you saw), "What's working" (their actual strengths, with evidence from what they said), "Focus for the next 30 days" (three concrete, small, realistic commitments), "When it gets hard" (one practical tool that fits them). Under 260 words. Use only what is in the conversations; never invent events. You are an AI companion, not a clinician: no diagnoses. If the conversations show risk of self-harm or danger, set the plan aside and instead gently encourage them to reach out to 988 (call or text, US) or local emergency services and to someone they trust.`
+        : `You are a caring friend on the Friendy app writing a short weekly check-in for a member based only on their own conversations from the last 7 days. Second person, warm, specific, in the language the member writes in. Plain text, no markdown, no bullets, no emojis. Cover: what they carried this week, one real win or strength you noticed (with evidence from what they said), one pattern worth watching, and one small thing to try in the week ahead. Under 150 words. Use only what is in the conversations; never invent events. No diagnoses. If the conversations show risk of self-harm or danger, set the check-in aside and gently encourage them to reach out to 988 (call or text, US) or local emergency services and to someone they trust.`;
 
       try {
-        const text = await callClaude(
+        const text = await callAI(
           plan === "premium" ? MODEL_PREMIUM : MODEL_STANDARD,
           system,
           [{ role: "user", content: `Here are my conversations:\n\n${transcript}` }],
@@ -811,7 +927,7 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    // ── owner panel ──
+    // -- owner panel --
     if (adminPath) {
       if (!isOwner(user)) return fail(403, "Not allowed.");
 
@@ -837,13 +953,15 @@ Deno.serve(async (req: Request) => {
           createdAt: u.created_at,
           lastSeenAt: u.last_seen_at,
         }));
-        const paying = members.filter((m) => m.plan && !m.isOwner);
+        const paying = members.filter((m) => m.plan && !m.isOwner && m.method !== "trial");
+        const trialing = members.filter((m) => m.plan && !m.isOwner && m.method === "trial");
         const approved = (orders || []).filter((o) => o.status === "approved");
         return json({
-          health: { chatReady: !!ANTHROPIC_KEY, cardAutoActivation: !!STRIPE_WEBHOOK_SECRET, cashtag: CASHTAG },
+          health: { chatReady: AI_READY, aiProvider: AI_PROVIDER || null, cardAutoActivation: !!STRIPE_WEBHOOK_SECRET, cashtag: CASHTAG },
           stats: {
             members: members.length,
             paying: paying.length,
+            trialing: trialing.length,
             monthlyRevenue: paying.reduce((s, m) => s + PLANS[m.plan!].cents, 0) / 100,
             collected: approved.reduce((s, o) => s + o.amount_cents, 0) / 100,
             pending: (orders || []).filter((o) => o.status === "pending").length,
@@ -864,7 +982,7 @@ Deno.serve(async (req: Request) => {
         if (action === "approve") {
           const { data: member } = await db.from("users").select("*").eq("id", order.user_id).maybeSingle();
           if (!member) return fail(404, "That member's account no longer exists.");
-          const expires = await grantPlan(member, order.plan, order.method);
+          const expires = await grantPlan(member, order.plan, order.method, order.billing === "annual" ? YEAR_DAYS : PERIOD_DAYS);
           await db.from("friendy_orders").update({
             status: "approved",
             reviewed_at: new Date().toISOString(),
@@ -892,7 +1010,7 @@ Deno.serve(async (req: Request) => {
           const plan = String(b.plan ?? "");
           const days = Math.min(Math.max(Number(b.days) || PERIOD_DAYS, 1), 366);
           if (!PLANS[plan]) return fail(400, "Unknown plan.");
-          const expires = await grantPlan(member, plan, member.payment_method || "comp", days);
+          const expires = await grantPlan(member, plan, member.payment_method && member.payment_method !== "trial" ? member.payment_method : "comp", days);
           return json({ ok: true, expiresAt: expires });
         }
         await db.from("users").update({ plan_status: "inactive", updated_at: new Date().toISOString() }).eq("id", id);
