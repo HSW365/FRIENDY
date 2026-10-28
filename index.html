@@ -1279,7 +1279,8 @@ async function revokeMember(id, btn) {
 
   const params = new URLSearchParams(location.search);
   const claim = params.get('claim'), claimEmail = params.get('email');
-  if (params.toString()) history.replaceState({}, '', location.pathname);
+  const wantJoin = params.has('signup') || location.hash === '#signup' || location.hash === '#join';
+  if (params.toString() || wantJoin) history.replaceState({}, '', location.pathname);
 
   if (claim && claimEmail) {
     signOut(true);
@@ -1292,6 +1293,8 @@ async function revokeMember(id, btn) {
     await refreshUser();
     if (APP.user) { goHome(); syncPolling(); }
   }
+  // Ad QR / sign-up links: show the app, then open sign-up right on it (3 free days, then plan + Cash App in the same flow)
+  if (wantJoin && !APP.user) setTimeout(() => startTrial(), 900);
   api('/config').then(c => { if (c.cashtag) { CASHTAG = c.cashtag; $('cashtag-inline').textContent = c.cashtag; } }).catch(() => {});
   document.addEventListener('visibilitychange', async () => {
     if (document.hidden || !APP.user || !$('home-page').classList.contains('active')) return;
