@@ -1,6 +1,7 @@
 {
   "name": "friendy-backend",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "description": "Friendy backend API",
   "main": "server.js",
   "scripts": {
