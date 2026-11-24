@@ -602,7 +602,7 @@ function updateUI() {
 
   const badge = document.getElementById('nav-badge');
   if (loggedIn && plan) {
-    badge.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+    badge.textContent = APP.user.isOwner ? 'VIP · Owner' : plan.charAt(0).toUpperCase() + plan.slice(1);
     badge.className = `nav-badge show nb-${plan === 'premium' ? 'prem' : plan}`;
   } else {
     badge.className = 'nav-badge';
@@ -790,7 +790,7 @@ async function doLogin() {
 
 function logout(silent = false) {
   APP.token = null; APP.user = null;
-  localStorage.removeItem('friendy_token'); localStorage.removeItem('friendy_user');
+  localStorage.removeItem('friendy_token'); localStorage.removeItem('friendy_user'); localStorage.removeItem('friendy_owner');
   showPage('landing-page');
   updateUI();
   if (!silent) showToast('Signed out.', false);
@@ -944,7 +944,31 @@ document.getElementById('msg-input').addEventListener('input', function() {
 document.getElementById('msg-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
+
+// ── HSW365 OWNER (PIN session from the Owner login tab) ───────────
+// The server re-checks the session with the owner-pin service, then signs in to the owner account: every friend, never pays.
+let OWNER_BUSY = false;
+async function ownerIn(token) {
+  if (!token || OWNER_BUSY || (APP.user && APP.user.isOwner)) return;
+  OWNER_BUSY = true;
+  try {
+    const res = await fetch(`${API}/auth/owner`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-hsw-owner': token }, body: '{}' });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.token) return;
+    APP.token = data.token; APP.user = data.user;
+    localStorage.setItem('friendy_token', data.token);
+    localStorage.setItem('friendy_user', JSON.stringify(data.user));
+    localStorage.setItem('friendy_owner', '1');
+    updateUI();
+  } catch (e) { /* offline: stay as is */ }
+  finally { OWNER_BUSY = false; }
+}
+window.addEventListener('hsw-owner', (e) => {
+  const d = e.detail || {};
+  if (d.owner) ownerIn(d.token);
+  else if (localStorage.getItem('friendy_owner')) logout(true);
+});
 </script>
-<script src="owner-login.js" defer></script>
+<script src="owner-login.js?v=3" defer></script>
 </body>
 </html>

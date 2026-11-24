@@ -29,6 +29,9 @@ const CASHTAG = Deno.env.get("FRIENDY_CASHTAG") || "$hsw365";
 const SUPPORT_EMAIL = "hsw365media@gmail.com";
 
 const OWNER_EMAILS = ["hsw365media@gmail.com", "hoodstarent365@gmail.com"];
+// HSW365 owner PIN service: the PIN-only "Owner login" tab (owner-login.js v3) gets a signed session token from it.
+// This function never trusts the browser: every token is re-checked here with {a:"verify",token} before anything opens.
+const OWNER_PIN_URL = Deno.env.get("OWNER_PIN_URL") || "https://lsxdlmrjrcivxwgfkpop.supabase.co/functions/v1/owner-pin";
 
 const PLANS: Record<string, { cents: number; yearCents: number; rank: number; friends: string[]; label: string }> = {
   basic: { cents: 800, yearCents: 5799, rank: 1, friends: ["Maya", "Dre"], label: "Basic" },
@@ -59,7 +62,7 @@ const MAX_MESSAGE_CHARS = 2000;
 // -- HTTP helpers --
 const CORS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-hsw-owner",
   "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
   "Access-Control-Max-Age": "86400",
 };
@@ -163,6 +166,32 @@ async function verifyToken(token: string): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+// -- HSW365 owner PIN session --
+const ownerPinCache = new Map<string, number>(); // token -> expiry of a positive answer (5 minutes); a "no" is never cached
+async function ownerPinValid(token: string): Promise<boolean> {
+  token = token.trim();
+  if (!token || token.length > 1024 || /\s/.test(token)) return false;
+  const until = ownerPinCache.get(token);
+  if (until && until > Date.now()) return true;
+  try {
+    const res = await fetch(OWNER_PIN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ a: "verify", token }),
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data && data.ok === true) {
+      ownerPinCache.set(token, Date.now() + 5 * 60_000);
+      return true;
+    }
+  } catch (e) {
+    console.error("owner_pin_verify_failed", (e as Error).message);
+  }
+  ownerPinCache.delete(token);
+  return false;
 }
 
 // -- users --
@@ -689,6 +718,29 @@ Deno.serve(async (req: Request) => {
       }
       await db.from("users").update({ failed_logins: 0, lock_until: null, last_seen_at: new Date().toISOString() })
         .eq("id", user.id);
+      return json({ token: await signToken(user.id), user: await publicUser(user) });
+    }
+
+    // -- HSW365 owner: PIN session from the Owner login tab -> the owner's account (every friend, never pays) --
+    if (path === "/auth/owner" && method === "POST") {
+      const b = await readBody(req);
+      const token = String(req.headers.get("x-hsw-owner") || b.ownerToken || "");
+      if (!(await ownerPinValid(token))) return fail(401, "Owner sign in needed. Use the Owner login tab.", "OWNER_PIN_REQUIRED");
+      const email = OWNER_EMAILS[0];
+      let { data: user } = await db.from("users").select("*").eq("email", email).maybeSingle();
+      if (!user) {
+        const { data, error } = await db.from("users").insert({
+          email, plan: "none", plan_status: "inactive", is_owner: true, display_name: null,
+        }).select("*").single();
+        if (error && error.code !== "23505") throw new Error(error.message);
+        user = data || (await db.from("users").select("*").eq("email", email).maybeSingle()).data;
+      } else if (user.is_owner !== true) {
+        const { data } = await db.from("users").update({ is_owner: true, updated_at: new Date().toISOString() })
+          .eq("id", user.id).select("*").single();
+        user = data || { ...user, is_owner: true };
+      }
+      if (!user) return fail(500, "Couldn't open the owner account. Try again.");
+      await db.from("users").update({ last_seen_at: new Date().toISOString() }).eq("id", user.id);
       return json({ token: await signToken(user.id), user: await publicUser(user) });
     }
 

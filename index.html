@@ -875,7 +875,7 @@ async function submitAuth(e) {
   } finally { setBusy(btn, false); $('auth-btn').textContent = authBtnLabel(); }
 }
 function signOut(silent) {
-  APP.token = null; APP.user = null; APP.friend = null; store.del('friendy_token'); clearInterval(APP.poll); APP.poll = null;
+  APP.token = null; APP.user = null; APP.friend = null; store.del('friendy_token'); store.del('friendy_owner'); clearInterval(APP.poll); APP.poll = null;
   document.querySelectorAll('.overlay.open').forEach(o => closeModal(o.id));
   showPage('landing-page');
   if (!silent) toast('Signed out.', true);
@@ -906,7 +906,7 @@ function renderHome() {
   const u = APP.user; if (!u) return;
   const badge = $('home-badge');
   badge.className = 'badge ' + (u.isOwner ? 'b-owner' : u.plan ? 'b-' + u.plan : 'b-none');
-  badge.textContent = u.isOwner ? 'Owner' : u.onTrial ? 'Free trial' : u.plan ? PLANS[u.plan].label : 'No plan';
+  badge.textContent = u.isOwner ? 'VIP · Owner' : u.onTrial ? 'Free trial' : u.plan ? PLANS[u.plan].label : 'No plan';
   $('owner-btn').hidden = !u.isOwner;
   $('home-hi').innerHTML = u.name ? `Hey <em>${esc(u.name)}.</em>` : 'Hey, <em>you made it.</em>';
   $('home-sub').textContent = u.plan ? "Who do you want to talk to?" : u.trialAvailable ? "Your 3 free days are waiting. No card needed." : "You're one step away from meeting your friends.";
@@ -1145,7 +1145,7 @@ $('quick').addEventListener('click', e => { const c = e.target.closest('.chip');
 function openAccount() {
   const u = APP.user; if (!u) return;
   const left = daysLeft(u.planExpiresAt);
-  const planLine = u.isOwner ? 'Premium (owner, never expires)' : u.onTrial ? PLANS[u.plan].label + ' · free trial' : u.plan ? PLANS[u.plan].label + ' · ' + money(PLANS[u.plan].price) + '/mo' : u.planStatus === 'expired' ? 'Ended' : 'None yet';
+  const planLine = u.isOwner ? 'VIP · Owner: every friend and feature, free, never expires' : u.onTrial ? PLANS[u.plan].label + ' · free trial' : u.plan ? PLANS[u.plan].label + ' · ' + money(PLANS[u.plan].price) + '/mo' : u.planStatus === 'expired' ? 'Ended' : 'None yet';
   const renewLine = u.isOwner || !u.plan ? '' : u.paymentMethod === 'card'
     ? `<div class="kv"><span>Billing</span><span>Card, renews monthly</span></div>`
     : `<div class="kv"><span>Access through</span><span>${esc(fmtDate(u.planExpiresAt))}${left !== null ? ' (' + Math.max(left,0) + (left === 1 ? ' day' : ' days') + ' left)' : ''}</span></div>`;
@@ -1301,8 +1301,32 @@ async function revokeMember(id, btn) {
     await refreshUser(); if (APP.user) { renderHome(); syncPolling(); }
   });
 })();
+
+// ── HSW365 OWNER (PIN session from the Owner login tab) ───────────
+// The server re-checks the session with the owner-pin service, then signs in to the owner account: every friend, never pays.
+let OWNER_BUSY = false;
+async function ownerIn(token) {
+  if (!token || OWNER_BUSY || (APP.user && APP.user.isOwner)) return;
+  OWNER_BUSY = true;
+  try {
+    const res = await fetch(API + '/auth/owner', { method:'POST', headers:{ 'Content-Type':'application/json', 'x-hsw-owner': token }, body:'{}' });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok || !d.token) return;
+    APP.token = d.token; APP.user = d.user; store.set('friendy_token', d.token); store.set('friendy_owner', '1');
+    document.querySelectorAll('.overlay.open').forEach(o => closeModal(o.id));
+    goHome(); syncPolling();
+  } catch (e) { /* offline: stay as is */ }
+  finally { OWNER_BUSY = false; }
+}
+window.addEventListener('hsw-owner', e => {
+  const d = e.detail || {};
+  if (d.owner) ownerIn(d.token);
+  else if (store.get('friendy_owner')) signOut(true);
+});
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.HSW_OWNER_READY) window.HSW_OWNER_READY.then(ok => { if (!ok && store.get('friendy_owner')) signOut(true); });
+});
 </script>
-<script src="https://calltwin.onrender.com/owner-signin.js" defer></script>
-<script src="owner-login.js" defer></script>
+<script src="owner-login.js?v=3" defer></script>
 </body>
 </html>
